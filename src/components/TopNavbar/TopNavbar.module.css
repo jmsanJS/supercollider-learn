@@ -1,0 +1,44 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  background: rgba(6, 10, 6, 0.92);
+  border-bottom: 1px solid rgba(0, 255, 80, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 0 24px;
+  gap: 0;
+}
+.logo_mark {
+  font-family: "Syne Mono", monospace;
+  font-size: 0.95rem;
+  color: #00ff50;
+  text-shadow: 0 0 12px rgba(0, 255, 80, 0.8);
+  padding: 14px 24px 14px 0;
+  border-right: 1px solid rgba(0, 255, 80, 0.1);
+  margin-right: 16px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.tab_btn {
+  background: none;
+  border: none;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: #4a6a4a;
+  padding: 18px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.tab_btn:hover {
+  color: #7ab07a;
+}
+.tab_btn.active {
+  color: #00ff50;
+  border-bottom-color: #00ff50;
+  text-shadow: 0 0 8px rgba(0, 255, 80, 0.5);
+}

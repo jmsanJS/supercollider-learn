@@ -100,3 +100,11 @@
   line-height: 1.7;
   max-width: 480px;
 }
+
+.cards_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+

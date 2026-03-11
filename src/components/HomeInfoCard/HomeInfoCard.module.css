@@ -1,0 +1,30 @@
+.info_card {
+  border: 1px solid rgba(0, 255, 80, 0.1);
+  border-radius: 4px;
+  padding: 18px 20px;
+  background: rgba(0, 255, 80, 0.02);
+  transition: border-color 0.15s;
+}
+
+.info_card:hover {
+  border-color: rgba(0, 255, 80, 0.25);
+}
+
+.card_icon {
+  font-size: 1.2rem;
+  color: #00ff50;
+  margin-bottom: 8px;
+}
+
+.card_label {
+  font-size: 0.78rem;
+  color: #c8ffc8;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.card_desc {
+  font-size: 0.73rem;
+  color: #5a8a5a;
+  line-height: 1.6;
+}

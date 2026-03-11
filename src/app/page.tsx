@@ -91,6 +91,25 @@ export default function Home() {
           <HomeInfoCard key={i} icon={c.icon} label={c.label} desc={c.desc} />
         ))}
       </div>
+
+      <div className={styles.about_sc}>
+        <div className={styles.section_label}>¿Qué es SuperCollider?</div>
+        <div className={styles.code_block}>
+          <pre>
+            {`
+// SuperCollider es un entorno de programación para síntesis de audio y composición algorítmica.
+// Es software libre usado por músicos, artistas e investigadores alrededor del mundo.
+
+// Fue creado en 1996 por James McCartney y es actualmente mantenido por la comunidad.
+
+// Ejemplo:
+
+{ SinOsc.ar(440, 0, 0.3) }.play  // ← esto genera un La4
+            `}
+          </pre>
+        </div>
+      </div>
+
     </div>
   );
 }

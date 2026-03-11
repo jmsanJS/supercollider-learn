@@ -108,3 +108,32 @@
   margin-bottom: 28px;
 }
 
+.section_label {
+  font-size: 0.65rem;
+  color: #00ff50;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 14px;
+}
+
+.about_sc {
+  margin-bottom: 24px;
+}
+
+.code_block {
+  border: 1px solid rgba(0, 255, 80, 0.12);
+  border-radius: 4px;
+  background: #020802;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  font-size: 0.75rem;
+  color: #5a8a5a;
+  line-height: 1.7;
+  overflow: scroll;
+}
+
+@media (max-width: 600px) {
+  .cards_grid {
+    grid-template-columns: 1fr;
+  }
+}

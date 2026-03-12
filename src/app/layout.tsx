@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Oxanium } from "next/font/google";
 import "./globals.css";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
+import Footer from "@/components/Footer/Footer";
 
 const JetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className={`${JetBrainsMono.variable} ${oxanium.variable} antialiased`}>
         <TopNavbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

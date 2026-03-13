@@ -16,3 +16,7 @@ export function getExerciseById(id: string): Exercise | undefined {
 export function getTotalExercises(): number {
   return EXERCISES.length;
 }
+
+export function getInitialCodes(): Record<string, string> {
+  return Object.fromEntries(EXERCISES.map(e => [e.id, e.starter]));
+}

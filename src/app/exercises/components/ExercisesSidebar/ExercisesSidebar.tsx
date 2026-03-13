@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./ExercisesSidebar.module.css";
-import {
-  getExercisesByLevel,
-  getLevels,
-  getTotalExercises,
-} from "@/lib/exercises";
+import { getExercisesByLevel, getLevels, getTotalExercises } from "@/lib/exercises";
+import { useExercises } from "@/context/ExercisesContext";
 
 export default function ExercisesSidebar() {
-  const [setActiveId] = useState("ex1");
+  const { setActiveId } = useExercises()
   const levels = getLevels();
   const totalExercises = getTotalExercises();
 

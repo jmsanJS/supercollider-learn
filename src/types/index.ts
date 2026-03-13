@@ -24,3 +24,9 @@ export type Exercise = {
   starter: string;
   validate: (code: string) => ValidationResult;
 };
+
+// Contexts
+export type ExercisesContextType = {
+  activeId: string;
+  setActiveId: (id: string) => void;
+};

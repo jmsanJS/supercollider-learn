@@ -11,6 +11,7 @@ export default function MainEditor() {
   const exercise = getExerciseById(activeId);
 
   const [codes, setCodes] = useState(getInitialCodes);
+  const [playingId, setPlayingId] = useState<string | null>(null);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
 
@@ -21,11 +22,36 @@ export default function MainEditor() {
 
   const lines = value.split("\n");
 
-  const handleTabPress = () => {};
+  const handleTabPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const target = e.target as HTMLTextAreaElement;
+      const s = target.selectionStart;
+      const nv = value.slice(0, s) + "  " + value.slice(target.selectionEnd);
+      onChange(nv);
+      setTimeout(() => {
+        target.selectionStart = target.selectionEnd = s + 2;
+      }, 0);
+    }
+  };
 
-  const handleRun = () => {};
-  const handleStop = () => {};
-  const handleReset = () => {};
+  const handleRun = () => {
+    if (!exercise) return;
+    const result = exercise.validate(value);
+
+    if (result.ok) {
+      setPlayingId(activeId);
+    } else {
+      setPlayingId(null);
+    }
+  };
+
+  const handleStop = () => setPlayingId(null);
+
+  const handleReset = () => {
+    onChange(exercise?.starter ?? "");
+    setPlayingId(null);
+  };
 
   return (
     <div className={styles.ex_main}>
@@ -77,9 +103,11 @@ export default function MainEditor() {
             <button className={styles.btn_run} onClick={handleRun}>
               ▶ Ejecutar
             </button>
-            <button className={styles.btn_stop} onClick={handleStop}>
-              ■ Stop
-            </button>
+            {playingId === activeId && (
+              <button className={styles.btn_stop} onClick={handleStop}>
+                ■ Stop
+              </button>
+            )}
             <button className={styles.btn_reset} onClick={handleReset}>
               ↺
             </button>

@@ -25,6 +25,14 @@ export type Exercise = {
   validate: (code: string) => ValidationResult;
 };
 
+// Progress
+export type ProgressEntry = {
+  completed: boolean;
+  code: string;
+};
+
+export type Progress = Record<string, ProgressEntry>;
+
 // Contexts
 export type ExercisesContextType = {
   activeId: string;

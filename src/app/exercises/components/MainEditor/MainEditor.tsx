@@ -7,7 +7,7 @@ import { useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 
 export default function MainEditor() {
-  const { activeId } = useExercises();
+  const { activeId, markCompleted } = useExercises();
   const exercise = getExerciseById(activeId);
 
   const [codes, setCodes] = useState(getInitialCodes);
@@ -15,20 +15,21 @@ export default function MainEditor() {
 
   const textarea = useRef<HTMLTextAreaElement>(null);
 
-  const value = codes[activeId] ?? exercise?.starter ?? "";
-  const onChange = (newValue: string) => {
-    setCodes((prev) => ({ ...prev, [activeId]: newValue }));
+  const code = codes[activeId] ?? exercise?.starter ?? "";
+  const onChange = (newCode: string) => {
+    setCodes((prev) => ({ ...prev, [activeId]: newCode }));
   };
 
-  const lines = value.split("\n");
+  const lines = code.split("\n");
 
   const handleTabPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab") {
       e.preventDefault();
       const target = e.target as HTMLTextAreaElement;
       const s = target.selectionStart;
-      const nv = value.slice(0, s) + "  " + value.slice(target.selectionEnd);
-      onChange(nv);
+      const usersCode = code.slice(0, s) + "  " + code.slice(target.selectionEnd);
+
+      onChange(usersCode);
       setTimeout(() => {
         target.selectionStart = target.selectionEnd = s + 2;
       }, 0);
@@ -37,10 +38,10 @@ export default function MainEditor() {
 
   const handleRun = () => {
     if (!exercise) return;
-    const result = exercise.validate(value);
-
+    const result = exercise.validate(code);
     if (result.ok) {
       setPlayingId(activeId);
+      markCompleted(activeId, code)
     } else {
       setPlayingId(null);
     }
@@ -86,12 +87,12 @@ export default function MainEditor() {
             <div className={styles.editor_inner}>
               <div
                 className={styles.hl_layer}
-                dangerouslySetInnerHTML={{ __html: highlight(value) }}
+                dangerouslySetInnerHTML={{ __html: highlight(code) }}
               />
               <textarea
                 ref={textarea}
                 className={styles.code_ta}
-                value={value}
+                value={code}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={handleTabPress}
                 spellCheck={false}

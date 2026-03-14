@@ -37,4 +37,7 @@ export type Progress = Record<string, ProgressEntry>;
 export type ExercisesContextType = {
   activeId: string;
   setActiveId: (id: string) => void;
+  progress: Progress;
+  markCompleted: (id: string, code: string) => void;
+  resetProgress: () => void;
 };

@@ -3,6 +3,7 @@ import { JetBrains_Mono, Oxanium } from "next/font/google";
 import "./globals.css";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
 import Footer from "@/components/Footer/Footer";
+import { ProgressProvider } from "@/context/ProgressContext";
 
 const JetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -38,9 +39,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${JetBrainsMono.variable} ${oxanium.variable} antialiased`}>
-        <TopNavbar />
-        <main>{children}</main>
-        <Footer />
+        <ProgressProvider>
+          <TopNavbar />
+          <main>{children}</main>
+          <Footer />
+        </ProgressProvider>
       </body>
     </html>
   );

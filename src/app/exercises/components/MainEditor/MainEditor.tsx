@@ -5,9 +5,12 @@ import styles from "./MainEditor.module.css";
 import { getExerciseById, getInitialCodes } from "@/lib/exercises";
 import { useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
+import { useProgress } from "@/context/ProgressContext";
 
 export default function MainEditor() {
-  const { activeId, markCompleted } = useExercises();
+  const { activeId } = useExercises();
+  const { markCompleted } = useProgress();
+
   const exercise = getExerciseById(activeId);
 
   const [codes, setCodes] = useState(getInitialCodes);
@@ -27,7 +30,8 @@ export default function MainEditor() {
       e.preventDefault();
       const target = e.target as HTMLTextAreaElement;
       const s = target.selectionStart;
-      const usersCode = code.slice(0, s) + "  " + code.slice(target.selectionEnd);
+      const usersCode =
+        code.slice(0, s) + "  " + code.slice(target.selectionEnd);
 
       onChange(usersCode);
       setTimeout(() => {
@@ -41,7 +45,7 @@ export default function MainEditor() {
     const result = exercise.validate(code);
     if (result.ok) {
       setPlayingId(activeId);
-      markCompleted(activeId, code)
+      markCompleted(activeId, code);
     } else {
       setPlayingId(null);
     }

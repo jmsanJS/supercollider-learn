@@ -1,0 +1,97 @@
+import { UGen } from "@/types";
+
+export const UGENS: UGen[] = [
+  {
+    name: "SinOsc",
+    category: "Oscillators",
+    signature: "SinOsc.ar(freq, phase, mul, add)",
+    description: "Oscilador sinusoidal puro. El UGen más fundamental de SuperCollider.",
+    args: [
+      { name: "freq", default: "440", desc: "Frecuencia en Hz" },
+      { name: "phase", default: "0", desc: "Fase inicial (0 a 2pi)" },
+      { name: "mul", default: "1", desc: "Multiplicador de amplitud" },
+      { name: "add", default: "0", desc: "Offset DC" },
+    ],
+    example: "{ SinOsc.ar(440, 0, 0.3) }.play",
+    sound: { freq: 440, amp: 0.3, type: "sine" },
+  },
+  {
+    name: "Saw",
+    category: "Oscillators",
+    signature: "Saw.ar(freq, mul, add)",
+    description: "Onda diente de sierra con contenido armónico rico. Ideal para síntesis sustractiva.",
+    args: [
+      { name: "freq", default: "440", desc: "Frecuencia en Hz" },
+      { name: "mul", default: "1", desc: "Amplitud" },
+    ],
+    example: "{ Saw.ar(220, 0.2) }.play",
+    sound: { freq: 220, amp: 0.2, type: "sawtooth" },
+  },
+  {
+    name: "Pulse",
+    category: "Oscillators",
+    signature: "Pulse.ar(freq, width, mul, add)",
+    description: "Onda cuadrada/pulso con ancho variable. width=0.5 produce onda cuadrada perfecta.",
+    args: [
+      { name: "freq", default: "440", desc: "Frecuencia en Hz" },
+      { name: "width", default: "0.5", desc: "Ancho de pulso (0 a 1)" },
+      { name: "mul", default: "1", desc: "Amplitud" },
+    ],
+    example: "{ Pulse.ar(440, 0.5, 0.2) }.play",
+    sound: { freq: 440, amp: 0.2, type: "square" },
+  },
+  {
+    name: "WhiteNoise",
+    category: "Noise",
+    signature: "WhiteNoise.ar(mul, add)",
+    description: "Ruido blanco con igual energía en todas las frecuencias.",
+    args: [{ name: "mul", default: "1", desc: "Amplitud" }],
+    example: "{ WhiteNoise.ar(0.1) }.play",
+    sound: { type: "noise", freq: null, amp: 0.1 },
+  },
+  {
+    name: "PinkNoise",
+    category: "Noise",
+    signature: "PinkNoise.ar(mul, add)",
+    description: "Ruido rosa, más cálido que el blanco. Decae 3dB por octava.",
+    args: [{ name: "mul", default: "1", desc: "Amplitud" }],
+    example: "{ PinkNoise.ar(0.1) }.play",
+    sound: { type: "noise", freq: null, amp: 0.15 },
+  },
+  {
+    name: "LFSaw",
+    category: "Low Frequency",
+    signature: "LFSaw.ar/kr(freq, iphase, mul, add)",
+    description: "Oscilador diente de sierra de baja frecuencia. Ideal para modulación (LFO).",
+    args: [
+      { name: "freq", default: "1", desc: "Frecuencia de modulación" },
+      { name: "iphase", default: "0", desc: "Fase inicial" },
+    ],
+    example: "{ SinOsc.ar(LFSaw.kr(2)*200+600, 0, 0.4) }.play",
+    sound: { freq: 600, amp: 0.4, type: "sine", lfo: { rate: 2, depth: 200 } },
+  },
+  {
+    name: "LPF",
+    category: "Filters",
+    signature: "LPF.ar(in, freq, mul, add)",
+    description: "Filtro pasa-bajos de segundo orden. Elimina frecuencias agudas.",
+    args: [
+      { name: "in", default: "-", desc: "Señal de entrada" },
+      { name: "freq", default: "1000", desc: "Frecuencia de corte en Hz" },
+    ],
+    example: "{ LPF.ar(Saw.ar(200, 0.4), 800) }.play",
+    sound: { freq: 200, amp: 0.3, type: "sawtooth" },
+  },
+  {
+    name: "Env",
+    category: "Envelopes",
+    signature: "Env.new(levels, times, curve)",
+    description: "Define la envolvente ADSR de un sonido: ataque, decaimiento, sustain, release.",
+    args: [
+      { name: "levels", default: "[0,1,0]", desc: "Niveles de amplitud" },
+      { name: "times", default: "[0.1, 0.5]", desc: "Tiempos en segundos" },
+    ],
+    example: "{ SinOsc.ar(440) * EnvGen.kr(Env.perc(0.01, 1), doneAction:2) }.play",
+    sound: { freq: 440, amp: 0.4, type: "sine", env: true },
+  },
+];

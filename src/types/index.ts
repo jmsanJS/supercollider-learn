@@ -54,3 +54,28 @@ export type ExercisesContextType = {
   markCompleted: (id: string, code: string) => void;
   resetProgress: () => void;
 };
+
+// Ugens
+export type UGen = {
+  name: string;
+  category: string;
+  signature: string;
+  description: string;
+  args: UGenArgument[];
+  example: string;
+  sound: UGenSound;
+};
+
+type UGenArgument = {
+  name: string;
+  default: string;
+  desc: string;
+};
+
+type UGenSound = {
+  freq: number | null;
+  amp: number;
+  type: string;
+  env?: boolean;
+  lfo?: { rate: number; depth: number };
+};

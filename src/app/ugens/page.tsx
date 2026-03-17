@@ -1,15 +1,12 @@
 import { Metadata } from "next";
+import UGensClient from "./UGensClient";
 
 export const metadata: Metadata = {
-  title: "UGens",
+  title: "UGens comunes",
   description:
     "Lista de los UGens más comunes y utilizados en SuperCollider. Los UGens son componentes básicos para la creación y modifica sonido.",
 };
 
 export default function Page() {
-  return (
-    <div>
-      <h1 className="text-4xl">UGens Page</h1>
-    </div>
-  );
+  return <UGensClient />
 }

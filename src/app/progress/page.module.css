@@ -25,31 +25,6 @@
   padding: 10px 14px;
 }
 
-.th_dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.th_dot.r {
-  background: #ff5f57;
-}
-
-.th_dot.y {
-  background: #ffbd2e;
-}
-
-.th_dot.g {
-  background: #28c840;
-}
-
-.th_title {
-  margin-left: 8px;
-  font-size: 0.7rem;
-  color: #4a6a4a;
-  letter-spacing: 0.08em;
-}
-
 .progress_hero {
   border: 1px solid rgba(0, 255, 80, 0.12);
   border-top: none;

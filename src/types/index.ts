@@ -79,3 +79,9 @@ type UGenSound = {
   env?: boolean;
   lfo?: { rate: number; depth: number };
 };
+
+// Components
+export interface TerminalHeaderProps {
+  title: string;
+  desc?: string;
+}

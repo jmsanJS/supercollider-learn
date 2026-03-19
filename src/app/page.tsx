@@ -1,5 +1,6 @@
 import HomeInfoCard from "@/components/HomeInfoCard/HomeInfoCard";
 import styles from "./page.module.css";
+import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 
 export default function Home() {
   const cards = [
@@ -64,12 +65,8 @@ export default function Home() {
 
   return (
     <div className={styles.section_wrap}>
-      <div className={styles.terminal_header}>
-        <span className={`${styles.th_dot} ${styles.r}`} />
-        <span className={`${styles.th_dot} ${styles.y}`} />
-        <span className={`${styles.th_dot} ${styles.g}`} />
-        <span className={styles.th_title}>sound.sc</span>
-      </div>
+      <TerminalHeader title="sound" desc="Aprende SuperCollider" />
+
       <div className={styles.terminal_section}>
         <div className={styles.t_prompt}>
           <span className={styles.prompt_sym}>~$</span>
@@ -109,7 +106,6 @@ export default function Home() {
           </pre>
         </div>
       </div>
-
     </div>
   );
 }

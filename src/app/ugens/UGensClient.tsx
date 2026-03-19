@@ -3,8 +3,13 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import { highlight } from "@/lib/highlight";
-import { getActiveUGen, getFilteredUGens, getUGensCategories } from "@/lib/ugens";
+import {
+  getActiveUGen,
+  getFilteredUGens,
+  getUGensCategories,
+} from "@/lib/ugens";
 import type { UGen } from "@/types";
+import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 
 export default function UGensClient() {
   const [activeUGen, setActiveUGen] = useState<string>("SinOsc");
@@ -12,6 +17,8 @@ export default function UGensClient() {
   const [filter, setFilter] = useState<string>("All");
 
   const ugen = getActiveUGen(activeUGen);
+  if (!ugen) return null;
+
   const categories = getUGensCategories();
   const filtered = getFilteredUGens(filter);
 
@@ -25,15 +32,13 @@ export default function UGensClient() {
 
   return (
     <section className={styles.section_wrap}>
-      <header className={styles.terminal_header} aria-hidden="true">
-        <span className={`${styles.th_dot} ${styles.r}`} />
-        <span className={`${styles.th_dot} ${styles.y}`} />
-        <span className={`${styles.th_dot} ${styles.g}`} />
-        <span className={styles.th_title}>ugens.sc — Unit Generators</span>
-      </header>
-
       <div className={styles.ugen_layout}>
         <div className={styles.ugen_list}>
+          <div className={styles.sidebar_header}>
+            <span className={styles.section_label} style={{ marginBottom: 0 }}>
+              UGens comunes
+            </span>
+          </div>
           <div className={styles.cat_filter}>
             {categories.map((category) => (
               <button
@@ -60,45 +65,52 @@ export default function UGensClient() {
           ))}
         </div>
 
-        <div className={styles.ugen_detail}>
-          <div className={styles.ud_name}>{ugen?.name}</div>
-          <div className={styles.ud_cat}>{ugen?.category}</div>
-          <div className={styles.ud_sig}>{ugen?.signature}</div>
-          <p className={styles.ud_desc}>{ugen?.description}</p>
+        <div>
+          <TerminalHeader title="ugens" desc="Unit Generators" />
 
-          <div className={styles.ud_args}>
-            <div className={styles.pane_label} style={{ marginBottom: 8 }}>
-              // argumentos
-            </div>
-            {ugen?.args.map((arg) => (
-              <div key={arg.name} className={styles.arg_row}>
-                <span className={styles.arg_name}>{arg.name}</span>
-                <span className={styles.arg_default}>{arg.default}</span>
-                <span className={styles.arg_desc}>{arg.desc}</span>
+          <div className={styles.ugen_detail}>
+            <div className={styles.ud_name}>{ugen.name}</div>
+            <div className={styles.ud_cat}>{ugen.category}</div>
+            <div className={styles.ud_sig}>{ugen.signature}</div>
+            <p className={styles.ud_desc}>{ugen.description}</p>
+
+            <div className={styles.ud_args}>
+              <div className={styles.pane_label} style={{ marginBottom: 8 }}>
+                // argumentos
               </div>
-            ))}
-          </div>
-
-          <div className={styles.ud_example}>
-            <div className={styles.pane_label} style={{ marginBottom: 8 }}>
-              // ejemplo
+              {ugen.args.map((arg) => (
+                <div key={arg.name} className={styles.arg_row}>
+                  <span className={styles.arg_name}>{arg.name}</span>
+                  <span className={styles.arg_default}>{arg.default}</span>
+                  <span className={styles.arg_desc}>{arg.desc}</span>
+                </div>
+              ))}
             </div>
-            <div className={styles.example_block}>
-              <pre
-                dangerouslySetInnerHTML={{ __html: highlight(ugen.example) }}
-              />
-            </div>
-          </div>
 
-          <div className={styles.ud_controls}>
-            <button className={styles.btn_run} onClick={() => handlePlay(ugen)}>
-              ▶ Escuchar
-            </button>
-            {playingName === ugen?.name && (
-              <button className={styles.btn_stop} onClick={handleStop}>
-                ■ Stop
+            <div className={styles.ud_example}>
+              <div className={styles.pane_label} style={{ marginBottom: 8 }}>
+                // ejemplo
+              </div>
+              <div className={styles.example_block}>
+                <pre
+                  dangerouslySetInnerHTML={{ __html: highlight(ugen.example) }}
+                />
+              </div>
+            </div>
+
+            <div className={styles.ud_controls}>
+              <button
+                className={styles.btn_run}
+                onClick={() => handlePlay(ugen)}
+              >
+                ▶ Escuchar
               </button>
-            )}
+              {playingName === ugen.name && (
+                <button className={styles.btn_stop} onClick={handleStop}>
+                  ■ Stop
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

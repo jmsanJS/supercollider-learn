@@ -4,6 +4,7 @@ import { useProgress } from "@/context/ProgressContext";
 import { EXERCISES } from "@/data/exercices";
 import { getProgressStats } from "@/lib/progress";
 import styles from "./page.module.css";
+import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 
 export default function ProgressClient() {
   const { progress, resetProgress } = useProgress();
@@ -18,12 +19,7 @@ export default function ProgressClient() {
 
   return (
     <section className={styles.section_wrap} aria-label="Progreso del curso">
-      <header className={styles.terminal_header} aria-hidden="true">
-        <span className={`${styles.th_dot} ${styles.r}`} />
-        <span className={`${styles.th_dot} ${styles.y}`} />
-        <span className={`${styles.th_dot} ${styles.g}`} />
-        <span className={styles.th_title}>progreso.sc</span>
-      </header>
+      <TerminalHeader title="progreso" />
 
       <div
         className={styles.progress_hero}

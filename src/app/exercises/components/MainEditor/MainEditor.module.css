@@ -92,7 +92,6 @@
   color: #5a8a5a;
   line-height: 1.75;
   white-space: pre-wrap;
-  font-family: "JetBrains Mono", monospace;
 }
 
 .editor_wrap {
@@ -130,7 +129,6 @@
   pointer-events: none;
   white-space: pre;
   overflow: auto;
-  font-family: "JetBrains Mono", monospace;
   font-size: 0.76rem;
   line-height: 1.65;
   color: #5a8a5a;
@@ -144,7 +142,6 @@
   background: transparent;
   color: transparent;
   caret-color: #00ff50;
-  font-family: "JetBrains Mono", monospace;
   font-size: 0.76rem;
   line-height: 1.65;
   padding: 10px 12px;
@@ -168,7 +165,6 @@
   color: #020802;
   border: none;
   border-radius: 3px;
-  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
@@ -190,9 +186,9 @@
   padding: 9px 14px;
   background: transparent;
   color: #ff5a5a;
-  border: 1px solid rgba(255, 90, 90, 0.3);
+  border: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 90, 90, 0.3);
   border-radius: 3px;
-  font-family: "JetBrains Mono", monospace;
   font-size: 0.74rem;
   cursor: pointer;
   transition: all 0.15s;
@@ -209,7 +205,6 @@
   color: #3a5a3a;
   border: 1px solid rgba(58, 90, 58, 0.4);
   border-radius: 3px;
-  font-family: "JetBrains Mono", monospace;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.15s;

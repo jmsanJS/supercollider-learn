@@ -4,6 +4,7 @@ import "./globals.css";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
 import Footer from "@/components/Footer/Footer";
 import { ProgressProvider } from "@/context/ProgressContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const JetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -31,19 +32,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${JetBrainsMono.variable} ${oxanium.variable} antialiased`}>
-        <ProgressProvider>
-          <TopNavbar />
-          <main>{children}</main>
-          <Footer />
-        </ProgressProvider>
+      <body className={`${JetBrainsMono.variable} ${oxanium.variable} antialiased`}
+      >
+        <ThemeProvider>
+          <ProgressProvider>
+            <TopNavbar />
+            <main>{children}</main>
+            <Footer />
+          </ProgressProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

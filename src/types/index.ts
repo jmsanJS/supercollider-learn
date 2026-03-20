@@ -55,6 +55,20 @@ export type ExercisesContextType = {
   resetProgress: () => void;
 };
 
+export type ThemeName = "phosphor" | "amber" | "slate" | "paper";
+
+export type ThemeOption = {
+  name: ThemeName;
+  label: string;
+  accent: string;
+  bg: string;
+};
+
+export type ThemeContextType = {
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
+};
+
 // Ugens
 export type UGen = {
   name: string;

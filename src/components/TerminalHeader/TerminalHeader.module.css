@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 255, 80, 0.12);
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
   border-bottom: none;
   border-radius: 6px 6px 0 0;
   padding: 10px 14px;
@@ -18,11 +18,9 @@
 .th_dot.r {
   background: #ff5f57;
 }
-
 .th_dot.y {
   background: #ffbd2e;
 }
-
 .th_dot.g {
   background: #28c840;
 }
@@ -30,6 +28,6 @@
 .th_title {
   margin-left: 8px;
   font-size: 0.7rem;
-  color: #4a6a4a;
+  color: var(--text-muted);
   letter-spacing: 0.08em;
 }

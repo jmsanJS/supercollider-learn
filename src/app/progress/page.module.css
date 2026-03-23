@@ -3,6 +3,7 @@
   max-width: 1400px;
   animation: fadeIn 0.2s ease;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -18,28 +19,28 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 255, 80, 0.12);
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
   border-bottom: none;
   border-radius: 6px 6px 0 0;
   padding: 10px 14px;
 }
 
 .progress_hero {
-  border: 1px solid rgba(0, 255, 80, 0.12);
+  border: 1px solid var(--border-subtle);
   border-top: none;
   border-radius: 0 0 6px 6px;
   padding: 36px 32px;
   margin-bottom: 24px;
   text-align: center;
-  background: rgba(0, 255, 80, 0.02);
+  background: var(--accent-dim);
 }
 
 .big_pct {
   font-family: "Syne Mono", monospace;
   font-size: clamp(3rem, 10vw, 5rem);
-  color: #00ff50;
-  text-shadow: 0 0 30px rgba(0, 255, 80, 0.5);
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow);
   line-height: 1;
 }
 
@@ -50,13 +51,13 @@
 
 .big_label {
   font-size: 0.78rem;
-  color: #5a8a5a;
+  color: var(--text-secondary);
   margin: 10px 0 20px;
 }
 
 .main_bar {
   height: 4px;
-  background: rgba(0, 255, 80, 0.1);
+  background: var(--accent-dim);
   border-radius: 2px;
   max-width: 300px;
   margin: 0 auto;
@@ -65,9 +66,9 @@
 
 .main_bar_fill {
   height: 100%;
-  background: #00ff50;
+  background: var(--accent);
   border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 255, 80, 0.6);
+  box-shadow: 0 0 10px var(--accent-glow);
   transition: width 0.6s ease;
 }
 
@@ -77,6 +78,7 @@
   gap: 12px;
   margin-bottom: 24px;
 }
+
 @media (max-width: 500px) {
   .level_progress_grid {
     grid-template-columns: 1fr;
@@ -84,15 +86,15 @@
 }
 
 .lp_card {
-  border: 1px solid rgba(0, 255, 80, 0.1);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
   padding: 16px;
-  background: rgba(0, 255, 80, 0.02);
+  background: var(--accent-dim);
 }
 
 .lp_level {
   font-size: 0.65rem;
-  color: #3a5a3a;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 6px;
@@ -100,13 +102,13 @@
 
 .lp_nums {
   font-size: 1.3rem;
-  color: #c8ffc8;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .lp_bar {
   height: 3px;
-  background: rgba(0, 255, 80, 0.1);
+  background: var(--accent-dim);
   border-radius: 2px;
   margin-bottom: 8px;
   overflow: hidden;
@@ -114,14 +116,14 @@
 
 .lp_bar_fill {
   height: 100%;
-  background: #00ff50;
-  box-shadow: 0 0 8px rgba(0, 255, 80, 0.5);
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
   transition: width 0.5s ease;
 }
 
 .lp_label {
   font-size: 0.65rem;
-  color: #4a7a4a;
+  color: var(--text-muted);
 }
 
 .ex_detail_list {
@@ -130,7 +132,7 @@
 
 .section_label {
   font-size: 0.65rem;
-  color: #00ff50;
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-bottom: 14px;
@@ -141,22 +143,22 @@
   align-items: center;
   gap: 12px;
   padding: 10px 14px;
-  border-bottom: 1px solid rgba(0, 255, 80, 0.05);
+  border-bottom: 1px solid var(--border-subtle);
   font-size: 0.72rem;
-  color: #3a5a3a;
+  color: var(--text-muted);
   transition: background 0.1s;
 }
 
 .ex_detail_row:hover {
-  background: rgba(0, 255, 80, 0.03);
+  background: var(--accent-dim);
 }
 
 .ex_detail_row.ex_done {
-  color: #5a8a5a;
+  color: var(--text-secondary);
 }
 
 .edr_check {
-  color: #00ff50;
+  color: var(--accent);
   min-width: 14px;
 }
 
@@ -166,13 +168,13 @@
 
 .edr_tag {
   font-size: 0.63rem;
-  color: #2a4a2a;
+  color: var(--text-disabled);
   min-width: 70px;
 }
 
 .edr_level {
   font-size: 0.63rem;
-  color: #2a4a2a;
+  color: var(--text-disabled);
   min-width: 40px;
 }
 
@@ -183,13 +185,13 @@
 }
 
 .ex_detail_row.ex_done .edr_status {
-  color: #00ff50;
+  color: var(--accent);
 }
 
 .reset_btn {
   background: transparent;
-  border: 1px solid rgba(255, 80, 80, 0.2);
-  color: #6a3a3a;
+  border: 1px solid color-mix(in srgb, var(--btn-stop) 20%, transparent);
+  color: color-mix(in srgb, var(--btn-stop) 50%, transparent);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
   padding: 8px 16px;
@@ -199,6 +201,6 @@
 }
 
 .reset_btn:hover {
-  color: #ff5a5a;
-  border-color: rgba(255, 80, 80, 0.4);
+  color: var(--btn-stop);
+  border-color: color-mix(in srgb, var(--btn-stop) 40%, transparent);
 }

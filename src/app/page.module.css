@@ -2,6 +2,7 @@
   padding: 30px 20px;
   animation: fadeIn 0.2s ease;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -14,12 +15,12 @@
 }
 
 .terminal_section {
-  border: 1px solid rgba(0, 255, 80, 0.12);
+  border: 1px solid var(--border-subtle);
   border-top: none;
   border-radius: 0 0 6px 6px;
   padding: 40px 32px;
   margin-bottom: 28px;
-  background: rgba(0, 255, 80, 0.02);
+  background: var(--accent-dim);
 }
 
 .t_prompt {
@@ -30,28 +31,29 @@
 }
 
 .prompt_sym {
-  color: #00ff50;
-  font-size: 1.1rem;
+  color: var(--accent);
+  font-size: 1.7rem;
   margin-top: 6px;
-  text-shadow: 0 0 10px rgba(0, 255, 80, 0.7);
+  text-shadow: 0 0 10px var(--accent-glow);
 }
 
 .t_title {
   font-family: "Syne Mono", monospace;
   font-size: clamp(1.8rem, 5vw, 3rem);
-  color: #c8ffc8;
+  color: var(--text-primary);
   line-height: 1.1;
-  text-shadow: 0 0 20px rgba(0, 255, 80, 0.4);
+  text-shadow: 0 0 20px var(--accent-glow);
 }
 
 .typewriter {
-  border-right: 2px solid #00ff50;
+  border-right: 2px solid var(--accent);
   animation: cursor 1.1s step-end infinite;
 }
+
 @keyframes cursor {
   0%,
   100% {
-    border-color: #00ff50;
+    border-color: var(--accent);
   }
   50% {
     border-color: transparent;
@@ -59,8 +61,8 @@
 }
 
 .t_sub {
-  font-size: 0.82rem;
-  color: #5a8a5a;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
   line-height: 1.7;
   max-width: 480px;
 }
@@ -73,21 +75,21 @@
 }
 
 .section_label {
-  font-size: 0.65rem;
-  color: #00ff50;
+  font-size: 1.1rem;
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-bottom: 14px;
 }
 
 .code_block {
-  border: 1px solid rgba(0, 255, 80, 0.12);
+  border: 1px solid var(--border-subtle);
   border-radius: 4px;
-  background: #020802;
+  background: var(--editor-bg);
   padding: 16px 18px;
   margin-bottom: 12px;
   font-size: 0.75rem;
-  color: #5a8a5a;
+  color: var(--text-secondary);
   line-height: 1.7;
   overflow: scroll;
 }

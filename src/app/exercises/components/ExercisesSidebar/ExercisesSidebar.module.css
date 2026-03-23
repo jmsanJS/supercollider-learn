@@ -1,14 +1,14 @@
 .ex_sidebar {
-  border: 1px solid rgba(0, 255, 80, 0.1);
+  border: 1px solid var(--border-subtle);
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-base);
   overflow: hidden;
   height: fit-content;
 }
 
 .sidebar_header {
   padding: 12px 14px;
-  border-bottom: 1px solid rgba(0, 255, 80, 0.08);
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,7 +16,7 @@
 
 .section_label {
   font-size: 0.65rem;
-  color: #00ff50;
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.14em;
   margin-bottom: 14px;
@@ -24,12 +24,12 @@
 
 .ex_count {
   font-size: 0.7rem;
-  color: #00ff50;
+  color: var(--accent);
 }
 
 .level_group {
   padding: 10px 0;
-  border-bottom: 1px solid rgba(0, 255, 80, 0.06);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .level_group:last-child {
@@ -38,7 +38,7 @@
 
 .level_label {
   font-size: 0.6rem;
-  color: #3a5a3a;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   padding: 0 14px 6px;
@@ -54,29 +54,29 @@
   border: none;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
-  color: #4a6a4a;
+  color: var(--text-muted);
   cursor: pointer;
   text-align: left;
   transition: all 0.1s;
 }
 
 .ex_item:hover {
-  background: rgba(0, 255, 80, 0.04);
-  color: #7ab07a;
+  background: var(--accent-dim);
+  color: var(--text-secondary);
 }
 
 .ex_item.active {
-  background: rgba(0, 255, 80, 0.07);
-  color: #c8ffc8;
+  background: var(--accent-dim);
+  color: var(--text-primary);
 }
 
 .ex_item.done {
-  color: #4a8a4a;
+  color: var(--text-secondary);
 }
 
 .ex_check {
   font-size: 0.65rem;
-  color: #00ff50;
+  color: var(--accent);
   min-width: 12px;
 }
 
@@ -89,6 +89,6 @@
 
 .ex_tag {
   font-size: 0.58rem;
-  color: #3a5a3a;
+  color: var(--text-muted);
   white-space: nowrap;
 }

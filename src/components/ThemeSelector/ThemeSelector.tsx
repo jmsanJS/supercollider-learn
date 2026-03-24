@@ -4,7 +4,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useRef, useState } from "react";
 import styles from "./ThemeSelector.module.css";
 import type { ThemeName } from "@/types";
-import { currentTheme } from "@/lib/themes";
+import { getCurrentTheme } from "@/lib/themes";
 import { THEMES } from "@/data/themes";
 
 export default function ThemeSelector() {
@@ -12,7 +12,7 @@ export default function ThemeSelector() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = currentTheme(THEMES, theme)
+  const current = getCurrentTheme(theme)
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

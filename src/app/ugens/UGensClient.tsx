@@ -10,11 +10,15 @@ import {
 } from "@/lib/ugens";
 import type { UGen } from "@/types";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
+import { useAudio } from "@/hooks/useAudio";
 
 export default function UGensClient() {
+  const [isDisabled, setIsDisabled] = useState(false);
   const [activeUGen, setActiveUGen] = useState<string>("SinOsc");
   const [playingName, setPlayingName] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("All");
+
+  const { play, stop } = useAudio();
 
   const ugen = getActiveUGen(activeUGen);
   if (!ugen) return null;
@@ -23,11 +27,15 @@ export default function UGensClient() {
   const filtered = getFilteredUGens(filter);
 
   const handlePlay = (u: UGen): void => {
+    play(u.sound);
     setPlayingName(u.name);
+    setIsDisabled(true);
   };
 
   const handleStop = (): void => {
+    stop();
     setPlayingName(null);
+    setIsDisabled(false);
   };
 
   return (
@@ -102,6 +110,7 @@ export default function UGensClient() {
               <button
                 className={styles.btn_run}
                 onClick={() => handlePlay(ugen)}
+                disabled={isDisabled}
               >
                 ▶ Escuchar
               </button>

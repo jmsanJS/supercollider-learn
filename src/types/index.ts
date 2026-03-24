@@ -1,3 +1,5 @@
+import * as Tone from "tone";
+
 export type AudioConfig = {
   freq?: number;
   amp?: number;
@@ -77,7 +79,7 @@ export type UGen = {
   description: string;
   args: UGenArgument[];
   example: string;
-  sound: UGenSound;
+  sound: AudioConfig;
 };
 
 type UGenArgument = {
@@ -86,16 +88,16 @@ type UGenArgument = {
   desc: string;
 };
 
-type UGenSound = {
-  freq: number | null;
-  amp: number;
-  type: string;
-  env?: boolean;
-  lfo?: { rate: number; depth: number };
-};
-
 // Components
 export interface TerminalHeaderProps {
   title: string;
   desc?: string;
 }
+
+// Hooks
+export type AudioRefs = {
+  synth?: Tone.Synth | Tone.Oscillator;
+  synth2?: Tone.Oscillator;
+  lfo?: Tone.LFO;
+  noise?: Tone.Noise;
+};

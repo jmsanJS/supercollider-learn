@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import styles from "./TopNavbar.module.css";
 import Link from "next/link";
+import ThemeSelector from "../ThemeSelector/ThemeSelector";
 
 export default function TopNavbar() {
   const [tab, setTab] = useState("home");
@@ -18,17 +19,24 @@ export default function TopNavbar() {
   return (
     <>
       <nav className={styles.topbar}>
-        <Link href="/" className={styles.logo_mark}>SC·Learn</Link>
-        {tabs.map((t) => (
-          <Link
-            key={t.id}
-            href={t.path}
-            className={`${styles.tab_btn} ${tab === t.id ? "active" : ""}`}
-            onClick={() => setTab(t.id)}
-          >
-            {t.label}
+        <div>
+          <Link href="/" className={styles.logo_mark}>
+            SC·Learn
           </Link>
-        ))}
+          {tabs.map((t) => (
+            <Link
+              key={t.id}
+              href={t.path}
+              className={`${styles.tab_btn} ${tab === t.id ? "active" : ""}`}
+              onClick={() => setTab(t.id)}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </div>
+        <div>
+          <ThemeSelector />
+        </div>
       </nav>
     </>
   );

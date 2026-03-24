@@ -2,24 +2,16 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ThemeName, ThemeContextType } from "@/types";
+import { applyThemeToDom, getInitialTheme, saveTheme } from "@/lib/themes";
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
-
-function getInitialTheme(): ThemeName {
-  if (typeof window === "undefined") return "phosphor"
-  return (localStorage.getItem("sc_theme") as ThemeName) ?? "phosphor";
-}
-
-function applyThemeToDom(th: ThemeName) {
-  document.documentElement.setAttribute("data-theme", th);
-}
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeName>(getInitialTheme);
 
   useEffect(() => {
     applyThemeToDom(theme);
-    localStorage.setItem("sc_theme", theme);
+    saveTheme(theme);
   }, [theme]);
 
   return (

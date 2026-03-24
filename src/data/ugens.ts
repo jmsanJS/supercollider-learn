@@ -47,7 +47,7 @@ export const UGENS: UGen[] = [
     description: "Ruido blanco con igual energía en todas las frecuencias.",
     args: [{ name: "mul", default: "1", desc: "Amplitud" }],
     example: "{ WhiteNoise.ar(0.1) }.play",
-    sound: { type: "noise", freq: null, amp: 0.1 },
+    sound: { type: "noise", amp: 0.1 },
   },
   {
     name: "PinkNoise",
@@ -56,7 +56,7 @@ export const UGENS: UGen[] = [
     description: "Ruido rosa, más cálido que el blanco. Decae 3dB por octava.",
     args: [{ name: "mul", default: "1", desc: "Amplitud" }],
     example: "{ PinkNoise.ar(0.1) }.play",
-    sound: { type: "noise", freq: null, amp: 0.15 },
+    sound: { type: "noise", amp: 0.15 },
   },
   {
     name: "LFSaw",

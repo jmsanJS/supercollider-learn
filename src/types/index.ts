@@ -55,7 +55,7 @@ export type ExercisesContextType = {
   resetProgress: () => void;
 };
 
-export type ThemeName = "phosphor" | "amber" | "slate" | "paper";
+export type ThemeName = "paper" | "phosphor" | "warm" | "cold";
 
 export type ThemeOption = {
   name: ThemeName;

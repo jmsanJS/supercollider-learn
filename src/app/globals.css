@@ -1,115 +1,7 @@
 @import "tailwindcss";
 
-/* ── Tema 1: Fósforo (default) ─────────────────────────────── */
 :root,
-[data-theme="phosphor"] {
-  --bg-base: #060d06;
-  --bg-surface: #0d150d;
-  --bg-elevated: #111a11;
-
-  --border-subtle: rgba(74, 222, 128, 0.12);
-  --border-medium: rgba(74, 222, 128, 0.25);
-  --border-strong: rgba(74, 222, 128, 0.45);
-
-  /* --accent: #4ade80; */
-  --accent: #00ff50;
-  --accent-glow: rgba(74, 222, 128, 0.35);
-  --accent-dim: rgba(74, 222, 128, 0.06);
-
-  /* --text-primary: #e2f5e2; */
-  --text-primary: #cafcca;
-  /* --text-secondary: #86b886; */
-  --text-secondary: #5a8a5a;
-  --text-muted: #4d7a4d;
-  --text-disabled: #2d4d2d;
-
-  --editor-bg: #030a03;
-  --editor-nums: rgba(74, 222, 128, 0.22);
-
-  --btn-run-bg: #4ade80;
-  --btn-run-text: #030a03;
-  --btn-stop: #f87171;
-
-  --hl-comment: #3d6b3d;
-  --hl-ugen: #67e8c8;
-  --hl-method: #7eb8ff;
-  --hl-number: #fb923c;
-  --hl-brace: #67d4f8;
-
-  --scanlines: rgba(74, 222, 128, 0.018);
-}
-
-/* ── Tema 2: Ámbar ─────────────────────────────────────────── */
-[data-theme="amber"] {
-  --bg-base: #0d0900;
-  --bg-surface: #150f00;
-  --bg-elevated: #1c1500;
-
-  --border-subtle: rgba(251, 191, 36, 0.12);
-  --border-medium: rgba(251, 191, 36, 0.25);
-  --border-strong: rgba(251, 191, 36, 0.45);
-
-  --accent: #fbbf24;
-  --accent-glow: rgba(251, 191, 36, 0.35);
-  --accent-dim: rgba(251, 191, 36, 0.06);
-
-  --text-primary: #fef3c7;
-  --text-secondary: #d97706;
-  --text-muted: #92600a;
-  --text-disabled: #4d3206;
-
-  --editor-bg: #080600;
-  --editor-nums: rgba(251, 191, 36, 0.22);
-
-  --btn-run-bg: #fbbf24;
-  --btn-run-text: #080600;
-  --btn-stop: #f87171;
-
-  --hl-comment: #6b4c0a;
-  --hl-ugen: #34d399;
-  --hl-method: #60a5fa;
-  --hl-number: #fb923c;
-  --hl-brace: #a78bfa;
-
-  --scanlines: rgba(251, 191, 36, 0.018);
-}
-
-/* ── Tema 3: Slate ─────────────────────────────────────────── */
-[data-theme="slate"] {
-  --bg-base: #0f1117;
-  --bg-surface: #161b27;
-  --bg-elevated: #1e2535;
-
-  --border-subtle: rgba(148, 163, 184, 0.1);
-  --border-medium: rgba(148, 163, 184, 0.2);
-  --border-strong: rgba(148, 163, 184, 0.4);
-
-  --accent: #38bdf8;
-  --accent-glow: rgba(56, 189, 248, 0.3);
-  --accent-dim: rgba(56, 189, 248, 0.06);
-
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --text-disabled: #2d3748;
-
-  --editor-bg: #0a0e18;
-  --editor-nums: rgba(148, 163, 184, 0.2);
-
-  --btn-run-bg: #38bdf8;
-  --btn-run-text: #0a0e18;
-  --btn-stop: #f87171;
-
-  --hl-comment: #475569;
-  --hl-ugen: #34d399;
-  --hl-method: #a78bfa;
-  --hl-number: #fb923c;
-  --hl-brace: #67d4f8;
-
-  --scanlines: rgba(56, 189, 248, 0.01);
-}
-
-/* ── Tema 4: Papel — claro, alto contraste ─────────────────── */
+/* 1. Paper Theme (default) */
 [data-theme="paper"] {
   --bg-base: #f5f5f0;
   --bg-surface: #ebebe6;
@@ -144,7 +36,112 @@
   --scanlines: transparent;
 }
 
-/* ── Base ──────────────────────────────────────────────────── */
+/* 2. Phosphor Theme */
+[data-theme="phosphor"] {
+  --bg-base: #060d06;
+  --bg-surface: #0d150d;
+  --bg-elevated: #111a11;
+
+  --border-subtle: rgba(74, 222, 128, 0.12);
+  --border-medium: rgba(74, 222, 128, 0.25);
+  --border-strong: rgba(74, 222, 128, 0.45);
+
+  --accent: #00ff50;
+  --accent-glow: rgba(74, 222, 128, 0.35);
+  --accent-dim: rgba(74, 222, 128, 0.06);
+
+  --text-primary: #cafcca;
+  --text-secondary: #5a8a5a;
+  --text-muted: #4d7a4d;
+  --text-disabled: #2d4d2d;
+
+  --editor-bg: #030a03;
+  --editor-nums: rgba(74, 222, 128, 0.22);
+
+  --btn-run-bg: #4ade80;
+  --btn-run-text: #030a03;
+  --btn-stop: #f87171;
+
+  --hl-comment: #3d6b3d;
+  --hl-ugen: #67e8c8;
+  --hl-method: #7eb8ff;
+  --hl-number: #fb923c;
+  --hl-brace: #67d4f8;
+
+  --scanlines: rgba(74, 222, 128, 0.018);
+}
+
+/* 3. Warm Theme */
+[data-theme="warm"] {
+  --bg-base: #0d0900;
+  --bg-surface: #150f00;
+  --bg-elevated: #1c1500;
+
+  --border-subtle: rgba(251, 191, 36, 0.12);
+  --border-medium: rgba(251, 191, 36, 0.25);
+  --border-strong: rgba(251, 191, 36, 0.45);
+
+  --accent: #fbbf24;
+  --accent-glow: rgba(251, 191, 36, 0.35);
+  --accent-dim: rgba(251, 191, 36, 0.06);
+
+  --text-primary: #fef3c7;
+  --text-secondary: #d97706;
+  --text-muted: #92600a;
+  --text-disabled: #4d3206;
+
+  --editor-bg: #080600;
+  --editor-nums: rgba(251, 191, 36, 0.22);
+
+  --btn-run-bg: #fbbf24;
+  --btn-run-text: #080600;
+  --btn-stop: #f87171;
+
+  --hl-comment: #6b4c0a;
+  --hl-ugen: #34d399;
+  --hl-method: #60a5fa;
+  --hl-number: #fb923c;
+  --hl-brace: #a78bfa;
+
+  --scanlines: rgba(251, 191, 36, 0.018);
+}
+
+/* 4. Cold Theme */
+[data-theme="cold"] {
+  --bg-base: #0f1117;
+  --bg-surface: #161b27;
+  --bg-elevated: #1e2535;
+
+  --border-subtle: rgba(148, 163, 184, 0.1);
+  --border-medium: rgba(148, 163, 184, 0.2);
+  --border-strong: rgba(148, 163, 184, 0.4);
+
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.3);
+  --accent-dim: rgba(56, 189, 248, 0.06);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --text-disabled: #2d3748;
+
+  --editor-bg: #0a0e18;
+  --editor-nums: rgba(148, 163, 184, 0.2);
+
+  --btn-run-bg: #38bdf8;
+  --btn-run-text: #0a0e18;
+  --btn-stop: #f87171;
+
+  --hl-comment: #475569;
+  --hl-ugen: #34d399;
+  --hl-method: #a78bfa;
+  --hl-number: #fb923c;
+  --hl-brace: #67d4f8;
+
+  --scanlines: rgba(56, 189, 248, 0.01);
+}
+
+/* Base */
 html,
 body {
   overscroll-behavior: none;

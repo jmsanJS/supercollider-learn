@@ -7,7 +7,7 @@ export type AudioConfig = {
   lfo?: { rate: number; depth: number };
   freqs?: number[];
   env?: boolean;
-  color?: "white" | "pink";
+  color?: "white" | "pink" | "brown";
 };
 
 export type ValidationResult = {

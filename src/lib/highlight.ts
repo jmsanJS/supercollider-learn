@@ -9,7 +9,7 @@ export function highlight(code: string): string {
       escape(line)
         .replace(/(\/\/.*)/g, '<span class="hl-comment">$1</span>')
         .replace(
-          /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|LFSaw|LPF|HPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix)\b/g,
+          /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|BrownNoise|LFSaw|LFTri|LFPulse|LPF|HPF|BPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix|Done|FreeVerb|DelayN)\b/g,
           '<span class="hl-ugen">$1</span>',
         )
         .replace(

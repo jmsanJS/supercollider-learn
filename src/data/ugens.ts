@@ -11,10 +11,14 @@ export const UGENS: UGen[] = [
     args: [
       { name: "freq", default: "440", desc: "Frecuencia en Hz" },
       { name: "phase", default: "0", desc: "Fase inicial (0 a 2pi)" },
-      { name: "mul", default: "1", desc: "Multiplicador de amplitud" },
-      { name: "add", default: "0", desc: "Offset DC" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(440, 0, 0.3) }.play",
+    example: "{ SinOsc.ar(440, 0, 0.3) }.play // suena la4",
     sound: { freq: 440, amp: 0.3, type: "sine" },
   },
   {
@@ -25,9 +29,14 @@ export const UGENS: UGen[] = [
       "Onda diente de sierra con contenido armónico rico. Ideal para síntesis sustractiva.",
     args: [
       { name: "freq", default: "440", desc: "Frecuencia en Hz" },
-      { name: "mul", default: "1", desc: "Amplitud" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ Saw.ar(220, 0.2) }.play",
+    example: "{ Saw.ar(220, 0.2) }.play // suena la3",
     sound: { freq: 220, amp: 0.2, type: "sawtooth" },
   },
   {
@@ -39,7 +48,12 @@ export const UGENS: UGen[] = [
     args: [
       { name: "freq", default: "440", desc: "Frecuencia en Hz" },
       { name: "width", default: "0.5", desc: "Ancho de pulso (0 a 1)" },
-      { name: "mul", default: "1", desc: "Amplitud" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: "{ Pulse.ar(440, 0.5, 0.2) }.play",
     sound: { freq: 440, amp: 0.2, type: "square" },
@@ -51,7 +65,14 @@ export const UGENS: UGen[] = [
     category: "Noise",
     signature: "WhiteNoise.ar(mul, add)",
     description: "Ruido blanco con igual energía en todas las frecuencias.",
-    args: [{ name: "mul", default: "1", desc: "Amplitud" }],
+    args: [
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
+    ],
     example: "{ WhiteNoise.ar(0.1) }.play",
     sound: { type: "noise", color: "white", amp: 0.1 },
   },
@@ -60,7 +81,14 @@ export const UGENS: UGen[] = [
     category: "Noise",
     signature: "PinkNoise.ar(mul, add)",
     description: "Ruido rosa, más cálido que el blanco. Decae 3dB por octava.",
-    args: [{ name: "mul", default: "1", desc: "Amplitud" }],
+    args: [
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
+    ],
     example: "{ PinkNoise.ar(0.1) }.play",
     sound: { type: "noise", color: "pink", amp: 0.1 },
   },
@@ -69,7 +97,14 @@ export const UGENS: UGen[] = [
     category: "Noise",
     signature: "BrownNoise.ar(mul, add)",
     description: "Ruido marrón, más grave y cálido. Decae 6dB por octava.",
-    args: [{ name: "mul", default: "1", desc: "Amplitud" }],
+    args: [
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
+    ],
     example: "{ BrownNoise.ar(0.1) }.play",
     sound: { type: "noise", color: "brown", amp: 0.1 },
   },
@@ -84,9 +119,20 @@ export const UGENS: UGen[] = [
     args: [
       { name: "freq", default: "1", desc: "Frecuencia de modulación" },
       { name: "iphase", default: "0", desc: "Fase inicial" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(LFSaw.kr(2)*200+600, 0, 0.4) }.play",
-    sound: { freq: 600, amp: 0.4, type: "sine", lfo: { rate: 2, depth: 200 } },
+    example: `{
+  SinOsc.ar(
+    LFSaw.kr(2) * 200 + 600,
+    0,
+    0.3)
+}.play`,
+    sound: { freq: 600, amp: 0.3, type: "sine", lfo: { rate: 2, depth: 200 } },
   },
   {
     name: "LFPulse",
@@ -98,8 +144,20 @@ export const UGENS: UGen[] = [
       { name: "freq", default: "1", desc: "Frecuencia de modulación" },
       { name: "iphase", default: "0", desc: "Fase inicial" },
       { name: "width", default: "0.5", desc: "Ciclo de trabajo (0 a 1)" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(440, 0, LFPulse.kr(4, 0, 0.5)*0.4) }.play",
+    example: `{
+	SinOsc.ar(
+		440,
+		0,
+		LFPulse.kr(2, 0, 0.5) * 0.3 // mul
+	)
+}.play`,
     sound: { freq: 440, amp: 0.3, type: "sine", lfo: { rate: 4, depth: 150 } },
   },
   {
@@ -111,8 +169,20 @@ export const UGENS: UGen[] = [
     args: [
       { name: "freq", default: "1", desc: "Frecuencia de modulación" },
       { name: "iphase", default: "0", desc: "Fase inicial" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(LFTri.kr(1)*100+440, 0, 0.3) }.play",
+    example: `{
+	SinOsc.ar(
+		LFTri.kr(1) * 100 + 440,
+		0,
+		0.3
+	)
+}.play`,
     sound: { freq: 440, amp: 0.3, type: "sine", lfo: { rate: 1, depth: 100 } },
   },
 
@@ -126,9 +196,20 @@ export const UGENS: UGen[] = [
     args: [
       { name: "in", default: "0", desc: "Señal de entrada" },
       { name: "freq", default: "1000", desc: "Frecuencia de corte en Hz" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ LPF.ar(Saw.ar(200, 0.4), 800) }.play",
-    sound: { freq: 200, amp: 0.3, type: "sawtooth" },
+    example: `{
+  LPF.ar(
+    Saw.ar(220, 0.3),
+    800
+  )
+}.play`,
+    sound: { freq: 220, amp: 0.3, type: "sawtooth" },
   },
   {
     name: "HPF",
@@ -139,9 +220,20 @@ export const UGENS: UGen[] = [
     args: [
       { name: "in", default: "-", desc: "Señal de entrada" },
       { name: "freq", default: "1000", desc: "Frecuencia de corte en Hz" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ HPF.ar(Saw.ar(200, 0.4), 800) }.play",
-    sound: { freq: 200, amp: 0.3, type: "sawtooth" },
+    example: `{
+  HPF.ar(
+    Saw.ar(220, 0.3),
+    800
+  )
+}.play`,
+    sound: { freq: 220, amp: 0.3, type: "sawtooth" },
   },
   {
     name: "BPF",
@@ -157,8 +249,20 @@ export const UGENS: UGen[] = [
         default: "1",
         desc: "Reciproco del factor Q (ancho de banda)",
       },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ BPF.ar(WhiteNoise.ar(0.5), 1200, 0.3) }.play",
+    example: `{
+	BPF.ar(
+		WhiteNoise.ar(0.5),
+		1200,
+		0.3
+	)
+}.play`,
     sound: { type: "noise", color: "white", amp: 0.3 },
   },
 
@@ -178,8 +282,20 @@ export const UGENS: UGen[] = [
         default: "0.5",
         desc: "Amortiguación de altas frecuencias",
       },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ FreeVerb.ar(SinOsc.ar(440, 0, 0.3), 0.5, 0.8) }.play",
+    example: `{
+	FreeVerb.ar(
+		SinOsc.ar(440, 0, 0.3),
+		0.5,
+		0.8
+	)
+}.play`,
     sound: { freq: 440, amp: 0.3, type: "sine" },
   },
   {
@@ -196,9 +312,20 @@ export const UGENS: UGen[] = [
         desc: "Tiempo máximo de delay en segundos",
       },
       { name: "delaytime", default: "0.2", desc: "Tiempo de delay actual" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example:
-      "{ DelayN.ar(SinOsc.ar(440, 0, 0.3), 0.5, 0.3) + SinOsc.ar(440, 0, 0.3) }.play",
+    example: `{
+	DelayN.ar(
+		SinOsc.ar(440, 0, 0.3),
+		1,
+		0.5
+	) + SinOsc.ar(440, 0, 0.3)
+}.play`,
     sound: { freq: 440, amp: 0.3, type: "sine" },
   },
 
@@ -212,10 +339,18 @@ export const UGENS: UGen[] = [
     args: [
       { name: "levels", default: "[0, 1, 0]", desc: "Niveles de amplitud" },
       { name: "times", default: "[1, 1]", desc: "Tiempos en segundos" },
-      { name: "curve", default: "lin", desc: "Forma de la envolvente" },
+      { name: "curve", default: "\\lin", desc: "Forma de la envolvente" },
     ],
-    example:
-      "{ SinOsc.ar(440) * EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf) }.play",
+    example: `{
+	SinOsc.ar(440) * EnvGen.kr(
+		Env.new(
+			[0, 1, 0.5, 1, 0],
+			[0.01, 0.5, 0.01, 2],
+			'\\lin'
+		),
+		doneAction: Done.freeSelf
+	)
+}.play`,
     sound: { freq: 440, amp: 0.4, type: "sine", env: true },
   },
   {
@@ -238,9 +373,17 @@ export const UGENS: UGen[] = [
         desc: "Done.freeSelf = libera el synth al terminar",
       },
     ],
-    example:
-      "{ SinOsc.ar(440) * EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf) }.play",
-    sound: { freq: 440, amp: 0.4, type: "sine", env: true },
+    example: `{
+	Saw.ar(220, 0.5) * EnvGen.kr(
+		Env.new(
+			[0, 0.5, 0.2, 1, 0],
+			[0.01, 1, 0.01, 0.5],
+			'\\sine'
+		),
+		doneAction: Done.freeSelf
+	)
+}.play`,
+    sound: { freq: 220, amp: 0.4, type: "sawtooth", env: true },
   },
 
   // ── Spatial ───────────────────────────────────────────────────────────────
@@ -248,14 +391,24 @@ export const UGENS: UGen[] = [
     name: "Pan2",
     category: "Spatial",
     signature: "Pan2.ar(in, pos, level)",
-    description:
-      "Panoramización estéreo. pos va de -1 (izquierda) a 1 (derecha).",
+    description: "Panoramización estéreo.",
     args: [
       { name: "in", default: "-", desc: "Señal de entrada mono" },
       { name: "pos", default: "0", desc: "Posición estéreo (-1 a 1)" },
       { name: "level", default: "1", desc: "Nivel de ganancia" },
     ],
-    example: "{ Pan2.ar(SinOsc.ar(440, 0, 0.3), SinOsc.kr(0.5)) }.play",
-    sound: { freq: 440, amp: 0.3, type: "sine", lfo: { rate: 0.5, depth: 50 } },
+    example: `{
+	Pan2.ar(
+		SinOsc.ar(440, 0, 0.3),
+		SinOsc.kr(0.5)
+	)
+}.play`,
+    sound: {
+      freq: 440,
+      amp: 0.3,
+      type: "sine",
+      pan: true,
+      lfo: { rate: 0.5, depth: 0 },
+    },
   },
 ];

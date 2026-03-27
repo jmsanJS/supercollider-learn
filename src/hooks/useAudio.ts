@@ -9,6 +9,7 @@ import {
   createLFOSynth,
   createEnvSynth,
   createSynth,
+  createPanner,
 } from "@/lib/audio";
 
 export function useAudio() {
@@ -28,6 +29,7 @@ export function useAudio() {
       refs.current.lfo?.dispose();
       refs.current.noise?.stop();
       refs.current.noise?.dispose();
+      refs.current.panner?.dispose();
     } catch {}
     refs.current = {};
   }, []);
@@ -42,6 +44,8 @@ export function useAudio() {
           refs.current = createNoise(audio);
         } else if (audio.type === "dtmf") {
           refs.current = createDTMF(audio);
+        } else if (audio.pan) {
+          refs.current = createPanner(audio);
         } else if (audio.lfo) {
           refs.current = createLFOSynth(audio);
         } else if (audio.env) {

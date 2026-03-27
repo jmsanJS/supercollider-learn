@@ -1,5 +1,7 @@
 import * as Tone from "tone";
 
+type NoiseColor = "white" | "pink" | "brown"
+
 export type AudioConfig = {
   freq?: number;
   amp?: number;
@@ -7,7 +9,8 @@ export type AudioConfig = {
   lfo?: { rate: number; depth: number };
   freqs?: number[];
   env?: boolean;
-  color?: "white" | "pink" | "brown";
+  color?: NoiseColor;
+  pan?: boolean;
 };
 
 export type ValidationResult = {
@@ -100,4 +103,5 @@ export type AudioRefs = {
   synth2?: Tone.Oscillator;
   lfo?: Tone.LFO;
   noise?: Tone.Noise;
+  panner?: Tone.Panner;
 };

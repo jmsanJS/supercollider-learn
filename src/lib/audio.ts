@@ -58,3 +58,24 @@ export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
   synth.triggerAttack(audio.freq ?? 440);
   return { synth };
 }
+
+export function createPanner(audio: AudioConfig): Pick<AudioRefs, "synth" | "lfo" | "panner"> {
+  const panner = new Tone.Panner(0).toDestination();
+
+  const lfo = new Tone.LFO({
+    frequency: audio.lfo?.rate ?? 0.5,
+    min: -1,
+    max: 1,
+    type: "sine",
+  }).connect(panner.pan).start();
+
+  const synth = new Tone.Synth({
+    oscillator: { type: (audio.type ?? "sine") as OscillatorType },
+    envelope: { attack: 0.05, decay: 0, sustain: 1, release: 0.5 },
+    volume: Tone.gainToDb(audio.amp ?? 0.3),
+  }).connect(panner);
+
+  synth.triggerAttack(audio.freq ?? 440);
+
+  return { synth, lfo, panner };
+}

@@ -1,0 +1,22 @@
+.copy_btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.copy_btn:hover {
+  color: var(--accent);
+  border-color: var(--border-medium);
+  background: var(--accent-dim);
+}

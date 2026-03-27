@@ -97,6 +97,10 @@ export interface TerminalHeaderProps {
   desc?: string;
 }
 
+export interface CopyToClipboardProps {
+  scCode: string;
+};
+
 // Hooks
 export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;

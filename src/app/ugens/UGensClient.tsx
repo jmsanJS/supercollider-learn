@@ -11,9 +11,10 @@ import {
 import type { UGen } from "@/types";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import { useAudio } from "@/hooks/useAudio";
+import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
 
 export default function UGensClient() {
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [activeUGen, setActiveUGen] = useState<string>("SinOsc");
   const [playingName, setPlayingName] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("All");
@@ -100,6 +101,7 @@ export default function UGensClient() {
                 // ejemplo
               </div>
               <div className={styles.example_block}>
+                <CopyToClipboard scCode={ugen.example} />
                 <pre
                   dangerouslySetInnerHTML={{ __html: highlight(ugen.example) }}
                 />

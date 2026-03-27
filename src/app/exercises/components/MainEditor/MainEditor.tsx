@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
+import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
 
 export default function MainEditor() {
   const { activeId } = useExercises();
@@ -85,6 +86,7 @@ export default function MainEditor() {
                 ))}
               </div>
               <div className={styles.editor_inner}>
+                <CopyToClipboard scCode={code} />
                 <div
                   className={styles.hl_layer}
                   dangerouslySetInnerHTML={{ __html: highlight(code) }}

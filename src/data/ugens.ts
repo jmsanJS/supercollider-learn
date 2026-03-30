@@ -132,7 +132,12 @@ export const UGENS: UGen[] = [
     0,
     0.3)
 }.play`,
-    sound: { freq: 600, amp: 0.3, type: "sine", lfo: { rate: 2, depth: 200 } },
+    sound: {
+      freq: 600,
+      amp: 0.3,
+      type: "sine",
+      lfo: { rate: 2, depth: 200, shape: "sawtooth", target: "frequency" },
+    },
   },
   {
     name: "LFPulse",
@@ -158,7 +163,12 @@ export const UGENS: UGen[] = [
 		LFPulse.kr(2, 0, 0.5) * 0.3 // mul
 	)
 }.play`,
-    sound: { freq: 440, amp: 0.3, type: "sine", lfo: { rate: 4, depth: 150 } },
+    sound: {
+      freq: 440,
+      amp: 0.3,
+      type: "sine",
+      lfo: { rate: 2, depth: 150, shape: "square", target: "amplitude" },
+    },
   },
   {
     name: "LFTri",
@@ -183,7 +193,12 @@ export const UGENS: UGen[] = [
 		0.3
 	)
 }.play`,
-    sound: { freq: 440, amp: 0.3, type: "sine", lfo: { rate: 1, depth: 100 } },
+    sound: {
+      freq: 440,
+      amp: 0.3,
+      type: "sine",
+      lfo: { rate: 1, depth: 100, shape: "triangle", target: "frequency" },
+    },
   },
 
   // ── Filters ───────────────────────────────────────────────────────────────

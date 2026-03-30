@@ -1,14 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import type { Progress } from "@/types";
+import type { ProgressContextType } from "@/types";
 import { loadProgress, saveProgress, clearProgress } from "@/lib/progress";
-
-type ProgressContextType = {
-  progress: Progress;
-  markCompleted: (id: string, code: string) => void;
-  resetProgress: () => void;
-};
 
 const ProgressContext = createContext<ProgressContextType | null>(null);
 

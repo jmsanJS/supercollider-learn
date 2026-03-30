@@ -63,6 +63,9 @@ export type ProgressStats = {
 export type ExercisesContextType = {
   activeId: string;
   setActiveId: (id: string) => void;
+};
+
+export type ProgressContextType = {
   progress: Progress;
   markCompleted: (id: string, code: string) => void;
   resetProgress: () => void;

@@ -1,11 +1,7 @@
 "use client";
 
+import { ExercisesContextType } from "@/types";
 import { createContext, useContext, useState } from "react";
-
-type ExercisesContextType = {
-  activeId: string;
-  setActiveId: (id: string) => void;
-};
 
 const ExercisesContext = createContext<ExercisesContextType | null>(null);
 

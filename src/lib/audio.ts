@@ -119,3 +119,39 @@ export function createPanner(
 
   return { synth, lfo, panner };
 }
+
+export function createFilteredSynth(
+  audio: AudioConfig,
+): Pick<AudioRefs, "synth" | "filter"> {
+  const filter = new Tone.Filter({
+    type: audio.filter!.type,
+    frequency: audio.filter!.freq,
+    Q: audio.filter?.Q ?? 1,
+  }).toDestination();
+
+  const synth = new Tone.Synth({
+    oscillator: { type: audio.type as OscillatorType },
+    envelope: { attack: 0.05, decay: 0, sustain: 1, release: 0.5 },
+    volume: Tone.gainToDb(audio.amp ?? 0.3),
+  }).connect(filter);
+
+  synth.triggerAttack(audio.freq ?? 220);
+
+  return { synth, filter };
+}
+
+export function createFilteredNoise(
+  audio: AudioConfig,
+): Pick<AudioRefs, "noise" | "filter"> {
+  const filter = new Tone.Filter({
+    type: audio.filter!.type,
+    frequency: audio.filter!.freq,
+    Q: audio.filter?.Q ?? 4,
+  }).toDestination();
+
+  const noise = new Tone.Noise(audio.color ?? "white").connect(filter);
+  noise.volume.value = Tone.gainToDb(audio.amp ?? 0.3);
+  noise.start();
+
+  return { noise, filter };
+}

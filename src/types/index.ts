@@ -1,12 +1,20 @@
 import * as Tone from "tone";
 
-type NoiseColor = "white" | "pink" | "brown"
+type NoiseColor = "white" | "pink" | "brown";
+type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
+
+type LFOValues = {
+  rate: number;
+  depth: number;
+  shape?: LFOShape;
+  target?: "frequency" | "amplitude";
+};
 
 export type AudioConfig = {
   freq?: number;
   amp?: number;
   type?: OscillatorType | "noise" | "dtmf";
-  lfo?: { rate: number; depth: number };
+  lfo?: LFOValues;
   freqs?: number[];
   env?: boolean;
   color?: NoiseColor;
@@ -99,7 +107,7 @@ export interface TerminalHeaderProps {
 
 export interface CopyToClipboardProps {
   scCode: string;
-};
+}
 
 // Hooks
 export type AudioRefs = {

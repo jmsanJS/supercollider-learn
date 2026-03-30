@@ -10,6 +10,8 @@ import {
   createEnvSynth,
   createSynth,
   createPanner,
+  createFilteredSynth,
+  createFilteredNoise,
 } from "@/lib/audio";
 
 export function useAudio() {
@@ -30,6 +32,7 @@ export function useAudio() {
       refs.current.noise?.stop();
       refs.current.noise?.dispose();
       refs.current.panner?.dispose();
+      refs.current.filter?.dispose();
     } catch {}
     refs.current = {};
   }, []);
@@ -40,7 +43,9 @@ export function useAudio() {
       await Tone.start();
 
       try {
-        if (audio.type === "noise") {
+        if (audio.type === "noise" && audio.filter) {
+          refs.current = createFilteredNoise(audio);
+        } else if (audio.type === "noise") {
           refs.current = createNoise(audio);
         } else if (audio.type === "dtmf") {
           refs.current = createDTMF(audio);
@@ -50,6 +55,8 @@ export function useAudio() {
           refs.current = createLFOSynth(audio);
         } else if (audio.env) {
           refs.current = createEnvSynth(audio);
+        } else if (audio.filter) {
+          refs.current = createFilteredSynth(audio);
         } else {
           refs.current = createSynth(audio);
         }

@@ -3,6 +3,12 @@ import * as Tone from "tone";
 type NoiseColor = "white" | "pink" | "brown";
 type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
 
+type FilterConfig = {
+  type: "lowpass" | "highpass" | "bandpass";
+  freq: number;
+  Q?: number;
+};
+
 type LFOValues = {
   rate: number;
   depth: number;
@@ -19,6 +25,7 @@ export type AudioConfig = {
   env?: boolean;
   color?: NoiseColor;
   pan?: boolean;
+  filter?: FilterConfig;
 };
 
 export type ValidationResult = {
@@ -119,4 +126,5 @@ export type AudioRefs = {
   lfo?: Tone.LFO;
   noise?: Tone.Noise;
   panner?: Tone.Panner;
+  filter?: Tone.Filter;
 };

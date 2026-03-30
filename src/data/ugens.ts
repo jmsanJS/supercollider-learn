@@ -224,7 +224,12 @@ export const UGENS: UGen[] = [
     800
   )
 }.play`,
-    sound: { freq: 220, amp: 0.3, type: "sawtooth" },
+    sound: {
+      freq: 220,
+      amp: 0.3,
+      type: "sawtooth",
+      filter: { type: "lowpass", freq: 800 },
+    },
   },
   {
     name: "HPF",
@@ -248,7 +253,12 @@ export const UGENS: UGen[] = [
     800
   )
 }.play`,
-    sound: { freq: 220, amp: 0.3, type: "sawtooth" },
+    sound: {
+      freq: 220,
+      amp: 0.3,
+      type: "sawtooth",
+      filter: { type: "highpass", freq: 800 },
+    },
   },
   {
     name: "BPF",
@@ -262,7 +272,7 @@ export const UGENS: UGen[] = [
       {
         name: "rq",
         default: "1",
-        desc: "Reciproco del factor Q (ancho de banda)",
+        desc: "Recíproco del factor Q (ancho de banda)",
       },
       {
         name: "mul",
@@ -275,10 +285,15 @@ export const UGENS: UGen[] = [
 	BPF.ar(
 		WhiteNoise.ar(0.5),
 		1200,
-		0.3
+		0.25
 	)
 }.play`,
-    sound: { type: "noise", color: "white", amp: 0.3 },
+    sound: {
+      type: "noise",
+      color: "white",
+      amp: 0.5,
+      filter: { type: "bandpass", freq: 1200, Q: 4 }, // Q is rq in SC, where rq = 1/Q
+    },
   },
 
   // ── Effects ───────────────────────────────────────────────────────────────

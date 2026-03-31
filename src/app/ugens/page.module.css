@@ -17,8 +17,9 @@
 
 .ugen_layout {
   display: grid;
-  grid-template-columns: 180px 1fr;
+  grid-template-columns: 200px 1fr;
   gap: 16px;
+  min-height: calc(100vh - 72px - 30px);
 }
 
 @media (max-width: 700px) {
@@ -27,12 +28,36 @@
   }
 }
 
-.ugen_list {
+.ugen_list_container {
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
   overflow: hidden;
   background: var(--bg-base);
-  height: fit-content;
+  max-height: calc(100vh - 72px - 30px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ugen_list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.ugen_list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ugen_list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ugen_list::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 2px;
+}
+
+.ugen_list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 .sidebar_header {

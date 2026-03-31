@@ -55,7 +55,7 @@ export default function UGensClient() {
   return (
     <section className={styles.section_wrap}>
       <div className={styles.ugen_layout}>
-        <div className={styles.ugen_list}>
+        <div className={styles.ugen_list_container}>
           <div className={styles.sidebar_header}>
             <span className={styles.section_label} style={{ marginBottom: 0 }}>
               UGens comunes
@@ -72,19 +72,21 @@ export default function UGensClient() {
               </button>
             ))}
           </div>
-          {filtered.map((ug) => (
-            <button
-              key={ug.name}
-              className={`${styles.ugen_item} ${activeUGen === ug.name ? styles.active : ""}`}
-              onClick={() => {
-                setActiveUGen(ug.name);
-                handleStop();
-              }}
-            >
-              <span className={styles.ui_name}>{ug.name}</span>
-              <span className={styles.ui_cat}>{ug.category}</span>
-            </button>
-          ))}
+          <div className={styles.ugen_list}>
+            {filtered.map((ug) => (
+              <button
+                key={ug.name}
+                className={`${styles.ugen_item} ${activeUGen === ug.name ? styles.active : ""}`}
+                onClick={() => {
+                  setActiveUGen(ug.name);
+                  handleStop();
+                }}
+              >
+                <span className={styles.ui_name}>{ug.name}</span>
+                <span className={styles.ui_cat}>{ug.category}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>

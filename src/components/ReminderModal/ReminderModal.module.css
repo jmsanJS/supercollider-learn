@@ -1,0 +1,154 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  animation: overlayIn 0.15s ease;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  overflow: hidden;
+  animation: modalIn 0.18s ease;
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--border-subtle);
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal_body {
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.icon_wrap {
+  color: var(--accent);
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.title {
+  font-family: "Syne Mono", monospace;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.desc strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.confirm_btn {
+  width: 100%;
+  padding: 11px 16px;
+  background: var(--btn-run-bg);
+  color: var(--btn-run-text);
+  border: none;
+  border-radius: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition:
+    filter 0.15s,
+    box-shadow 0.15s;
+  margin-top: 4px;
+}
+
+.confirm_btn:hover {
+  filter: brightness(1.5);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.confirm_btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.remind_label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+  user-select: none;
+}
+
+.remind_label:hover {
+  color: var(--text-secondary);
+}
+
+.remind_checkbox {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--border-medium);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.remind_checkbox:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.remind_checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 5px;
+  height: 8px;
+  border: 1.5px solid var(--btn-run-text);
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}

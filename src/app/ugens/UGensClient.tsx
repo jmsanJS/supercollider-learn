@@ -13,12 +13,15 @@ import type { UGen } from "@/types";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import { useAudio } from "@/hooks/useAudio";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
+import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
+import ReminderModal from "@/components/ReminderModal/ReminderModal";
 
 export default function UGensClient() {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [activeUGen, setActiveUGen] = useState<string>("SinOsc");
   const [playingName, setPlayingName] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("All");
+  const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
 
   const { play, stop } = useAudio();
 
@@ -29,9 +32,18 @@ export default function UGensClient() {
   const filtered = getFilteredUGens(filter);
 
   const handlePlay = (u: UGen): void => {
+    if (!hasSeenVolumeReminder()) {
+      setShowVolumeModal(true);
+      return;
+    }
     play(u.sound);
     setPlayingName(u.name);
     setIsDisabled(true);
+  };
+
+  const handleVolumeConfirm = (remindNextSession: boolean): void => {
+    markVolumeReminderSeen(remindNextSession);
+    setShowVolumeModal(false);
   };
 
   const handleStop = (): void => {
@@ -108,6 +120,10 @@ export default function UGensClient() {
                 />
               </div>
             </div>
+
+            {showVolumeModal && (
+              <ReminderModal onConfirm={handleVolumeConfirm} />
+            )}
 
             <div className={styles.ud_controls}>
               <button

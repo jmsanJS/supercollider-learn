@@ -119,6 +119,10 @@ export interface CopyToClipboardProps {
   scCode: string;
 }
 
+export interface ReminderModalProps {
+  onConfirm: (remindNextSession: boolean) => void;
+}
+
 // Hooks
 export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;

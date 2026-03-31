@@ -9,6 +9,8 @@ import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
+import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
+import ReminderModal from "@/components/ReminderModal/ReminderModal";
 
 export default function MainEditor() {
   const { activeId } = useExercises();
@@ -16,6 +18,7 @@ export default function MainEditor() {
 
   const [codes, setCodes] = useState(getInitialCodes);
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
 
@@ -46,6 +49,12 @@ export default function MainEditor() {
 
   const handleRun = (): void => {
     if (!exercise) return;
+
+    if (!hasSeenVolumeReminder()) {
+      setShowVolumeModal(true);
+      return;
+    }
+
     const result = exercise.validate(code);
     if (result.ok) {
       setPlayingId(activeId);
@@ -53,6 +62,11 @@ export default function MainEditor() {
     } else {
       setPlayingId(null);
     }
+  };
+
+  const handleVolumeConfirm = (remindNextSession: boolean): void => {
+    markVolumeReminderSeen(remindNextSession);
+    setShowVolumeModal(false);
   };
 
   const handleStop = (): void => setPlayingId(null);
@@ -102,6 +116,10 @@ export default function MainEditor() {
                 />
               </div>
             </div>
+
+            {showVolumeModal && (
+              <ReminderModal onConfirm={handleVolumeConfirm} />
+            )}
 
             <div className={styles.ex_controls}>
               <button className={styles.btn_run} onClick={handleRun}>

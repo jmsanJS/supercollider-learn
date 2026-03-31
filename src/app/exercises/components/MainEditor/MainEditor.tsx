@@ -18,6 +18,7 @@ export default function MainEditor() {
 
   const [codes, setCodes] = useState(getInitialCodes);
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
@@ -32,7 +33,9 @@ export default function MainEditor() {
 
   const lines = code.split("\n");
 
-  const handleTabPress = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+  const handleTabPress = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+  ): void => {
     if (e.key === "Tab") {
       e.preventDefault();
       const target = e.target as HTMLTextAreaElement;
@@ -57,6 +60,7 @@ export default function MainEditor() {
 
     const result = exercise.validate(code);
     if (result.ok) {
+      setIsDisabled(true);
       setPlayingId(activeId);
       markCompleted(activeId, code);
     } else {
@@ -69,11 +73,15 @@ export default function MainEditor() {
     setShowVolumeModal(false);
   };
 
-  const handleStop = (): void => setPlayingId(null);
+  const handleStop = (): void => {
+    setPlayingId(null);
+    setIsDisabled(false);
+  };
 
   const handleReset = (): void => {
     onChange(exercise.starter ?? "");
     setPlayingId(null);
+    setIsDisabled(false);
   };
 
   return (
@@ -122,7 +130,11 @@ export default function MainEditor() {
             )}
 
             <div className={styles.ex_controls}>
-              <button className={styles.btn_run} onClick={handleRun}>
+              <button
+                className={styles.btn_run}
+                onClick={handleRun}
+                disabled={isDisabled}
+              >
                 ▶ Ejecutar
               </button>
               {playingId === activeId && (

@@ -4,11 +4,12 @@ import { useState } from "react";
 import styles from "./TopNavbar.module.css";
 import Link from "next/link";
 import ThemeSelector from "../ThemeSelector/ThemeSelector";
+import { TopNavbarTab } from "@/types";
 
 export default function TopNavbar() {
-  const [tab, setTab] = useState("home");
+  const [tab, setTab] = useState<string>("home");
 
-  const tabs = [
+  const tabs: TopNavbarTab[] = [
     { id: "home", path: "/", label: "Inicio" },
     { id: "about", path: "/about", label: "Acerca de" },
     { id: "exercises", path: "/exercises", label: "Ejercicios" },
@@ -17,27 +18,25 @@ export default function TopNavbar() {
   ];
 
   return (
-    <>
-      <nav className={styles.topbar}>
-        <div>
-          <Link href="/" className={styles.logo_mark}>
-            SC·Learn
+    <nav className={styles.topbar}>
+      <div>
+        <Link href="/" className={styles.logo_mark}>
+          SC·Learn
+        </Link>
+        {tabs.map((t) => (
+          <Link
+            key={t.id}
+            href={t.path}
+            className={`${styles.tab_btn} ${tab === t.id ? styles.active : ""}`}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
           </Link>
-          {tabs.map((t) => (
-            <Link
-              key={t.id}
-              href={t.path}
-              className={`${styles.tab_btn} ${tab === t.id ? "active" : ""}`}
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}
-            </Link>
-          ))}
-        </div>
-        <div>
-          <ThemeSelector />
-        </div>
-      </nav>
-    </>
+        ))}
+      </div>
+      <div>
+        <ThemeSelector />
+      </div>
+    </nav>
   );
 }

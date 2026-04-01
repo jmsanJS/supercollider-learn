@@ -129,6 +129,11 @@ export type TopNavbarTab = {
   label: string;
 };
 
+export type FooterLink = {
+  label: string;
+  href: string;
+};
+
 // Hooks
 export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;

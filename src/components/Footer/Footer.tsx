@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { FooterLink } from "@/types";
 import styles from "./Footer.module.css";
-import FooterLinkList from "./components/FooterLinkList";
+import Link from "next/link";
 
 export default function Footer() {
-  const [year] = useState(new Date().getFullYear());
+  const year = new Date().getFullYear();
 
-  const navLinks = [
+  const navLinks: FooterLink[] = [
     { label: "Inicio", href: "/" },
     { label: "Acerca de", href: "/about" },
     { label: "Ejercicios", href: "/exercises" },
@@ -15,30 +15,16 @@ export default function Footer() {
     { label: "UGens comunes", href: "/ugens" },
   ];
 
-  const resourceLinks = [
-    {
-      label: "SuperCollider oficial",
-      href: "https://supercollider.github.io",
-      external: true,
-    },
-    {
-      label: "Documentación SC",
-      href: "https://doc.sccode.org",
-      external: true,
-    },
-    { label: "Tone.js docs", href: "https://tonejs.github.io", external: true },
-    {
-      label: "GitHub del proyecto",
-      href: "https://github.com/",
-      external: true,
-    },
+  const resourceLinks: FooterLink[] = [
+    { label: "SuperCollider oficial", href: "https://supercollider.github.io" },
+    { label: "Documentación SC", href: "https://docs.supercollider.online/" },
+    { label: "GitHub del proyecto", href: "https://github.com/" },
   ];
 
-  const legalLinks = [
-    { href: "#", label: "Términos de uso" },
-    { href: "#", label: "Política de privacidad" },
-    { href: "#", label: "Cookies" },
-    { href: "#", label: "Licencia MIT" },
+  const legalLinks: FooterLink[] = [
+    { label: "Términos de uso", href: "#" },
+    { label: "Política de privacidad", href: "#" },
+    { label: "Licencia MIT", href: "#" },
   ];
 
   return (
@@ -55,8 +41,40 @@ export default function Footer() {
           </p>
         </div>
 
-        <FooterLinkList title="Navegación" links={navLinks} />
-        <FooterLinkList title="Recursos" links={resourceLinks} />
+        <nav aria-label="Recursos">
+          <h2 className={styles.footer_col_title}>Recursos</h2>
+          <ul className={styles.footer_link_list}>
+            {resourceLinks.map((link, i) => (
+              <li key={i}>
+                <a
+                  className={styles.footer_ext_link}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${link.label} (abre en nueva pestaña)`}
+                >
+                  {link.label}
+                  <span aria-hidden="true" className={styles.ext_icon}>
+                    ↗
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Navegación">
+          <h2 className={styles.footer_col_title}>Navegación</h2>
+          <ul className={styles.footer_link_list}>
+            {navLinks.map((link, i) => (
+              <li key={i}>
+                <Link href={link.href} className={styles.footer_nav_btn}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
       <div className={styles.footer_bottom}>
@@ -64,7 +82,7 @@ export default function Footer() {
           © {year} <strong>SC·Learn</strong>. Proyecto de código abierto.
         </p>
 
-        <nav aria-label="Legal">
+        <nav role="navigation" aria-label="Legal">
           <ul className={styles.footer_legal} style={{ listStyle: "none" }}>
             {legalLinks.map((link, i) => (
               <li key={i}>

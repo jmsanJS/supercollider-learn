@@ -13,11 +13,19 @@ export function highlight(code: string): string {
           '<span class="hl-ugen">$1</span>',
         )
         .replace(
-          /\b(play|ar|kr|new|stop|free|release|perc|linen)\b/g,
+          /(?<=\.)(play|ar|kr|new|stop|free|scope|freeSelf|release|perc|linen|triangle|sine|boot|quit)\b/g,
           '<span class="hl-method">$1</span>',
         )
         .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="hl-number">$1</span>')
-        .replace(/([{}()[\]])/g, '<span class="hl-brace">$1</span>'),
+        .replace(/([{}()[\]])/g, '<span class="hl-brace">$1</span>')
+        .replace(
+          /(\\[a-zA-Z]\w*)/g,
+          '<span class="hl-argument">$1</span>',
+        )
+        .replace(
+          /([a-zA-Z]\w*)(?=:)/g,
+          '<span class="hl-argument">$1</span>',
+        ),
     )
     .join("\n");
 }

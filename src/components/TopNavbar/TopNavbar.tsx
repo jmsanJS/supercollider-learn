@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import styles from "./TopNavbar.module.css";
 import Link from "next/link";
 import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import { TopNavbarTab } from "@/types";
+import { usePathname } from "next/navigation";
 
 export default function TopNavbar() {
-  const [tab, setTab] = useState<string>("home");
+  const path = usePathname();
 
   const tabs: TopNavbarTab[] = [
     { id: "home", path: "/", label: "Inicio" },
@@ -27,8 +27,7 @@ export default function TopNavbar() {
           <Link
             key={t.id}
             href={t.path}
-            className={`${styles.tab_btn} ${tab === t.id ? styles.active : ""}`}
-            onClick={() => setTab(t.id)}
+            className={`${styles.tab_btn} ${path === t.path ? styles.active : ""}`}
           >
             {t.label}
           </Link>

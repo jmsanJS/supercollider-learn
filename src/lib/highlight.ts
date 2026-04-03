@@ -18,14 +18,9 @@ export function highlight(code: string): string {
         )
         .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="hl-number">$1</span>')
         .replace(/([{}()[\]])/g, '<span class="hl-brace">$1</span>')
-        .replace(
-          /(\\[a-zA-Z]\w*)/g,
-          '<span class="hl-argument">$1</span>',
-        )
-        .replace(
-          /([a-zA-Z]\w*)(?=:)/g,
-          '<span class="hl-argument">$1</span>',
-        ),
+        .replace(/(\\[a-zA-Z]\w*)/g, '<span class="hl-argument">$1</span>')
+        .replace(/([a-zA-Z]\w*)(?=:)/g, '<span class="hl-argument">$1</span>')
+        .replace(/\b(var)\b/g, '<span class="hl-keyword">$1</span>'),
     )
     .join("\n");
 }

@@ -1,5 +1,18 @@
 import * as Tone from "tone";
 
+export type AudioConfig = {
+  freq?: number;
+  amp?: number;
+  type?: OscillatorType | "noise" | "dtmf";
+  lfo?: LFOValues;
+  freqs?: number[];
+  env?: boolean;
+  color?: NoiseColor;
+  pan?: boolean;
+  filter?: FilterConfig;
+  reverb?: ReverbConfig;
+};
+
 type NoiseColor = "white" | "pink" | "brown";
 type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
 
@@ -16,16 +29,20 @@ type LFOValues = {
   target?: "frequency" | "amplitude";
 };
 
-export type AudioConfig = {
-  freq?: number;
-  amp?: number;
-  type?: OscillatorType | "noise" | "dtmf";
-  lfo?: LFOValues;
-  freqs?: number[];
-  env?: boolean;
-  color?: NoiseColor;
-  pan?: boolean;
-  filter?: FilterConfig;
+export type ReverbConfig = {
+  mix: number;
+  room: number;
+};
+
+// Hooks
+export type AudioRefs = {
+  synth?: Tone.Synth | Tone.Oscillator;
+  synth2?: Tone.Oscillator;
+  lfo?: Tone.LFO;
+  noise?: Tone.Noise;
+  panner?: Tone.Panner;
+  filter?: Tone.Filter;
+  reverb?: Tone.Reverb;
 };
 
 export type ValidationResult = {
@@ -132,14 +149,4 @@ export type TopNavbarTab = {
 export type FooterLink = {
   label: string;
   href: string;
-};
-
-// Hooks
-export type AudioRefs = {
-  synth?: Tone.Synth | Tone.Oscillator;
-  synth2?: Tone.Oscillator;
-  lfo?: Tone.LFO;
-  noise?: Tone.Noise;
-  panner?: Tone.Panner;
-  filter?: Tone.Filter;
 };

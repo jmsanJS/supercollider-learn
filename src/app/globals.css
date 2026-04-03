@@ -27,12 +27,13 @@
   --btn-run-text: #ffffff;
   --btn-stop: #dc2626;
 
-  --hl-comment: #9ca3af;
+  --hl-comment: #848484;
   --hl-ugen: #3478bc;
-  --hl-method: #090909;
+  --hl-method: #1a1a1a;
   --hl-number: #af33a6;
   --hl-brace: #2d3542;
-  --hl-argument: #458725;
+  --hl-argument: #3f831e;
+  --hl-keyword: #c8563c;
 
   --scanlines: transparent;
 }
@@ -69,6 +70,7 @@
   --hl-number: #fb923c;
   --hl-brace: #67d4f8;
   --hl-argument: #e879a0;
+  --hl-keyword: #d5674f;
 
   --scanlines: rgba(74, 222, 128, 0.018);
 }
@@ -105,6 +107,7 @@
   --hl-number: #fb923c;
   --hl-brace: #a78bfa;
   --hl-argument: #86efac;
+  --hl-keyword: #eb6d51;
 
   --scanlines: rgba(251, 191, 36, 0.018);
 }
@@ -141,6 +144,7 @@
   --hl-number: #fb923c;
   --hl-brace: #67d4f8;
   --hl-argument: #fbbf24;
+  --hl-keyword: #d85a3e;
 
   --scanlines: rgba(56, 189, 248, 0.01);
 }
@@ -189,7 +193,9 @@ a {
 .hl-brace {
   color: var(--hl-brace);
 }
-
 .hl-argument {
   color: var(--hl-argument);
+}
+.hl-keyword {
+  color: var(--hl-keyword);
 }

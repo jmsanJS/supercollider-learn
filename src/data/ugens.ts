@@ -320,13 +320,30 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: `{
-	FreeVerb.ar(
-		SinOsc.ar(440, 0, 0.3),
-		0.5,
-		0.8
-	)
+	var env, snd;
+
+	env = EnvGen.ar(
+		Env.linen(0.02, 4, 1, 0.5, curve: -4),
+		doneAction: Done.freeSelf
+	);
+
+	snd = SinOsc.ar(
+		EnvGen.ar(Env.perc(level: 880)),
+		0,
+		0.3
+	);
+
+	snd = FreeVerb.ar(snd, 0.5, 0.8, 0);
+
+	snd * env;
 }.play`,
-    sound: { freq: 440, amp: 0.3, type: "sine" },
+    sound: {
+      freq: 880,
+      amp: 0.5,
+      type: "sine",
+      env: true,
+      reverb: { mix: 0.5, room: 0.8 },
+    },
   },
   {
     name: "DelayN",

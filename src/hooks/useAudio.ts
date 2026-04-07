@@ -12,6 +12,7 @@ import {
   createPanner,
   createFilteredSynth,
   createFilteredNoise,
+  createReverbSynth,
 } from "@/lib/audio";
 
 export function useAudio() {
@@ -33,6 +34,7 @@ export function useAudio() {
       refs.current.noise?.dispose();
       refs.current.panner?.dispose();
       refs.current.filter?.dispose();
+      refs.current.reverb?.dispose();
     } catch {}
     refs.current = {};
   }, []);
@@ -53,6 +55,8 @@ export function useAudio() {
           refs.current = createPanner(audio);
         } else if (audio.lfo) {
           refs.current = createLFOSynth(audio);
+        } else if (audio.reverb) {
+          refs.current = createReverbSynth(audio);
         } else if (audio.env) {
           refs.current = createEnvSynth(audio);
         } else if (audio.filter) {

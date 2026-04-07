@@ -155,3 +155,34 @@ export function createFilteredNoise(
 
   return { noise, filter };
 }
+
+export function createReverbSynth(
+  audio: AudioConfig,
+): Pick<AudioRefs, "synth" | "reverb"> {
+  const reverb = new Tone.Reverb({
+    decay: (audio.reverb?.room ?? 0.5) * 6,
+    wet: audio.reverb?.mix ?? 0.5,
+    // no damp arg in Tone
+  }).toDestination();
+
+  const synth = new Tone.Synth({
+    oscillator: { type: (audio.type ?? "sine") as OscillatorType },
+    envelope: {
+      attack: 0.02, // = Env.perc -> attackTime
+      release: 5, // Env.linen -> attackTime + sustainTime + releaseTime
+    },
+    volume: Tone.gainToDb(audio.amp ?? 0.5),
+  }).connect(reverb);
+
+  // Gliss def
+  const now = Tone.now();
+  synth.oscillator.frequency.setValueAtTime(audio.freq ?? 880, now);
+  synth.oscillator.frequency.exponentialRampToValueAtTime(
+    (audio.freq ?? 880) * 0.02,
+    now + 1,
+  );
+
+  synth.triggerAttackRelease(audio.freq ?? 880, now);
+
+  return { synth, reverb };
+}

@@ -367,13 +367,17 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: `{
-	DelayN.ar(
-		SinOsc.ar(440, 0, 0.3),
-		1,
-		0.5
-	) + SinOsc.ar(440, 0, 0.3)
+	var snd, delay, buf;
+
+	buf = Buffer.read(s, "/Users/me/Desktop/poing.mp3");
+	snd = PlayBuf.ar(1, buf, loop: 0);
+	delay = DelayN.ar(snd, 1.5, 1.5);
+
+	snd = snd + delay;
+
+	snd;
 }.play`,
-    sound: { freq: 440, amp: 0.3, type: "sine" },
+    sound: { sample: "/dist/audio/poing.mp3", delay: true },
   },
 
   // ── Envelopes ─────────────────────────────────────────────────────────────
@@ -393,7 +397,7 @@ export const UGENS: UGen[] = [
 		Env.new(
 			[0, 1, 0.5, 1, 0],
 			[0.01, 0.5, 0.01, 2],
-			'\\lin'
+			\\lin
 		),
 		doneAction: Done.freeSelf
 	)
@@ -425,7 +429,7 @@ export const UGENS: UGen[] = [
 		Env.new(
 			[0, 0.5, 0.2, 1, 0],
 			[0.01, 1, 0.01, 0.5],
-			'\\sine'
+			\\sine
 		),
 		doneAction: Done.freeSelf
 	)

@@ -4,6 +4,7 @@ export type AudioConfig = {
   freq?: number;
   amp?: number;
   type?: OscillatorType | "noise" | "dtmf";
+  sample?: string;
   lfo?: LFOValues;
   freqs?: number[];
   env?: boolean;
@@ -11,6 +12,7 @@ export type AudioConfig = {
   pan?: boolean;
   filter?: FilterConfig;
   reverb?: ReverbConfig;
+  delay?: boolean;
 };
 
 type NoiseColor = "white" | "pink" | "brown";
@@ -38,11 +40,13 @@ export type ReverbConfig = {
 export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;
   synth2?: Tone.Oscillator;
+  sample?: Tone.Player;
   lfo?: Tone.LFO;
   noise?: Tone.Noise;
   panner?: Tone.Panner;
   filter?: Tone.Filter;
   reverb?: Tone.Reverb;
+  delay?: Tone.Delay;
 };
 
 export type ValidationResult = {

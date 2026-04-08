@@ -9,11 +9,11 @@ export function highlight(code: string): string {
       escape(line)
         .replace(/(\/\/.*)/g, '<span class="hl-comment">$1</span>')
         .replace(
-          /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|BrownNoise|LFSaw|LFTri|LFPulse|LPF|HPF|BPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix|Done|FreeVerb|DelayN)\b/g,
+          /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|BrownNoise|LFSaw|LFTri|LFPulse|LPF|HPF|BPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix|Done|FreeVerb|DelayN|Buffer|PlayBuf)\b/g,
           '<span class="hl-ugen">$1</span>',
         )
         .replace(
-          /(?<=\.)(play|ar|kr|new|stop|free|scope|freeSelf|release|perc|linen|triangle|sine|boot|quit)\b/g,
+          /(?<=\.)(play|ar|kr|new|stop|free|read|scope|freeSelf|release|perc|linen|triangle|sine|boot|quit)\b/g,
           '<span class="hl-method">$1</span>',
         )
         .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="hl-number">$1</span>')

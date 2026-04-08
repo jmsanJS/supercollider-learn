@@ -13,6 +13,7 @@ import {
   createFilteredSynth,
   createFilteredNoise,
   createReverbSynth,
+  createDelay,
 } from "@/lib/audio";
 
 export function useAudio() {
@@ -35,6 +36,7 @@ export function useAudio() {
       refs.current.panner?.dispose();
       refs.current.filter?.dispose();
       refs.current.reverb?.dispose();
+      refs.current.delay?.dispose()
     } catch {}
     refs.current = {};
   }, []);
@@ -57,12 +59,15 @@ export function useAudio() {
           refs.current = createLFOSynth(audio);
         } else if (audio.reverb) {
           refs.current = createReverbSynth(audio);
+        } else if (audio.delay) {
+          refs.current = createDelay(audio);
         } else if (audio.env) {
           refs.current = createEnvSynth(audio);
         } else if (audio.filter) {
           refs.current = createFilteredSynth(audio);
         } else {
           refs.current = createSynth(audio);
+          console.log(audio)
         }
       } catch (e) {
         console.error(e);

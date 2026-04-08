@@ -186,3 +186,18 @@ export function createReverbSynth(
 
   return { synth, reverb };
 }
+
+export function createDelay(
+  audio: AudioConfig,
+): Pick<AudioRefs, "sample" | "delay"> {
+  const delay = new Tone.Delay(1.5).toDestination();
+  const sample = new Tone.Player(audio.sample).toDestination();
+
+  Tone.loaded().then(() => {
+    sample.start();
+  });
+
+  sample.connect(delay);
+
+  return { sample, delay };
+}

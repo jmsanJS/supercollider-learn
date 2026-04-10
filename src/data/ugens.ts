@@ -395,8 +395,8 @@ export const UGENS: UGen[] = [
     example: `{
 	SinOsc.ar(440) * EnvGen.kr(
 		Env.new(
-			[0, 1, 0.5, 1, 0],
-			[0.01, 0.5, 0.01, 2],
+			[0, 0.5, 0],
+			[1, 5],
 			\\lin
 		),
 		doneAction: Done.freeSelf

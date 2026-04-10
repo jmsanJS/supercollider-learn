@@ -74,11 +74,11 @@ export function createLFOSynth(
 export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
   const synth = new Tone.Synth({
     oscillator: { type: (audio.type ?? "sine") as OscillatorType },
-    envelope: { attack: 0.01, decay: 0.5, sustain: 0, release: 0.1 },
+    envelope: { attack: 1, decay: 5, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
     volume: Tone.gainToDb(audio.amp ?? 0.3),
   }).toDestination();
 
-  synth.triggerAttackRelease(audio.freq ?? 440, "2n");
+  synth.triggerAttackRelease(audio.freq ?? 440, 8);
 
   return { synth };
 }

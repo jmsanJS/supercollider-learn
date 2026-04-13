@@ -32,14 +32,14 @@ export function createLFOSynth(
   const freq = audio.freq ?? 440;
   const rate = audio.lfo!.rate;
   const depth = audio.lfo!.depth;
-  const shape = audio.lfo!.shape ?? "sine";
-  const target = audio.lfo!.target ?? "frequency";
+  const shape = audio.lfo!.shape;
+  const target = audio.lfo!.target;
 
-  const amp = new Tone.Gain(audio.amp ?? 0.3).toDestination();
+  const amp = new Tone.Gain(audio.amp ?? 1).toDestination();
 
   const synth = new Tone.Synth({
-    oscillator: { type: "sine" },
-    envelope: { attack: 0.05, decay: 0, sustain: 1, release: 0.3 },
+    oscillator: { type: audio.type as OscillatorType },
+    envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.1 },
   });
 
   synth.connect(amp);
@@ -50,7 +50,7 @@ export function createLFOSynth(
     lfo = new Tone.LFO({
       frequency: rate,
       min: 0,
-      max: audio.amp ?? 0.3,
+      max: audio.amp ?? 1,
       type: shape,
     })
       .connect(amp.gain)
@@ -98,9 +98,9 @@ export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
 
 export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
   const synth = new Tone.Synth({
-    oscillator: { type: (audio.type ?? "sine") as OscillatorType },
+    oscillator: { type: audio.type as OscillatorType },
     envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.1 },
-    volume: Tone.gainToDb(audio.amp ?? 0.3),
+    volume: Tone.gainToDb(audio.amp ?? 1),
   }).toDestination();
 
   synth.triggerAttack(audio.freq ?? 440);

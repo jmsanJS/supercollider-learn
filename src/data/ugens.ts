@@ -396,13 +396,25 @@ export const UGENS: UGen[] = [
 	SinOsc.ar(440) * EnvGen.kr(
 		Env.new(
 			[0, 0.5, 0],
-			[1, 5],
+			[3, 1],
 			\\lin
 		),
 		doneAction: Done.freeSelf
 	)
 }.play`,
-    sound: { freq: 440, amp: 0.4, type: "sine", env: true },
+    sound: {
+      freq: 440,
+      amp: 0.5,
+      type: "sine",
+      env: {
+        attack: 3,
+        decay: 1,
+        sustain: 0,
+        release: 0.001,
+        attackCurve: "linear",
+        decayCurve: "linear",
+      },
+    },
   },
   {
     name: "EnvGen",
@@ -425,16 +437,28 @@ export const UGENS: UGen[] = [
       },
     ],
     example: `{
-	Saw.ar(220, 0.5) * EnvGen.kr(
+	Saw.ar(220) * EnvGen.kr(
 		Env.new(
-			[0, 0.5, 0.2, 1, 0],
-			[0.01, 1, 0.01, 0.5],
-			\\sine
+			[0, 0.5, 0],
+			[0.5, 2],
+			\\lin
 		),
 		doneAction: Done.freeSelf
 	)
 }.play`,
-    sound: { freq: 220, amp: 0.4, type: "sawtooth", env: true },
+    sound: {
+      freq: 220,
+      amp: 0.5,
+      type: "sawtooth",
+      env: {
+        attack: 0.5,
+        decay: 2,
+        sustain: 0,
+        release: 0.001,
+        attackCurve: "linear",
+        decayCurve: "linear",
+      },
+    },
   },
 
   // ── Spatial ───────────────────────────────────────────────────────────────

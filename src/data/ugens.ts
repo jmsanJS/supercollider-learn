@@ -167,7 +167,7 @@ export const UGENS: UGen[] = [
       freq: 440,
       amp: 0.3,
       type: "sine",
-      lfo: { rate: 2, depth: 150, shape: "square", target: "amplitude" },
+      lfo: { rate: 2, depth: 0, shape: "square", target: "amplitude" },
     },
   },
   {
@@ -341,7 +341,6 @@ export const UGENS: UGen[] = [
       freq: 880,
       amp: 0.5,
       type: "sine",
-      env: true,
       reverb: { mix: 0.5, room: 0.8 },
     },
   },

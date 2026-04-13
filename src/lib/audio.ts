@@ -1,6 +1,20 @@
 import * as Tone from "tone";
 import type { AudioConfig, AudioRefs } from "@/types";
 
+function buildSynth(audio: AudioConfig) {
+  return new Tone.Synth({
+    oscillator: { type: audio.type as OscillatorType },
+    envelope: {
+      attack: audio.env?.attack ?? 0.01,
+      decay: audio.env?.decay ?? 0,
+      sustain: audio.env?.sustain ?? 1,
+      release: audio.env?.release ?? 0.1,
+      ...audio.env,
+    },
+    volume: Tone.gainToDb(audio.amp ?? 1),
+  });
+}
+
 export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise"> {
   const noise = new Tone.Noise(audio.color).toDestination();
 
@@ -37,11 +51,7 @@ export function createLFOSynth(
 
   const amp = new Tone.Gain(audio.amp ?? 1).toDestination();
 
-  const synth = new Tone.Synth({
-    oscillator: { type: audio.type as OscillatorType },
-    envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.1 },
-  });
-
+  const synth = buildSynth(audio);
   synth.connect(amp);
 
   let lfo: Tone.LFO;
@@ -72,18 +82,8 @@ export function createLFOSynth(
 }
 
 export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
-  const synth = new Tone.Synth({
-    oscillator: { type: audio.type as OscillatorType },
-    envelope: {
-      attack: audio.env?.attack,
-      decay: audio.env?.decay,
-      sustain: audio.env?.sustain,
-      release: audio.env?.release,
-      attackCurve: audio.env?.attackCurve,
-      decayCurve: audio.env?.decayCurve,
-    },
-    volume: Tone.gainToDb(audio.amp ?? 1),
-  }).toDestination();
+  const synth = buildSynth(audio);
+  synth.toDestination();
 
   const timeInSecs =
     (audio.env?.attack ?? 0) +
@@ -97,11 +97,8 @@ export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
 }
 
 export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
-  const synth = new Tone.Synth({
-    oscillator: { type: audio.type as OscillatorType },
-    envelope: { attack: 0.01, decay: 0, sustain: 1, release: 0.1 },
-    volume: Tone.gainToDb(audio.amp ?? 1),
-  }).toDestination();
+  const synth = buildSynth(audio);
+  synth.toDestination();
 
   synth.triggerAttack(audio.freq ?? 440);
 
@@ -122,12 +119,8 @@ export function createPanner(
     .connect(panner.pan)
     .start();
 
-  const synth = new Tone.Synth({
-    oscillator: { type: (audio.type ?? "sine") as OscillatorType },
-    envelope: { attack: 0.05, decay: 0, sustain: 1, release: 0.5 },
-    volume: Tone.gainToDb(audio.amp ?? 0.3),
-  }).connect(panner);
-
+  const synth = buildSynth(audio);
+  synth.connect(panner);
   synth.triggerAttack(audio.freq ?? 440);
 
   return { synth, lfo, panner };
@@ -142,12 +135,8 @@ export function createFilteredSynth(
     Q: audio.filter?.Q ?? 1,
   }).toDestination();
 
-  const synth = new Tone.Synth({
-    oscillator: { type: audio.type as OscillatorType },
-    envelope: { attack: 0.05, decay: 0, sustain: 1, release: 0.5 },
-    volume: Tone.gainToDb(audio.amp ?? 0.3),
-  }).connect(filter);
-
+  const synth = buildSynth(audio);
+  synth.connect(filter);
   synth.triggerAttack(audio.freq ?? 220);
 
   return { synth, filter };
@@ -178,15 +167,9 @@ export function createReverbSynth(
     // no damp arg in Tone
   }).toDestination();
 
-  const synth = new Tone.Synth({
-    oscillator: { type: (audio.type ?? "sine") as OscillatorType },
-    envelope: {
-      attack: 0.02, // = Env.perc -> attackTime
-      release: 5, // Env.linen -> attackTime + sustainTime + releaseTime
-    },
-    volume: Tone.gainToDb(audio.amp ?? 0.5),
-  }).connect(reverb);
-
+  // Env.linen -> attackTime + sustainTime + releaseTime
+  const synth = buildSynth(audio);
+  synth.connect(reverb);
   // Gliss def
   const now = Tone.now();
   synth.oscillator.frequency.setValueAtTime(audio.freq ?? 880, now);
@@ -206,9 +189,7 @@ export function createDelay(
   const delay = new Tone.Delay(1.5).toDestination();
   const sample = new Tone.Player(audio.sample).toDestination();
 
-  Tone.loaded().then(() => {
-    sample.start();
-  });
+  Tone.loaded().then(() => sample.start());
 
   sample.connect(delay);
 

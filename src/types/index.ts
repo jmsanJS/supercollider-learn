@@ -5,7 +5,7 @@ export type AudioConfig = {
   amp?: number;
   type?: OscillatorType | "noise" | "dtmf";
   sample?: string;
-  lfo?: LFOValues;
+  lfo?: LFOConfig;
   freqs?: number[];
   env?: EnvConfig;
   color?: NoiseColor;
@@ -16,7 +16,6 @@ export type AudioConfig = {
 };
 
 type NoiseColor = "white" | "pink" | "brown";
-type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
 
 type EnvConfig = {
   attack?: number;
@@ -27,17 +26,22 @@ type EnvConfig = {
   decayCurve?: "linear" | "exponential"
 }
 
+type FilterType = "lowpass" | "highpass" | "bandpass";
+
 type FilterConfig = {
-  type: "lowpass" | "highpass" | "bandpass";
+  type: FilterType;
   freq: number;
   Q?: number;
 };
 
-type LFOValues = {
+type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
+type LFOTarget = "frequency" | "amplitude";
+
+type LFOConfig = {
   rate: number;
   depth: number;
-  shape?: LFOShape;
-  target?: "frequency" | "amplitude";
+  shape?: LFOShape
+  target?: LFOTarget;
 };
 
 export type ReverbConfig = {

@@ -7,7 +7,7 @@ export type AudioConfig = {
   sample?: string;
   lfo?: LFOValues;
   freqs?: number[];
-  env?: boolean;
+  env?: EnvConfig;
   color?: NoiseColor;
   pan?: boolean;
   filter?: FilterConfig;
@@ -17,6 +17,15 @@ export type AudioConfig = {
 
 type NoiseColor = "white" | "pink" | "brown";
 type LFOShape = "sine" | "sawtooth" | "square" | "triangle";
+
+type EnvConfig = {
+  attack?: number;
+  decay?: number;
+  sustain?: number;
+  release?: number;
+  attackCurve?: Tone.EnvelopeCurve;
+  decayCurve?: "linear" | "exponential"
+}
 
 type FilterConfig = {
   type: "lowpass" | "highpass" | "bandpass";

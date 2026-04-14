@@ -26,7 +26,7 @@ function builtFilter(filter?: FilterConfig) {
 export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise"> {
   const noise = new Tone.Noise(audio.color).toDestination();
 
-  noise.volume.value = Tone.gainToDb(audio.amp ?? 0.1);
+  noise.volume.value = Tone.gainToDb(audio.amp ?? 1);
   noise.start();
 
   return { noise };
@@ -37,7 +37,7 @@ export function createDTMF(
 ): Pick<AudioRefs, "synth" | "synth2"> {
   const [f1, f2] = audio.freqs ?? [770, 1336];
 
-  const gain = new Tone.Gain(audio.amp ?? 0.2).toDestination();
+  const gain = new Tone.Gain(audio.amp ?? 1).toDestination();
 
   const s1 = new Tone.Oscillator(f1, "sine").connect(gain);
   const s2 = new Tone.Oscillator(f2, "sine").connect(gain);
@@ -174,13 +174,13 @@ export function createReverbSynth(
   synth.connect(reverb);
   // Gliss def
   const now = Tone.now();
-  synth.oscillator.frequency.setValueAtTime(audio.freq ?? 880, now);
+  synth.oscillator.frequency.setValueAtTime(audio.freq ?? 440, now);
   synth.oscillator.frequency.exponentialRampToValueAtTime(
-    (audio.freq ?? 880) * 0.02,
+    (audio.freq ?? 440) * 0.02,
     now + 1,
   );
 
-  synth.triggerAttackRelease(audio.freq ?? 880, now);
+  synth.triggerAttackRelease(audio.freq ?? 440, now);
 
   return { synth, reverb };
 }

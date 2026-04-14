@@ -28,7 +28,7 @@ type EnvConfig = {
 
 type FilterType = "lowpass" | "highpass" | "bandpass";
 
-type FilterConfig = {
+export type FilterConfig = {
   type: FilterType;
   freq: number;
   Q?: number;

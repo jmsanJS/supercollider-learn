@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import type { AudioConfig, AudioRefs } from "@/types";
+import type { AudioConfig, AudioRefs, FilterConfig } from "@/types";
 
 function buildSynth(audio: AudioConfig) {
   return new Tone.Synth({
@@ -13,6 +13,14 @@ function buildSynth(audio: AudioConfig) {
     },
     volume: Tone.gainToDb(audio.amp ?? 1),
   });
+}
+
+function builtFilter(filter?: FilterConfig) {
+  return new Tone.Filter({
+    type: filter!.type,
+    frequency: filter!.freq,
+    Q: filter?.Q ?? 1,
+  })
 }
 
 export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise"> {
@@ -129,11 +137,8 @@ export function createPanner(
 export function createFilteredSynth(
   audio: AudioConfig,
 ): Pick<AudioRefs, "synth" | "filter"> {
-  const filter = new Tone.Filter({
-    type: audio.filter!.type,
-    frequency: audio.filter!.freq,
-    Q: audio.filter?.Q ?? 1,
-  }).toDestination();
+  const filter = builtFilter(audio.filter)
+  filter.toDestination();
 
   const synth = buildSynth(audio);
   synth.connect(filter);
@@ -145,14 +150,11 @@ export function createFilteredSynth(
 export function createFilteredNoise(
   audio: AudioConfig,
 ): Pick<AudioRefs, "noise" | "filter"> {
-  const filter = new Tone.Filter({
-    type: audio.filter!.type,
-    frequency: audio.filter!.freq,
-    Q: audio.filter?.Q ?? 4,
-  }).toDestination();
+  const filter = builtFilter(audio.filter)
+  filter.toDestination();
 
   const noise = new Tone.Noise(audio.color ?? "white").connect(filter);
-  noise.volume.value = Tone.gainToDb(audio.amp ?? 0.3);
+  noise.volume.value = Tone.gainToDb(audio.amp ?? 1);
   noise.start();
 
   return { noise, filter };

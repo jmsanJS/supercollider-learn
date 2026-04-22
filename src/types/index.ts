@@ -167,3 +167,19 @@ export type FooterLink = {
   label: string;
   href: string;
 };
+
+// Glossary
+export type GlossaryCategory =
+  | "all"
+  | "programming"
+  | "audio"
+  | "music"
+  | "supercollider";
+
+export type GlossaryTerm = {
+  id: string;
+  term: string;
+  category: Exclude<GlossaryCategory, "all">;
+  definition: string;
+  related?: string[];  // ids de términos relacionados
+};

@@ -3,6 +3,7 @@
   max-width: 1400px;
   animation: fadeIn 0.2s ease;
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -18,7 +19,9 @@
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 16px;
+  min-height: calc(100vh - 72px - 30px);
 }
+
 @media (max-width: 700px) {
   .ex_layout {
     grid-template-columns: 1fr;

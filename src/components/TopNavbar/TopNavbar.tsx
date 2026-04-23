@@ -15,6 +15,7 @@ export default function TopNavbar() {
     { id: "exercises", path: "/exercises", label: "Ejercicios" },
     { id: "progress", path: "/progress", label: "Progreso" },
     { id: "ugens", path: "/ugens", label: "UGens comunes" },
+    { id: "glossary", path: "/glossary", label: "Glosario" },
   ];
 
   return (

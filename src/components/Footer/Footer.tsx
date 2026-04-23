@@ -13,6 +13,7 @@ export default function Footer() {
     { label: "Ejercicios", href: "/exercises" },
     { label: "Progreso", href: "/progress" },
     { label: "UGens comunes", href: "/ugens" },
+    { label: "Glosario", href: "/glossary" },
   ];
 
   const resourceLinks: FooterLink[] = [

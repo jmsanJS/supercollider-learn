@@ -1,7 +1,7 @@
 import type { UGen } from "@/types";
 
 export const UGENS: UGen[] = [
-  // ── Oscillators ──────────────────────────────────────────────────────────
+  // ── Oscillators ──
   {
     name: "SinOsc",
     category: "Oscillators",
@@ -18,7 +18,7 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(440, 0, 0.3) }.play // suena la4",
+    example: "{ SinOsc.ar(440, 0, 0.3) ! 2 }.play // '! n' multiplica la señal por 'n' para que suene en 'n' altoparlantes",
     sound: { freq: 440, amp: 0.3, type: "sine" },
   },
   {
@@ -36,7 +36,7 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ Saw.ar(220, 0.2) }.play // suena la3",
+    example: "{ Saw.ar(220, 0.2) ! 2 }.play",
     sound: { freq: 220, amp: 0.2, type: "sawtooth" },
   },
   {
@@ -55,11 +55,11 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ Pulse.ar(440, 0.5, 0.2) }.play",
+    example: "{ Pulse.ar(440, 0.5, 0.2) ! 2 }.play",
     sound: { freq: 440, amp: 0.2, type: "square" },
   },
 
-  // ── Noise ─────────────────────────────────────────────────────────────────
+  // ── Noise ──
   {
     name: "WhiteNoise",
     category: "Noise",
@@ -73,7 +73,7 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ WhiteNoise.ar(0.1) }.play",
+    example: "{ WhiteNoise.ar(0.1) ! 2 }.play // '! n' multiplica la señal por 'n' para que suene en 'n' altoparlantes",
     sound: { type: "noise", color: "white", amp: 0.1 },
   },
   {
@@ -89,7 +89,7 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ PinkNoise.ar(0.1) }.play",
+    example: "{ PinkNoise.ar(0.1) ! 2 }.play",
     sound: { type: "noise", color: "pink", amp: 0.1 },
   },
   {
@@ -105,11 +105,11 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ BrownNoise.ar(0.1) }.play",
+    example: "{ BrownNoise.ar(0.1) ! 2 }.play",
     sound: { type: "noise", color: "brown", amp: 0.1 },
   },
 
-  // ── Low Frequency ─────────────────────────────────────────────────────────
+  // ── Low Frequency ──
   {
     name: "LFSaw",
     category: "Low Frequency",
@@ -130,7 +130,7 @@ export const UGENS: UGen[] = [
   SinOsc.ar(
     LFSaw.kr(2) * 200 + 600,
     0,
-    0.3)
+    0.3) ! 2
 }.play`,
     sound: {
       freq: 600,
@@ -160,8 +160,8 @@ export const UGENS: UGen[] = [
 	SinOsc.ar(
 		440,
 		0,
-		LFPulse.kr(2, 0, 0.5) * 0.3 // mul
-	)
+		LFPulse.kr(2, 0, 0.5) * 0.3
+	) ! 2
 }.play`,
     sound: {
       freq: 440,
@@ -191,7 +191,7 @@ export const UGENS: UGen[] = [
 		LFTri.kr(1) * 100 + 440,
 		0,
 		0.3
-	)
+	) ! 2
 }.play`,
     sound: {
       freq: 440,
@@ -201,7 +201,7 @@ export const UGENS: UGen[] = [
     },
   },
 
-  // ── Filters ───────────────────────────────────────────────────────────────
+  // ── Filters ──
   {
     name: "LPF",
     category: "Filters",
@@ -222,7 +222,7 @@ export const UGENS: UGen[] = [
   LPF.ar(
     Saw.ar(220, 0.3),
     800
-  )
+  ) ! 2
 }.play`,
     sound: {
       freq: 220,
@@ -251,7 +251,7 @@ export const UGENS: UGen[] = [
   HPF.ar(
     Saw.ar(220, 0.3),
     800
-  )
+  ) ! 2
 }.play`,
     sound: {
       freq: 220,
@@ -286,7 +286,7 @@ export const UGENS: UGen[] = [
 		WhiteNoise.ar(0.5),
 		1200,
 		0.25
-	)
+	) ! 2
 }.play`,
     sound: {
       type: "noise",
@@ -296,7 +296,7 @@ export const UGENS: UGen[] = [
     },
   },
 
-  // ── Effects ───────────────────────────────────────────────────────────────
+  // ── Effects ──
   {
     name: "FreeVerb",
     category: "Effects",
@@ -334,8 +334,8 @@ export const UGENS: UGen[] = [
 	);
 
 	snd = FreeVerb.ar(snd, 0.5, 0.8, 0);
-
-	snd * env;
+	snd = snd * env;
+	snd ! 2
 }.play`,
     sound: {
       freq: 880,
@@ -373,8 +373,7 @@ export const UGENS: UGen[] = [
 	delay = DelayN.ar(snd, 1.5, 1.5);
 
 	snd = snd + delay;
-
-	snd;
+	snd ! 2
 }.play`,
     sound: { sample: "/dist/audio/poing.mp3", delay: true },
   },
@@ -399,7 +398,7 @@ export const UGENS: UGen[] = [
 			\\lin
 		),
 		doneAction: Done.freeSelf
-	)
+	) ! 2
 }.play`,
     sound: {
       freq: 440,
@@ -443,7 +442,7 @@ export const UGENS: UGen[] = [
 			\\lin
 		),
 		doneAction: Done.freeSelf
-	)
+	) ! 2
 }.play`,
     sound: {
       freq: 220,

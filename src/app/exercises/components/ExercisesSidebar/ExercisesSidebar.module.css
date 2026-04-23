@@ -7,7 +7,7 @@
 }
 
 .sidebar_header {
-  padding: 12px 14px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;

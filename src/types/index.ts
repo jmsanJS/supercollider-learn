@@ -183,3 +183,9 @@ export type GlossaryTerm = {
   definition: string;
   related?: string[];  // ids de términos relacionados
 };
+
+// Highlight
+export type HighlightResult = {
+  html: string;
+  endsInBlockComment: boolean;
+};

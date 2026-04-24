@@ -5,9 +5,14 @@ import Link from "next/link";
 import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import { TopNavbarTab } from "@/types";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export default function TopNavbar() {
   const path = usePathname();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [path]);
 
   const tabs: TopNavbarTab[] = [
     { id: "home", path: "/", label: "Inicio" },

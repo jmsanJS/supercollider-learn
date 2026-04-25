@@ -1,4 +1,5 @@
 import * as Tone from "tone";
+import type { ReactNode } from "react";
 
 export type AudioConfig = {
   freq?: number;
@@ -155,6 +156,16 @@ export interface CopyToClipboardProps {
 
 export interface ReminderModalProps {
   onConfirm: (remindNextSession: boolean) => void;
+  onCancel?: () => void;
+  title?: string;
+  description?: ReactNode;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  headerTitle?: string;
+  showRemindOption?: boolean;
+  remindLabel?: string;
+  initialRemindNextSession?: boolean;
+  icon?: "volume" | "warning";
 }
 
 export type TopNavbarTab = {

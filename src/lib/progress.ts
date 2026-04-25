@@ -1,6 +1,6 @@
 import type { Exercise, LevelStats, Progress, ProgressStats } from "@/types";
 import { getExercisesByLevel, getLevels, getTotalExercises } from "@/lib/exercises";
-import { EXERCISES } from "@/data/exercices";
+import { EXERCISES } from "@/data/exercises";
 
 const STORAGE_KEY = "sc_learn";
 

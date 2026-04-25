@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useProgress } from "@/context/ProgressContext";
-import { EXERCISES } from "@/data/exercices";
+import { EXERCISES } from "@/data/exercises";
 import { getProgressStats } from "@/lib/progress";
 import styles from "./page.module.css";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";

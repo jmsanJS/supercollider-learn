@@ -1,4 +1,4 @@
-import { EXERCISES } from "@/data/exercices";
+import { EXERCISES } from "@/data/exercises";
 import { Exercise } from "@/types";
 
 export function getLevels(): number[] {

@@ -17,7 +17,7 @@
 
 .ex_layout {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 260px 1fr;
   gap: 16px;
   min-height: calc(100vh - 72px - 30px);
 }
@@ -25,5 +25,6 @@
 @media (max-width: 700px) {
   .ex_layout {
     grid-template-columns: 1fr;
+    padding: 0 10px;
   }
 }

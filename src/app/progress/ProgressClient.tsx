@@ -1,20 +1,29 @@
 "use client";
 
+import { useState } from "react";
 import { useProgress } from "@/context/ProgressContext";
 import { EXERCISES } from "@/data/exercices";
 import { getProgressStats } from "@/lib/progress";
 import styles from "./page.module.css";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
+import ReminderModal from "@/components/ReminderModal/ReminderModal";
 
 export default function ProgressClient() {
   const { progress, resetProgress } = useProgress();
+  const [showResetModal, setShowResetModal] = useState(false);
   const progressStats = getProgressStats(progress);
 
   const handleReset = () => {
-    const reset = window.confirm(
-      "¿Quieres borrar todo tu progreso? Esta acción no se puede deshacer.",
-    );
-    if (reset) resetProgress();
+    setShowResetModal(true);
+  };
+
+  const handleResetConfirm = () => {
+    resetProgress();
+    setShowResetModal(false);
+  };
+
+  const handleResetCancel = () => {
+    setShowResetModal(false);
   };
 
   return (
@@ -119,6 +128,20 @@ export default function ProgressClient() {
           Borrar progreso
         </button>
       </section>
+
+      {showResetModal && (
+        <ReminderModal
+          onConfirm={handleResetConfirm}
+          onCancel={handleResetCancel}
+          headerTitle="confirm"
+          icon="warning"
+          title="Confirmar borrado"
+          description="¿Quieres borrar todo tu progreso? Esta acción no se puede deshacer."
+          confirmLabel="Borrar progreso"
+          cancelLabel="Cancelar"
+          showRemindOption={false}
+        />
+      )}
     </section>
   );
 }

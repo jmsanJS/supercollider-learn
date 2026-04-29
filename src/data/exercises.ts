@@ -59,7 +59,7 @@ export const EXERCISES: Exercise[] = [
   },
   {
     id: "ex4",
-    level: 2,
+    level: 1,
     title: "Ruido blanco",
     tag: "WhiteNoise",
     goal: "Genera ruido blanco a baja amplitud (0.1)",
@@ -120,6 +120,164 @@ export const EXERCISES: Exercise[] = [
         ok,
         tips,
         audio: { type: "dtmf", freqs: [770, 1336], amp: 0.2 },
+      };
+    },
+  },
+  {
+    id: "ex7",
+    level: 2,
+    title: "Sirena de policía",
+    tag: "SinOsc",
+    goal: "Crea una sirena de policía que alterna entre dos frecuencias (600 y 800 Hz)",
+    theory: `Las sirenas de policía alternan entre dos tonos fijos.\nSe puede lograr con un LFPulse que conmuta entre dos frecuencias:\n\nLFPulse.ar(rate) selecciona 0 o 1 → escala y desplaza\npara obtener freq1 o freq2.\n\nLFPulse.ar(rate) * range + base`,
+    starter: `// Sirena de policía: alterna 600 ↔ 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1) * 200 + 600,\n    0, 0.4\n  )\n}.play`,
+    validate(code) {
+      const ok = /SinOsc/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/LFPulse/.test(code)) tips.push("Usa LFPulse para alternar entre dos frecuencias fijas");
+      if (!/SinOsc/.test(code)) tips.push("SinOsc es el oscilador principal");
+      const m = code.match(/LFPulse\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const rate = m ? parseFloat(m[1]) : 1;
+      return {
+        ok, tips,
+        audio: { freq: 600, amp: 0.4, type: "sine", lfo: { rate, depth: 100, shape: "square", target: "frequency" } },
+      };
+    },
+  },
+  {
+    id: "ex8",
+    level: 2,
+    title: "Alarma de coche",
+    tag: "SinOsc",
+    goal: "Crea una alarma de coche: tono descendente rápido con LFSaw inverso",
+    theory: `Las alarmas de coche suelen usar un barrido descendente rápido\nque se repite en bucle.\n\nLFSaw.ar(rate, 1) genera una rampa descendente (iphase: 1).\nMultiplícala por el rango de frecuencias y suma la base:\n\n  LFSaw.ar(2, 1) * (-200) + 900`,
+    starter: `// Alarma de coche: barrido descendente\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * 200 + 900,\n    0, 0.4\n  )\n}.play`,
+    validate(code) {
+      const ok = /SinOsc/.test(code) && /LFSaw/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/LFSaw/.test(code)) tips.push("Usa LFSaw para el barrido de frecuencia");
+      const m = code.match(/LFSaw\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const rate = m ? parseFloat(m[1]) : 2;
+      return {
+        ok, tips,
+        audio: { freq: 900, amp: 0.4, type: "sine", lfo: { rate, depth: 200, shape: "sawtooth", target: "frequency" } },
+      };
+    },
+  },
+  {
+    id: "ex9",
+    level: 3,
+    title: "Alarma de incendio",
+    tag: "Pulse",
+    goal: "Crea una alarma de incendio: pulsos cortos y agudos a 3200 Hz con Pulse",
+    theory: `Las alarmas de incendio emiten pulsos cortos y penetrantes.\nPulse.ar con un LFPulse de baja frecuencia como amplitud\ncrea el efecto de intermitencia:\n\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2)`,
+    starter: `// Alarma de incendio: pulsos agudos\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3\n}.play`,
+    validate(code) {
+      const ok = /Pulse/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/Pulse/.test(code)) tips.push("Usa Pulse.ar(3200) como oscilador principal");
+      if (!/LFPulse/.test(code)) tips.push("Usa LFPulse para crear la intermitencia");
+      const m = code.match(/Pulse\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const freq = m ? parseFloat(m[1]) : 3200;
+      const m2 = code.match(/LFPulse\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const rate = m2 ? parseFloat(m2[1]) : 2;
+      return {
+        ok, tips,
+        audio: { freq, amp: 0.3, type: "square", lfo: { rate, depth: 1, shape: "square", target: "amplitude" } },
+      };
+    },
+  },
+  {
+    id: "ex10",
+    level: 2,
+    title: "Pitido de microondas",
+    tag: "EnvGen",
+    goal: "Crea tres pitidos cortos a 1000 Hz usando EnvGen con Env.perc",
+    theory: `Los electrodomésticos usan pitidos cortos con envolvente percusiva.\nEnv.perc(attackTime, releaseTime) crea una envolvente\nque sube y baja rápidamente:\n\n  SinOsc.ar(1000) * EnvGen.kr(Env.perc(0.01, 0.1))\n\nPara repetirlos, usa un Array o Phasor.`,
+    starter: `// Pitido corto de microondas\n{\n  SinOsc.ar(1000) *\n  EnvGen.kr(Env.perc(0.01, 0.1), doneAction: Done.freeSelf)\n}.play`,
+    validate(code) {
+      const ok = /SinOsc/.test(code) && /EnvGen/.test(code) && /Env\.perc/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/EnvGen/.test(code)) tips.push("Usa EnvGen.kr para aplicar la envolvente");
+      if (!/Env\.perc/.test(code)) tips.push("Usa Env.perc(attack, release) para la forma del pitido");
+      const m = code.match(/SinOsc\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const freq = m ? parseFloat(m[1]) : 1000;
+      return {
+        ok, tips,
+        audio: {
+          freq, amp: 0.5, type: "sine",
+          env: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
+        },
+      };
+    },
+  },
+  {
+    id: "ex11",
+    level: 2,
+    title: "Temporizador de cocina",
+    tag: "EnvGen",
+    goal: "Crea un tono de temporizador: 880 Hz con envolvente de 0.05s de ataque y 0.3s de caída",
+    theory: `Los temporizadores de cocina usan tonos con caída rápida.\nEnv.perc con un release algo más largo que el attack\nda ese carácter reconocible:\n\n  Env.perc(attackTime, releaseTime, level, curve)`,
+    starter: `// Temporizador de cocina\n{\n  SinOsc.ar(880) *\n  EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf)\n}.play`,
+    validate(code) {
+      const ok = /SinOsc/.test(code) && /EnvGen/.test(code) && /Env\.perc/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/EnvGen/.test(code)) tips.push("Usa EnvGen.kr con Env.perc");
+      if (!/Env\.perc/.test(code)) tips.push("Env.perc(attack, release) define la envolvente");
+      const m = code.match(/SinOsc\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const freq = m ? parseFloat(m[1]) : 880;
+      const m2 = code.match(/Env\.perc\(\s*[\d.]+\s*,\s*([\d.]+)/);
+      const release = m2 ? parseFloat(m2[1]) : 0.3;
+      return {
+        ok, tips,
+        audio: {
+          freq, amp: 0.5, type: "sine",
+          env: { attack: 0.05, decay: release, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
+        },
+      };
+    },
+  },
+  {
+    id: "ex12",
+    level: 3,
+    title: "Despertador digital",
+    tag: "Pulse",
+    goal: "Crea un despertador: onda cuadrada a 1200 Hz con intermitencia rápida (4 Hz)",
+    theory: `Los despertadores digitales usan ondas cuadradas agudas\ncon una intermitencia rítmica para captar la atención.\n\nMultiplica el oscilador por un LFPulse para la intermitencia:\n\n  Pulse.ar(1200, 0.5) * LFPulse.kr(4) * amp`,
+    starter: `// Despertador digital\n{\n  Pulse.ar(1200, 0.5) * LFPulse.kr(4) * 0.3\n}.play`,
+    validate(code) {
+      const ok = /Pulse\.ar/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/Pulse\.ar/.test(code)) tips.push("Usa Pulse.ar para la onda cuadrada aguda");
+      if (!/LFPulse/.test(code)) tips.push("Usa LFPulse para la intermitencia rítmica");
+      const m = code.match(/Pulse\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const freq = m ? parseFloat(m[1]) : 1200;
+      const m2 = code.match(/LFPulse\.\w+\(\s*(\d+(?:\.\d+)?)/);
+      const rate = m2 ? parseFloat(m2[1]) : 4;
+      return {
+        ok, tips,
+        audio: { freq, amp: 0.3, type: "square", lfo: { rate, depth: 1, shape: "square", target: "amplitude" } },
+      };
+    },
+  },
+  {
+    id: "ex13",
+    level: 3,
+    title: "Señal de evacuación",
+    tag: "SinOsc",
+    goal: "Crea una señal de evacuación: tono ascendente lento (300→1200 Hz) con LFSaw",
+    theory: `Las señales de evacuación (WHOOP) usan un barrido ascendente\nlento que se repite, diseñado para ser inconfundible.\n\nLFSaw.ar(rate) genera valores de -1 a 1.\nEscálalo para obtener el rango de frecuencias:\n\n  LFSaw.ar(0.5) * 450 + 750  → 300 a 1200 Hz`,
+    starter: `// Señal de evacuación: barrido ascendente\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  )\n}.play`,
+    validate(code) {
+      const ok = /SinOsc/.test(code) && /LFSaw/.test(code) && /\.play/.test(code);
+      const tips = [];
+      if (!/LFSaw/.test(code)) tips.push("Usa LFSaw para el barrido de frecuencia ascendente");
+      if (!/SinOsc/.test(code)) tips.push("SinOsc es el oscilador principal");
+      const m = code.match(/LFSaw\.ar\(\s*(\d+(?:\.\d+)?)/);
+      const rate = m ? parseFloat(m[1]) : 0.5;
+      return {
+        ok, tips,
+        audio: { freq: 750, amp: 0.4, type: "sine", lfo: { rate, depth: 450, shape: "sawtooth", target: "frequency" } },
       };
     },
   },

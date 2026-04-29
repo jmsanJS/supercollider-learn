@@ -10,7 +10,7 @@ import { useExercises } from "@/context/ExercisesContext";
 import { useProgress } from "@/context/ProgressContext";
 
 export default function ExercisesSidebar() {
-  const { setActiveId } = useExercises();
+  const { activeId, setActiveId } = useExercises();
   const { progress } = useProgress();
 
   const levels = getLevels();
@@ -33,7 +33,7 @@ export default function ExercisesSidebar() {
             return (
               <button
                 key={e.id}
-                className={styles.ex_item}
+                className={`${styles.ex_item} ${activeId === e.id ? styles.active : ""}`}
                 onClick={() => setActiveId(e.id)}
               >
                 <span className={styles.ex_check}>{completed ? "✓" : "○"}</span>

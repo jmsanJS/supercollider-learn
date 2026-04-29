@@ -8,13 +8,16 @@ import { useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
+import { parseSCCode } from "@/lib/scCodeParser";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
 import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
+import { useAudio } from "@/hooks/useAudio";
 
 export default function MainEditor() {
   const { activeId } = useExercises();
   const { markCompleted } = useProgress();
+  const { play, stop } = useAudio();
 
   const [codes, setCodes] = useState(getInitialCodes);
   const [playingId, setPlayingId] = useState<string | null>(null);
@@ -61,6 +64,8 @@ export default function MainEditor() {
     const result = exercise.validate(code);
     if (result.ok) {
       setIsDisabled(true);
+      const audioConfig = parseSCCode(code);
+      play(audioConfig);
       setPlayingId(activeId);
       markCompleted(activeId, code);
     } else {
@@ -76,6 +81,7 @@ export default function MainEditor() {
   const handleStop = (): void => {
     setPlayingId(null);
     setIsDisabled(false);
+    stop();
   };
 
   const handleReset = (): void => {

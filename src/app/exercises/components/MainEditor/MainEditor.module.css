@@ -179,3 +179,41 @@
   color: var(--text-secondary);
   border-color: color-mix(in srgb, var(--text-secondary) 40%, transparent);
 }
+
+.feedback {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  animation: fadeIn 0.2s ease;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+}
+
+.fb_ok {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-surface));
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-subtle));
+  color: var(--accent);
+}
+
+.fb_err {
+  background: color-mix(in srgb, var(--btn-stop) 10%, var(--bg-surface));
+  border-color: color-mix(in srgb, var(--btn-stop) 35%, var(--border-subtle));
+  color: color-mix(in srgb, var(--btn-stop) 75%, var(--text-primary));
+}
+
+.fb_icon {
+  margin-right: 6px;
+  color: var(--accent);
+}
+
+.fb_icon_err {
+  margin-bottom: 4px;
+  color: var(--btn-stop);
+}
+
+.fb_tip {
+  color: color-mix(in srgb, var(--btn-stop) 70%, var(--text-secondary));
+}

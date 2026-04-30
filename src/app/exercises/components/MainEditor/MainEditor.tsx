@@ -8,11 +8,12 @@ import { useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
-import { parseSCCode } from "@/lib/scCodeParser";
+import { parseSCCode, validateSCCode } from "@/lib/scCodeParser";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
 import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
 import { useAudio } from "@/hooks/useAudio";
+import type { ValidationResult } from "@/types";
 
 export default function MainEditor() {
   const { activeId } = useExercises();
@@ -20,6 +21,9 @@ export default function MainEditor() {
   const { play, stop } = useAudio();
 
   const [codes, setCodes] = useState(getInitialCodes);
+  const [results, setResults] = useState<
+    Record<string, ValidationResult | null>
+  >({});
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
@@ -30,8 +34,11 @@ export default function MainEditor() {
   if (!exercise) return null;
 
   const code: string = codes[activeId] ?? exercise.starter ?? "";
+  const activeResult = results[exercise.id] ?? null;
+
   const onChange = (newCode: string): void => {
     setCodes((prev) => ({ ...prev, [activeId]: newCode }));
+    setResults((prev) => ({ ...prev, [activeId]: null }));
   };
 
   const lines = code.split("\n");
@@ -61,15 +68,33 @@ export default function MainEditor() {
       return;
     }
 
+    const scValidation = validateSCCode(code);
     const result = exercise.validate(code);
-    if (result.ok) {
+    const mergedTips = [
+      ...scValidation.errors,
+      ...(result.ok ? [] : result.tips),
+    ];
+
+    const feedbackResult: ValidationResult = {
+      ok: scValidation.ok && result.ok,
+      tips: mergedTips,
+      audio: result.audio,
+    };
+    setResults((prev) => ({ ...prev, [exercise.id]: feedbackResult }));
+    const canPlayCode = scValidation.ok;
+
+    if (canPlayCode) {
       setIsDisabled(true);
       const audioConfig = parseSCCode(code);
       play(audioConfig);
       setPlayingId(activeId);
-      markCompleted(activeId, code);
     } else {
       setPlayingId(null);
+      setIsDisabled(false);
+    }
+
+    if (result.ok && scValidation.ok) {
+      markCompleted(activeId, code);
     }
   };
 
@@ -86,8 +111,10 @@ export default function MainEditor() {
 
   const handleReset = (): void => {
     onChange(exercise.starter ?? "");
+    setResults((prev) => ({ ...prev, [activeId]: null }));
     setPlayingId(null);
     setIsDisabled(false);
+    stop();
   };
 
   return (
@@ -152,6 +179,37 @@ export default function MainEditor() {
                 ↺
               </button>
             </div>
+
+            {activeResult && (
+              <div
+                className={`${styles.feedback} ${activeResult.ok ? styles.fb_ok : styles.fb_err}`}
+                role="status"
+                aria-live="polite"
+              >
+                {activeResult.ok ? (
+                  <>
+                    <span className={styles.fb_icon}>✓</span> ¡Correcto! El
+                    sonido se está generando.
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.fb_icon_err}>
+                      ✗ Revisa tu código:
+                    </div>
+                    {(activeResult.tips.length
+                      ? activeResult.tips
+                      : [
+                          "La solución no cumple aún los requisitos del ejercicio.",
+                        ]
+                    ).map((t, i) => (
+                      <div key={i} className={styles.fb_tip}>
+                        ▸ {t}
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

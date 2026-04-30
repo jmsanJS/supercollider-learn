@@ -1,11 +1,54 @@
-import type { AudioConfig } from "@/types";
+import type { AudioConfig, SCCodeValidation } from "@/types";
 
-const OSC_TYPES: Record<string, OscillatorType> = {
-  SinOsc: "sine",
-  Saw: "sawtooth",
-  Pulse: "square",
-  LFTri: "triangle",
-};
+const SOUND_UGEN = "(SinOsc|Saw|Pulse|LFTri|WhiteNoise|PinkNoise|BrownNoise)";
+
+function hasBalancedPairs(
+  code: string,
+  openChar: string,
+  closeChar: string,
+): boolean {
+  let depth = 0;
+  for (const ch of code) {
+    if (ch === openChar) depth += 1;
+    if (ch === closeChar) {
+      depth -= 1;
+      if (depth < 0) return false;
+    }
+  }
+  return depth === 0;
+}
+
+export function validateSCCode(code: string): SCCodeValidation {
+  const errors: string[] = [];
+
+  const hasBalancedBraces = hasBalancedPairs(code, "{", "}");
+  if (!hasBalancedBraces) errors.push("Falta cerrar o abrir correctamente llaves { }.");
+
+  const hasBalancedParens = hasBalancedPairs(code, "(", ")");
+  if (!hasBalancedParens)
+    errors.push("Falta cerrar o abrir correctamente paréntesis ( ).");
+
+  const hasBalancedBrackets = hasBalancedPairs(code, "[", "]");
+  if (!hasBalancedBrackets)
+    errors.push("Falta cerrar o abrir correctamente corchetes [ ].");
+
+  const hasPlayCall = /\.play\b/.test(code);
+  if (!hasPlayCall)
+    errors.push("Agrega .play al final para ejecutar el bloque de audio.");
+
+  const hasUGenArCall = new RegExp(`\\b${SOUND_UGEN}\\.ar\\s*\\(`).test(code);
+  if (!hasUGenArCall) {
+    errors.push(
+      "Para sonar, usa un UGen con llamada .ar(...), por ejemplo: SinOsc.ar().",
+    );
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
+export function isPlayableSCCode(code: string): boolean {
+  return validateSCCode(code).ok;
+}
 
 function getFreq(code: string): number {
   const match = code.match(
@@ -16,12 +59,18 @@ function getFreq(code: string): number {
 
 function getAmp(code: string): number {
   const match = code.match(/\.ar\([^)]*,\s*[^,)]*,\s*(-?\d+(?:\.\d+)?)/);
-  return match ? parseFloat(match[1]) : 0.3;
+  return match ? parseFloat(match[1]) : 1;
 }
 
-function getOscType(code: string): OscillatorType {
+function getOscType(code: string): OscillatorType | null {
+  const OSC_TYPES: Record<string, OscillatorType> = {
+    SinOsc: "sine",
+    Saw: "sawtooth",
+    Pulse: "square",
+    LFTri: "triangle",
+  };
   const match = code.match(/\b(SinOsc|Saw|Pulse|LFTri)\b/);
-  return match ? OSC_TYPES[match[1]] : "sine";
+  return match ? OSC_TYPES[match[1]] : null;
 }
 
 function getNoiseConfig(code: string, amp: number): AudioConfig | null {
@@ -125,6 +174,8 @@ export function parseSCCode(code: string): AudioConfig {
 
   const lfoConfig = getLfoConfig(code, freq, amp);
   if (lfoConfig) return lfoConfig;
+
+  if (!type) return {};
 
   const panConfig = getPanConfig(code, freq, amp, type);
   if (panConfig) return panConfig;

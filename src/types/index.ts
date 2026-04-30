@@ -200,3 +200,10 @@ export type HighlightResult = {
   html: string;
   endsInBlockComment: boolean;
 };
+
+// SC Code Parser lib
+
+export type SCCodeValidation = {
+  ok: boolean;
+  errors: string[];
+};

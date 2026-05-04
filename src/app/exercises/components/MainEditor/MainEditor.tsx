@@ -4,7 +4,7 @@
 import { useExercises } from "@/context/ExercisesContext";
 import styles from "./MainEditor.module.css";
 import { getExerciseById, getInitialCodes } from "@/lib/exercises";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
@@ -25,10 +25,13 @@ export default function MainEditor() {
     Record<string, ValidationResult | null>
   >({});
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    stop();
+  }, [activeId, stop]);
 
   const exercise = getExerciseById(activeId);
   if (!exercise) return null;
@@ -84,13 +87,11 @@ export default function MainEditor() {
     const canPlayCode = scValidation.ok;
 
     if (canPlayCode) {
-      setIsDisabled(true);
       const audioConfig = parseSCCode(code);
       play(audioConfig);
       setPlayingId(activeId);
     } else {
       setPlayingId(null);
-      setIsDisabled(false);
     }
 
     if (result.ok && scValidation.ok) {
@@ -105,7 +106,6 @@ export default function MainEditor() {
 
   const handleStop = (): void => {
     setPlayingId(null);
-    setIsDisabled(false);
     stop();
   };
 
@@ -113,7 +113,6 @@ export default function MainEditor() {
     onChange(exercise.starter ?? "");
     setResults((prev) => ({ ...prev, [activeId]: null }));
     setPlayingId(null);
-    setIsDisabled(false);
     stop();
   };
 
@@ -166,7 +165,7 @@ export default function MainEditor() {
               <button
                 className={styles.btn_run}
                 onClick={handleRun}
-                disabled={isDisabled}
+                disabled={playingId === activeId}
               >
                 ▶ Ejecutar
               </button>

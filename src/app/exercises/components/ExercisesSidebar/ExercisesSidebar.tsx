@@ -8,13 +8,20 @@ import {
 } from "@/lib/exercises";
 import { useExercises } from "@/context/ExercisesContext";
 import { useProgress } from "@/context/ProgressContext";
+import { useAudio } from "@/hooks/useAudio";
 
 export default function ExercisesSidebar() {
   const { activeId, setActiveId } = useExercises();
   const { progress } = useProgress();
+  const { stop } = useAudio();
 
   const levels = getLevels();
   const totalExercises = getTotalExercises();
+
+  const handleClick = (id: string) => {
+    if (activeId !== id) stop();
+    setActiveId(id);
+  };
 
   return (
     <aside className={styles.ex_sidebar}>
@@ -34,7 +41,7 @@ export default function ExercisesSidebar() {
               <button
                 key={e.id}
                 className={`${styles.ex_item} ${activeId === e.id ? styles.active : ""}`}
-                onClick={() => setActiveId(e.id)}
+                onClick={() => handleClick(e.id)}
               >
                 <span className={styles.ex_check}>{completed ? "✓" : "○"}</span>
                 <span className={styles.ex_name}>{e.title}</span>

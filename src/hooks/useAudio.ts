@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import * as Tone from "tone";
 import type { AudioConfig, AudioRefs } from "@/types";
 import {
@@ -16,29 +16,29 @@ import {
   createDelay,
 } from "@/lib/audio";
 
-export function useAudio() {
-  const refs = useRef<AudioRefs>({});
+let refs: AudioRefs = {};
 
+export function useAudio() {
   const stop = useCallback(() => {
     try {
-      if (refs.current.synth instanceof Tone.Synth) {
-        refs.current.synth.triggerRelease();
+      if (refs.synth instanceof Tone.Synth) {
+        refs.synth.triggerRelease();
       } else {
-        refs.current.synth?.stop();
+        refs.synth?.stop();
       }
-      refs.current.synth?.dispose();
-      refs.current.synth2?.stop();
-      refs.current.synth2?.dispose();
-      refs.current.lfo?.stop();
-      refs.current.lfo?.dispose();
-      refs.current.noise?.stop();
-      refs.current.noise?.dispose();
-      refs.current.panner?.dispose();
-      refs.current.filter?.dispose();
-      refs.current.reverb?.dispose();
-      refs.current.delay?.dispose()
+      refs.synth?.dispose();
+      refs.synth2?.stop();
+      refs.synth2?.dispose();
+      refs.lfo?.stop();
+      refs.lfo?.dispose();
+      refs.noise?.stop();
+      refs.noise?.dispose();
+      refs.panner?.dispose();
+      refs.filter?.dispose();
+      refs.reverb?.dispose();
+      refs.delay?.dispose();
     } catch {}
-    refs.current = {};
+    refs = {};
   }, []);
 
   const play = useCallback(
@@ -48,26 +48,26 @@ export function useAudio() {
 
       try {
         if (audio.type === "noise" && audio.filter) {
-          refs.current = createFilteredNoise(audio);
+          refs = createFilteredNoise(audio);
         } else if (audio.type === "noise") {
-          refs.current = createNoise(audio);
+          refs = createNoise(audio);
         } else if (audio.type === "dtmf") {
-          refs.current = createDTMF(audio);
+          refs = createDTMF(audio);
         } else if (audio.pan) {
-          refs.current = createPanner(audio);
+          refs = createPanner(audio);
         } else if (audio.lfo) {
-          refs.current = createLFOSynth(audio);
+          refs = createLFOSynth(audio);
         } else if (audio.reverb) {
-          refs.current = createReverbSynth(audio);
+          refs = createReverbSynth(audio);
         } else if (audio.delay) {
-          refs.current = createDelay(audio);
+          refs = createDelay(audio);
         } else if (audio.env) {
-          refs.current = createEnvSynth(audio);
+          refs = createEnvSynth(audio);
         } else if (audio.filter) {
-          refs.current = createFilteredSynth(audio);
+          refs = createFilteredSynth(audio);
         } else {
-          refs.current = createSynth(audio);
-          console.log(audio)
+          refs = createSynth(audio);
+          console.log(audio);
         }
       } catch (e) {
         console.error(e);

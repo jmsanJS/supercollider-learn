@@ -8,7 +8,7 @@ export const EXERCISES: Exercise[] = [
     tag: "SinOsc",
     goal: "Genera un tono de 440 Hz con amplitud 0.3",
     theory: `SinOsc genera una onda sinusoidal pura.\n\nSintaxis:\n  SinOsc.ar(freq, phase, mul)\n\nEl bloque { }.play envía el audio a los altavoces.`,
-    starter: `// Genera un tono puro de 440 Hz\n{\n  SinOsc.ar(440, 0, 0.3)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok =
         /SinOsc/.test(code) &&
@@ -30,7 +30,7 @@ export const EXERCISES: Exercise[] = [
     tag: "SinOsc",
     goal: "Modifica el tono anterior para sonar una octava más alta (880 Hz)",
     theory: `Duplicar la frecuencia sube exactamente una octava:\n\n  220 Hz → La3\n  440 Hz → La4  ← referencia\n  880 Hz → La5\n\nEs la relación matemática fundamental de la música occidental.`,
-    starter: `// Cambia la frecuencia a 880 Hz\n{\n  SinOsc.ar(440, 0, 0.3)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const m = code.match(/SinOsc\.ar\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 0;
@@ -47,7 +47,7 @@ export const EXERCISES: Exercise[] = [
     tag: "Pulse",
     goal: "Genera una onda cuadrada a 220 Hz usando Pulse",
     theory: `Pulse genera ondas cuadradas/rectangulares.\nTiene un timbre más brillante y "electrónico" que SinOsc.\n\nPulse.ar(freq, width, mul)\n  width: 0.5 = onda cuadrada perfecta`,
-    starter: `// Onda cuadrada a 220 Hz\n{\n  Pulse.ar(220, 0.5, 0.2)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /Pulse/.test(code) && /\.ar/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -64,7 +64,7 @@ export const EXERCISES: Exercise[] = [
     tag: "WhiteNoise",
     goal: "Genera ruido blanco a baja amplitud (0.1)",
     theory: `WhiteNoise genera señal aleatoria con igual\nenergía en todas las frecuencias.\n\nÚsalo para:\n  • Efectos de viento, agua, lluvia\n  • Capas de textura\n  • Síntesis de percusión`,
-    starter: `// Ruido blanco suave\n{\n  WhiteNoise.ar(0.1)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /WhiteNoise/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -79,7 +79,7 @@ export const EXERCISES: Exercise[] = [
     tag: "LFSaw",
     goal: "Usa LFSaw para modular la frecuencia de SinOsc y crear una sirena",
     theory: `La modulación de frecuencia (FM) usa un oscilador\npara controlar la frecuencia de otro.\n\nLFSaw.ar(rate) * depth + center\n  • rate:   velocidad de oscilación\n  • depth:  rango de variación\n  • center: frecuencia central`,
-    starter: `// Sirena: oscila entre 400 y 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2) * 200 + 600,\n    0, 0.4\n  )\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok =
         /SinOsc/.test(code) && /LFSaw/.test(code) && /\.play/.test(code);
@@ -105,7 +105,7 @@ export const EXERCISES: Exercise[] = [
     tag: "DTMF",
     goal: "Mezcla dos SinOsc para reproducir el tono DTMF del número 5 (770 + 1336 Hz)",
     theory: `Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).\nCada tecla es la SUMA de dos frecuencias:\n\n     1209  1336  1477\n770:  4     5     6\n852:  7     8     9\n\nTecla 5 = 770 Hz + 1336 Hz\n\nMezcla con: (SinOsc.ar(f1) + SinOsc.ar(f2)) * amp`,
-    starter: `// Tecla 5 del teléfono: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\n}.play`,
     validate(code) {
       const has770 = /770/.test(code);
       const has1336 = /1336/.test(code);
@@ -130,7 +130,7 @@ export const EXERCISES: Exercise[] = [
     tag: "SinOsc",
     goal: "Crea una sirena de policía que alterna entre dos frecuencias (600 y 800 Hz)",
     theory: `Las sirenas de policía alternan entre dos tonos fijos.\nSe puede lograr con un LFPulse que conmuta entre dos frecuencias:\n\nLFPulse.ar(rate) selecciona 0 o 1 → escala y desplaza\npara obtener freq1 o freq2.\n\nLFPulse.ar(rate) * range + base`,
-    starter: `// Sirena de policía: alterna 600 ↔ 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1) * 200 + 600,\n    0, 0.4\n  )\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /SinOsc/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -151,7 +151,7 @@ export const EXERCISES: Exercise[] = [
     tag: "SinOsc",
     goal: "Crea una alarma de coche: tono descendente rápido con LFSaw inverso",
     theory: `Las alarmas de coche suelen usar un barrido descendente rápido\nque se repite en bucle.\n\nLFSaw.ar(rate, 1) genera una rampa descendente (iphase: 1).\nMultiplícala por el rango de frecuencias y suma la base:\n\n  LFSaw.ar(2, 1) * (-200) + 900`,
-    starter: `// Alarma de coche: barrido descendente\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * 200 + 900,\n    0, 0.4\n  )\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /SinOsc/.test(code) && /LFSaw/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -171,7 +171,7 @@ export const EXERCISES: Exercise[] = [
     tag: "Pulse",
     goal: "Crea una alarma de incendio: pulsos cortos y agudos a 3200 Hz con Pulse",
     theory: `Las alarmas de incendio emiten pulsos cortos y penetrantes.\nPulse.ar con un LFPulse de baja frecuencia como amplitud\ncrea el efecto de intermitencia:\n\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2)`,
-    starter: `// Alarma de incendio: pulsos agudos\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /Pulse/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -194,7 +194,7 @@ export const EXERCISES: Exercise[] = [
     tag: "EnvGen",
     goal: "Crea tres pitidos cortos a 1000 Hz usando EnvGen con Env.perc",
     theory: `Los electrodomésticos usan pitidos cortos con envolvente percusiva.\nEnv.perc(attackTime, releaseTime) crea una envolvente\nque sube y baja rápidamente:\n\n  SinOsc.ar(1000) * EnvGen.kr(Env.perc(0.01, 0.1))\n\nPara repetirlos, usa un Array o Phasor.`,
-    starter: `// Pitido corto de microondas\n{\n  SinOsc.ar(1000) *\n  EnvGen.kr(Env.perc(0.01, 0.1), doneAction: Done.freeSelf)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /SinOsc/.test(code) && /EnvGen/.test(code) && /Env\.perc/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -218,7 +218,7 @@ export const EXERCISES: Exercise[] = [
     tag: "EnvGen",
     goal: "Crea un tono de temporizador: 880 Hz con envolvente de 0.05s de ataque y 0.3s de caída",
     theory: `Los temporizadores de cocina usan tonos con caída rápida.\nEnv.perc con un release algo más largo que el attack\nda ese carácter reconocible:\n\n  Env.perc(attackTime, releaseTime, level, curve)`,
-    starter: `// Temporizador de cocina\n{\n  SinOsc.ar(880) *\n  EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf)\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /SinOsc/.test(code) && /EnvGen/.test(code) && /Env\.perc/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -244,7 +244,7 @@ export const EXERCISES: Exercise[] = [
     tag: "Pulse",
     goal: "Crea un despertador: onda cuadrada a 1200 Hz con intermitencia rápida (4 Hz)",
     theory: `Los despertadores digitales usan ondas cuadradas agudas\ncon una intermitencia rítmica para captar la atención.\n\nMultiplica el oscilador por un LFPulse para la intermitencia:\n\n  Pulse.ar(1200, 0.5) * LFPulse.kr(4) * amp`,
-    starter: `// Despertador digital\n{\n  Pulse.ar(1200, 0.5) * LFPulse.kr(4) * 0.3\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /Pulse\.ar/.test(code) && /LFPulse/.test(code) && /\.play/.test(code);
       const tips = [];
@@ -267,7 +267,7 @@ export const EXERCISES: Exercise[] = [
     tag: "SinOsc",
     goal: "Crea una señal de evacuación: tono ascendente lento (300→1200 Hz) con LFSaw",
     theory: `Las señales de evacuación (WHOOP) usan un barrido ascendente\nlento que se repite, diseñado para ser inconfundible.\n\nLFSaw.ar(rate) genera valores de -1 a 1.\nEscálalo para obtener el rango de frecuencias:\n\n  LFSaw.ar(0.5) * 450 + 750  → 300 a 1200 Hz`,
-    starter: `// Señal de evacuación: barrido ascendente\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  )\n}.play`,
+    starter: `// Escribe tu solucion dentro del bloque\n{\n\t\n}.play`,
     validate(code) {
       const ok = /SinOsc/.test(code) && /LFSaw/.test(code) && /\.play/.test(code);
       const tips = [];

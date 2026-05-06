@@ -26,6 +26,7 @@ export default function MainEditor() {
   >({});
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
+  const [showAnswerModal, setShowAnswerModal] = useState<boolean>(false);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
 
@@ -117,9 +118,18 @@ export default function MainEditor() {
   };
 
   const handleShowAnswer = (): void => {
+    setShowAnswerModal(true);
+  };
+
+  const handleShowAnswerConfirm = (): void => {
+    setShowAnswerModal(false);
     onChange(exercise.answer ?? "");
     setPlayingId(null);
     stop();
+  };
+
+  const handleShowAnswerCancel = (): void => {
+    setShowAnswerModal(false);
   };
 
   return (
@@ -165,6 +175,20 @@ export default function MainEditor() {
 
             {showVolumeModal && (
               <ReminderModal onConfirm={handleVolumeConfirm} />
+            )}
+
+            {showAnswerModal && (
+              <ReminderModal
+                onConfirm={handleShowAnswerConfirm}
+                onCancel={handleShowAnswerCancel}
+                title="Mostrar respuesta"
+                description="Si confirmas, se cargará la solución del ejercicio actual en el editor."
+                confirmLabel="Mostrar"
+                cancelLabel="Cancelar"
+                headerTitle="show-the-answer"
+                showRemindOption={false}
+                icon="warning"
+              />
             )}
 
             <div className={styles.ex_controls}>

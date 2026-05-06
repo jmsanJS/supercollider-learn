@@ -170,7 +170,7 @@
   color: var(--text-muted);
   border: 1px solid color-mix(in srgb, var(--text-muted) 40%, transparent);
   border-radius: 3px;
-  font-size: 1rem;
+  font-size: 0.74rem;
   cursor: pointer;
   transition: all 0.15s;
 }

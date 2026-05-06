@@ -116,6 +116,12 @@ export default function MainEditor() {
     stop();
   };
 
+  const handleShowAnswer = (): void => {
+    onChange(exercise.answer ?? "");
+    setPlayingId(null);
+    stop();
+  };
+
   return (
     <section>
       <TerminalHeader title={exercise?.id} desc={exercise?.title} />
@@ -175,7 +181,10 @@ export default function MainEditor() {
                 </button>
               )}
               <button className={styles.btn_reset} onClick={handleReset}>
-                ↺
+                ↺ Reiniciar
+              </button>
+              <button className={styles.btn_reset} onClick={handleShowAnswer}>
+                💡 Mostrar respuesta
               </button>
             </div>
 

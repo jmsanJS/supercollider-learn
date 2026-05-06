@@ -77,6 +77,7 @@ export type Exercise = {
   goal: string;
   theory: string;
   starter: string;
+  answer: string;
   validate: (code: string) => ValidationResult;
 };
 

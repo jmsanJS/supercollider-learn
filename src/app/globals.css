@@ -77,39 +77,39 @@
 
 /* 3. Warm Theme */
 [data-theme="warm"] {
-  --bg-base: #0d0900;
-  --bg-surface: #150f00;
-  --bg-elevated: #1c1500;
+  --bg-base: #fdf8f0;
+  --bg-surface: #f5edd8;
+  --bg-elevated: #ffffff;
 
-  --border-subtle: rgba(251, 191, 36, 0.12);
-  --border-medium: rgba(251, 191, 36, 0.25);
-  --border-strong: rgba(251, 191, 36, 0.45);
+  --border-subtle: rgba(120, 70, 0, 0.08);
+  --border-medium: rgba(120, 70, 0, 0.18);
+  --border-strong: rgba(120, 70, 0, 0.4);
 
-  --accent: #fbbf24;
-  --accent-glow: rgba(251, 191, 36, 0.35);
-  --accent-dim: rgba(251, 191, 36, 0.06);
+  --accent: #b97500;
+  --accent-glow: rgba(194, 122, 0, 0.18);
+  --accent-dim: rgba(194, 122, 0, 0.06);
 
-  --text-primary: #fef3c7;
-  --text-secondary: #d97706;
-  --text-muted: #92600a;
-  --text-disabled: #4d3206;
+  --text-primary: #1c0d00;
+  --text-secondary: #4a2c00;
+  --text-muted: #7a5020;
+  --text-disabled: #b89060;
 
-  --editor-bg: #080600;
-  --editor-nums: rgba(251, 191, 36, 0.22);
+  --editor-bg: #fffdf5;
+  --editor-nums: rgba(120, 70, 0, 0.22);
 
-  --btn-run-bg: #fbbf24;
-  --btn-run-text: #080600;
-  --btn-stop: #f87171;
+  --btn-run-bg: #b97500;
+  --btn-run-text: #ffffff;
+  --btn-stop: #dc2626;
 
-  --hl-comment: #6b4c0a;
-  --hl-ugen: #34d399;
-  --hl-method: #60a5fa;
-  --hl-number: #fb923c;
-  --hl-brace: #a78bfa;
-  --hl-argument: #86efac;
-  --hl-keyword: #eb6d51;
+  --hl-comment: #9a7040;
+  --hl-ugen: #0d7a5f;
+  --hl-method: #1a56a0;
+  --hl-number: #c0530a;
+  --hl-brace: #5b3d8a;
+  --hl-argument: #2d7a2d;
+  --hl-keyword: #b83224;
 
-  --scanlines: rgba(251, 191, 36, 0.018);
+  --scanlines: transparent;
 }
 
 /* 4. Cold Theme */

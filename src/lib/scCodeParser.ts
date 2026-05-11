@@ -39,7 +39,7 @@ export function validateSCCode(code: string): SCCodeValidation {
   const hasUGenArCall = new RegExp(`\\b${SOUND_UGEN}\\.ar\\s*\\(`).test(code);
   if (!hasUGenArCall) {
     errors.push(
-      "Para sonar, usa un UGen con llamada .ar(...), por ejemplo: SinOsc.ar().",
+      "Usa un UGen con llamada .ar(...) para generar audio.",
     );
   }
 
@@ -58,8 +58,16 @@ function getFreq(code: string): number {
 }
 
 function getAmp(code: string): number {
-  const match = code.match(/\.ar\([^)]*,\s*[^,)]*,\s*(-?\d+(?:\.\d+)?)/);
-  return match ? parseFloat(match[1]) : 1;
+  // Third arg: SinOsc.ar(freq, phase, mul), Pulse.ar(freq, width, mul), LFTri.ar(freq, iphase, mul)
+  const thirdArg = code.match(/\.ar\([^)]*,\s*[^,)]*,\s*(-?\d+(?:\.\d+)?)/);
+  if (thirdArg) return parseFloat(thirdArg[1]);
+  // Second arg: Saw.ar(freq, mul)
+  const sawArg = code.match(/Saw\.ar\s*\(\s*-?\d+(?:\.\d+)?\s*,\s*(-?\d+(?:\.\d+)?)\s*\)/);
+  if (sawArg) return parseFloat(sawArg[1]);
+  // Single arg: WhiteNoise.ar(mul), PinkNoise.ar(mul), BrownNoise.ar(mul)
+  const noiseArg = code.match(/(?:WhiteNoise|PinkNoise|BrownNoise)\.ar\s*\(\s*(\d+(?:\.\d+)?)\s*\)/);
+  if (noiseArg) return parseFloat(noiseArg[1]);
+  return 1;
 }
 
 function getOscType(code: string): OscillatorType | null {

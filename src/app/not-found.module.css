@@ -1,0 +1,145 @@
+.wrap {
+  padding: 30px 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal {
+  border: 1px solid var(--border-subtle);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 32px;
+  background: var(--accent-dim);
+}
+
+.output_line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+  color: var(--text-secondary);
+}
+
+.prompt {
+  color: var(--accent);
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.cmd {
+  color: var(--text-primary);
+}
+
+.error_block {
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-medium);
+  border-radius: 4px;
+  background: var(--editor-bg);
+  margin-bottom: 28px;
+}
+
+.error_code {
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-glow);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.error_lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.error_msg {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.keyword {
+  color: var(--hl-keyword);
+}
+
+.error_detail {
+  font-size: 0.8rem;
+}
+
+.comment {
+  color: var(--hl-comment);
+  font-style: italic;
+}
+
+.suggestion {
+  margin-bottom: 28px;
+}
+
+.suggestion_text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-left: 34px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn_primary {
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background: var(--btn-run-bg);
+  color: var(--btn-run-text);
+  letter-spacing: 0.06em;
+  transition: opacity 0.15s;
+}
+
+.btn_primary:hover {
+  opacity: 0.85;
+}
+
+.btn_secondary {
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-medium);
+  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn_secondary:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .terminal {
+    padding: 20px 16px;
+  }
+
+  .error_block {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+}

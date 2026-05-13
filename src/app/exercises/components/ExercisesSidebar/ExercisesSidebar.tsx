@@ -17,6 +17,7 @@ export default function ExercisesSidebar() {
 
   const levels = getLevels();
   const totalExercises = getTotalExercises();
+  const completedCount = Object.values(progress).filter((p) => p.completed).length;
 
   const handleClick = (id: string) => {
     if (activeId !== id) stop();
@@ -29,7 +30,7 @@ export default function ExercisesSidebar() {
         <span className={styles.section_label} style={{ marginBottom: 0 }}>
           Ejercicios
         </span>
-        <span className={styles.ex_count}>0/{totalExercises}</span>
+        <span className={styles.ex_count}>{completedCount}/{totalExercises}</span>
       </div>
       {levels.map((lv) => (
         <div key={lv} className={styles.level_group}>

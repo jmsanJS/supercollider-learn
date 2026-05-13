@@ -8,16 +8,16 @@ export const THEMES: ThemeOption[] = [
     bg: "#f5f5f0",
   },
   {
+    name: "warm",
+    label: "Cálido",
+    accent: "#b97500",
+    bg: "#fdf8f0",
+  },
+  {
     name: "phosphor",
     label: "Fósforo",
     accent: "#4ade80",
     bg: "#060d06",
-  },
-  {
-    name: "warm",
-    label: "Cálido",
-    accent: "#fbbf24",
-    bg: "#0d0900",
   },
   {
     name: "cold",

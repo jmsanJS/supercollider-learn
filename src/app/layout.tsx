@@ -30,8 +30,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${JetBrainsMono.variable} antialiased`}
-      >
+      <body className={JetBrainsMono.variable}>
         <ThemeProvider>
           <ProgressProvider>
             <TopNavbar />

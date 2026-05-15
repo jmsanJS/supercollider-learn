@@ -19,7 +19,7 @@ export default function Footer() {
   const resourceLinks: FooterLink[] = [
     { label: "SuperCollider oficial", href: "https://supercollider.github.io" },
     { label: "Documentación SC", href: "https://docs.supercollider.online/" },
-    { label: "GitHub del proyecto", href: "https://github.com/" },
+    { label: "GitHub del proyecto", href: "https://github.com/jmsanJS/sc-learn" },
   ];
 
   return (

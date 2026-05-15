@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 import type { GlossaryCategory, GlossaryTerm } from "@/types";
 import {
@@ -21,15 +21,24 @@ const CATEGORIES: { id: GlossaryCategory; label: string; }[] = [
 export default function GlossaryClient() {
   const [activeCategory, setActiveCategory] = useState<GlossaryCategory>("all");
   const [activeTerm, setActiveTerm] = useState<GlossaryTerm | null>(null);
+  const shouldScroll = useRef(false);
 
   const terms = getTermsByCategory(activeCategory);
   const totals = getTotalByCategory();
+
+  useEffect(() => {
+    if (!shouldScroll.current || !activeTerm) return;
+    shouldScroll.current = false;
+    const el = document.getElementById(`term-${activeTerm.id}`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeTerm]);
 
   const handleSelectTerm = (term: GlossaryTerm) => {
     setActiveTerm((prev) => (prev?.id === term.id ? null : term));
   };
 
   const handleRelatedClick = (related: GlossaryTerm) => {
+    shouldScroll.current = true;
     setActiveTerm(related);
     if (related.category !== activeCategory && activeCategory !== "all") {
       setActiveCategory("all");
@@ -71,7 +80,7 @@ export default function GlossaryClient() {
           <div className={styles.terms_wrap}>
             <ul className={styles.terms_list} aria-label="Lista de términos">
               {terms.map((term) => (
-                <li key={term.id}>
+                <li key={term.id} id={`term-${term.id}`}>
                   <button
                     className={`${styles.term_item} ${activeTerm?.id === term.id ? styles.active : ""}`}
                     onClick={() => handleSelectTerm(term)}

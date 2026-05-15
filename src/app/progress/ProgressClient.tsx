@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { EXERCISES } from "@/data/exercises";
 import { getProgressStats } from "@/lib/progress";
@@ -99,20 +100,23 @@ export default function ProgressClient() {
             const p = progress[ex.id];
             const completed = p?.completed ?? false;
             return (
-              <li
-                key={ex.id}
-                className={`${styles.ex_detail_row} ${completed ? styles.ex_done : ""}`}
-                aria-label={`${ex.title} — ${completed ? "completado" : "pendiente"}`}
-              >
-                <span className={styles.edr_check} aria-hidden="true">
-                  {completed ? "✓" : "○"}
-                </span>
-                <span className={styles.edr_title}>{ex.title}</span>
-                <span className={styles.edr_tag}>{ex.tag}</span>
-                <span className={styles.edr_level}>Nv.{ex.level}</span>
-                <span className={styles.edr_status}>
-                  {completed ? "completado" : "pendiente"}
-                </span>
+              <li key={ex.id}>
+                <Link
+                  href={`/exercises?id=${ex.id}`}
+                  className={`${styles.ex_detail_row} ${completed ? styles.ex_done : ""}`}
+                  aria-label={`${ex.title} — ${completed ? "completado" : "pendiente"}`}
+                >
+                  <span className={styles.edr_check} aria-hidden="true">
+                    {completed ? "✓" : "○"}
+                  </span>
+                  <span className={styles.edr_title}>{ex.title}</span>
+                  <span className={styles.edr_tag}>{ex.tag}</span>
+                  <span className={styles.edr_level}>Nv.{ex.level}</span>
+                  <span className={styles.edr_status}>
+                    {completed ? "completado" : "pendiente"}
+                  </span>
+                  <span className={styles.edr_arrow} aria-hidden="true">→</span>
+                </Link>
               </li>
             );
           })}

@@ -5,8 +5,8 @@ import { createContext, useContext, useState } from "react";
 
 const ExercisesContext = createContext<ExercisesContextType | null>(null);
 
-export function ExercisesProvider({ children }: { children: React.ReactNode }) {
-  const [activeId, setActiveId] = useState("ex1");
+export function ExercisesProvider({ children, initialId = "ex1" }: { children: React.ReactNode; initialId?: string }) {
+  const [activeId, setActiveId] = useState(initialId);
 
   return (
     <ExercisesContext.Provider value={{ activeId, setActiveId }}>

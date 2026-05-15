@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import ExercisesClient from "./ExercisesClient";
 
 export const metadata: Metadata = {
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function ExercisesPage() {
-  return <ExercisesClient />;
+  return (
+    <Suspense>
+      <ExercisesClient />
+    </Suspense>
+  );
 }

@@ -129,6 +129,7 @@
 
 .ex_detail_list {
   margin-bottom: 24px;
+  list-style-type: none;
 }
 
 .section_label {
@@ -152,6 +153,17 @@
 
 .ex_detail_row:hover {
   background: var(--accent-dim);
+}
+
+.ex_detail_row:hover .edr_arrow {
+  color: var(--accent);
+}
+
+.edr_arrow {
+  font-size: 0.65rem;
+  color: var(--text-disabled);
+  margin-left: auto;
+  transition: color 0.1s;
 }
 
 .ex_detail_row.ex_done {

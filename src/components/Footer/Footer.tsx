@@ -22,12 +22,6 @@ export default function Footer() {
     { label: "GitHub del proyecto", href: "https://github.com/" },
   ];
 
-  const legalLinks: FooterLink[] = [
-    { label: "Términos de uso", href: "#" },
-    { label: "Política de privacidad", href: "#" },
-    { label: "Licencia MIT", href: "#" },
-  ];
-
   return (
     <footer className={styles.footer}>
       <div className={styles.footer_top}>
@@ -83,17 +77,6 @@ export default function Footer() {
           © {year} <strong>SC·Learn</strong>. Proyecto de código abierto.
         </p>
 
-        <nav role="navigation" aria-label="Legal">
-          <ul className={styles.footer_legal} style={{ listStyle: "none" }}>
-            {legalLinks.map((link, i) => (
-              <li key={i}>
-                <a className={styles.legal_link} href={link.href}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
     </footer>
   );

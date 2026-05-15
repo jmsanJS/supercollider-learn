@@ -115,14 +115,6 @@
   color: var(--hl-ugen);
 }
 
-.social_icon {
-  font-size: 0.85rem;
-  color: var(--text-disabled);
-  transition:
-    color 0.15s,
-    text-shadow 0.15s;
-}
-
 .ext_icon {
   font-size: 0.55rem;
   opacity: 0.5;
@@ -180,19 +172,3 @@
   font-weight: 400;
 }
 
-.footer_legal {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.legal_link {
-  font-size: 0.62rem;
-  color: var(--text-disabled);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.legal_link:hover {
-  color: var(--text-secondary);
-}

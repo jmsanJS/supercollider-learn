@@ -54,8 +54,8 @@ export function createLFOSynth(
   const freq = audio.freq ?? 440;
   const rate = audio.lfo!.rate;
   const depth = audio.lfo!.depth;
-  const shape = audio.lfo!.shape;
-  const target = audio.lfo!.target;
+  const shape = audio.lfo!.shape ?? "sine";
+  const target = audio.lfo!.target ?? "frequency";
 
   const amp = new Tone.Gain(audio.amp ?? 1).toDestination();
 

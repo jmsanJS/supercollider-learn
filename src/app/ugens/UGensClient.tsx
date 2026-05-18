@@ -123,6 +123,17 @@ export default function UGensClient() {
               </div>
             </div>
 
+            {ugen.note && (
+              <div className={styles.ud_notes}>
+                <div className={styles.pane_label} style={{ marginBottom: 8 }}>
+                  // notas
+                </div>
+                {ugen.note.map((n, i) => (
+                  <p key={i} className={styles.note_item}>{n}</p>
+                ))}
+              </div>
+            )}
+
             {showVolumeModal && (
               <ReminderModal onConfirm={handleVolumeConfirm} />
             )}

@@ -136,6 +136,7 @@ export type UGen = {
   description: string;
   args: UGenArgument[];
   example: string;
+  note?: string[];
   sound: AudioConfig;
 };
 

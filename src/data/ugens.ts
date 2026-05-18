@@ -18,7 +18,10 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ SinOsc.ar(440, 0, 0.3) ! 2 }.play // '! n' multiplica la señal por 'n' para que suene en 'n' altoparlantes",
+    example: "{ SinOsc.ar(440, 0, 0.3) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+    ],
     sound: { freq: 440, amp: 0.3, type: "sine" },
   },
   {
@@ -37,6 +40,9 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: "{ Saw.ar(220, 0.2) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+    ],
     sound: { freq: 220, amp: 0.2, type: "sawtooth" },
   },
   {
@@ -56,6 +62,10 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: "{ Pulse.ar(440, 0.5, 0.2) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "width: 0.5 → onda cuadrada perfecta (mitad del ciclo en alto, mitad en bajo); valores menores crean pulsos más estrechos y un sonido más nasal",
+    ],
     sound: { freq: 440, amp: 0.2, type: "square" },
   },
 
@@ -73,7 +83,11 @@ export const UGENS: UGen[] = [
       },
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
-    example: "{ WhiteNoise.ar(0.1) ! 2 }.play // '! n' multiplica la señal por 'n' para que suene en 'n' altoparlantes",
+    example: "{ WhiteNoise.ar(0.1) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "El ruido no tiene frecuencia definida, por eso solo acepta mul y add: no hay nada más que controlar en la síntesis",
+    ],
     sound: { type: "noise", color: "white", amp: 0.1 },
   },
   {
@@ -90,6 +104,10 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: "{ PinkNoise.ar(0.1) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "El ruido no tiene frecuencia definida, por eso solo acepta mul y add: no hay nada más que controlar en la síntesis",
+    ],
     sound: { type: "noise", color: "pink", amp: 0.1 },
   },
   {
@@ -106,6 +124,10 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: "{ BrownNoise.ar(0.1) ! 2 }.play",
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "El ruido no tiene frecuencia definida, por eso solo acepta mul y add: no hay nada más que controlar en la síntesis",
+    ],
     sound: { type: "noise", color: "brown", amp: 0.1 },
   },
 
@@ -132,6 +154,11 @@ export const UGENS: UGen[] = [
     0,
     0.3) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "LFSaw.kr(2) oscila entre -1 y 1 a 2 Hz; × 200 convierte ese rango en ±200 Hz; + 600 desplaza el centro a 600 Hz → la frecuencia barre entre 400 y 800 Hz",
+      "Se usa .kr en vez de .ar porque es un LFO: corre a tasa de control (menor coste de CPU) ya que no necesita la resolución de audio",
+    ],
     sound: {
       freq: 600,
       amp: 0.3,
@@ -163,6 +190,10 @@ export const UGENS: UGen[] = [
 		LFPulse.kr(2, 0, 0.5) * 0.3
 	) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "LFPulse.kr(2, 0, 0.5) * 0.3 produce un trémolo: la amplitud alterna entre 0 y 0.3 a 2 Hz (encendido/apagado)",
+    ],
     sound: {
       freq: 440,
       amp: 0.3,
@@ -193,6 +224,10 @@ export const UGENS: UGen[] = [
 		0.3
 	) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "LFTri.kr(1) oscila entre -1 y 1 a 1 Hz; × 100 da ±100 Hz; + 440 centra en 440 Hz → vibrato suave que barre entre 340 y 540 Hz",
+    ],
     sound: {
       freq: 440,
       amp: 0.3,
@@ -224,6 +259,10 @@ export const UGENS: UGen[] = [
     800
   ) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "Con corte en 800 Hz sobre una Saw de 220 Hz se eliminan los armónicos agudos → sonido más cálido y redondo",
+    ],
     sound: {
       freq: 220,
       amp: 0.3,
@@ -253,6 +292,10 @@ export const UGENS: UGen[] = [
     800
   ) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "Con corte en 800 Hz sobre una Saw de 220 Hz se eliminan los graves → solo pasan los armónicos agudos, sonido más brillante y delgado",
+    ],
     sound: {
       freq: 220,
       amp: 0.3,
@@ -282,12 +325,17 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: `{
-	BPF.ar(
-		WhiteNoise.ar(0.5),
-		1200,
-		0.25
-	) ! 2
+  BPF.ar(
+    WhiteNoise.ar(0.5),
+    1200,
+    0.25
+  ) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "rq = 1/Q: rq bajo (0.1) → banda estrecha, sonido muy resonante; rq alto (1) → banda ancha, filtro suave",
+      "Aplicado a ruido blanco, el BPF actúa como un resonador que colorea el ruido con una frecuencia dominante",
+    ],
     sound: {
       type: "noise",
       color: "white",
@@ -320,23 +368,28 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: `{
-	var env, snd;
+  var env, snd;
 
-	env = EnvGen.ar(
-		Env.linen(0.02, 4, 1, 0.5, curve: -4),
-		doneAction: Done.freeSelf
-	);
+  env = EnvGen.ar(
+    Env.linen(0.02, 4, 1, 0.5, curve: -4),
+    doneAction: Done.freeSelf
+  );
 
-	snd = SinOsc.ar(
-		EnvGen.ar(Env.perc(level: 880)),
-		0,
-		0.3
-	);
+  snd = SinOsc.ar(
+    EnvGen.ar(Env.perc(level: 880)),
+    0,
+    0.3
+  );
 
-	snd = FreeVerb.ar(snd, 0.5, 0.8, 0);
-	snd = snd * env;
-	snd ! 2
+  snd = FreeVerb.ar(snd, 0.5, 0.8, 0);
+  snd = snd * env;
+  snd ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "EnvGen con Env.perc modula la frecuencia: el ataque va de 0 a 880 Hz y cae rápido → sonido percusivo tipo 'boing'",
+      "doneAction: Done.freeSelf libera el nodo del servidor al terminar la envolvente, evitando acumular synths silenciosos en memoria",
+    ],
     sound: {
       freq: 880,
       amp: 0.5,
@@ -366,19 +419,24 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: "Valor añadido a la salida" },
     ],
     example: `{
-	var snd, delay, buf;
+  var snd, delay, buf;
 
-	buf = Buffer.read(s, "/Users/me/Desktop/poing.mp3");
-	snd = PlayBuf.ar(1, buf, loop: 0);
-	delay = DelayN.ar(snd, 1.5, 1.5);
+  buf = Buffer.read(s, "/Users/me/Desktop/poing.mp3");
+  snd = PlayBuf.ar(1, buf, loop: 0);
+  delay = DelayN.ar(snd, 1.5, 1.5);
 
-	snd = snd + delay;
-	snd ! 2
+  snd = snd + delay;
+  snd ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "snd + delay mezcla la señal original con el eco: se escucha el sonido directo y su repetición 1.5 segundos después",
+      "maxdelaytime debe ser mayor o igual que delaytime; reserva el buffer de memoria necesario para el delay",
+    ],
     sound: { sample: "/dist/audio/poing.mp3", delay: true },
   },
 
-  // ── Envelopes ─────────────────────────────────────────────────────────────
+  // ── Envelopes --
   {
     name: "Env",
     category: "Envelopes",
@@ -391,15 +449,20 @@ export const UGENS: UGen[] = [
       { name: "curve", default: "\\lin", desc: "Forma de la envolvente" },
     ],
     example: `{
-	SinOsc.ar(440) * EnvGen.kr(
-		Env.new(
-			[0, 0.5, 0],
-			[3, 1],
-			\\lin
-		),
-		doneAction: Done.freeSelf
-	) ! 2
+  SinOsc.ar(440) * EnvGen.kr(
+    Env.new(
+      [0, 0.5, 0],
+      [3, 1],
+      \\lin
+    ),
+    doneAction: Done.freeSelf
+  ) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "levels tiene un elemento más que times: [0, 0.5, 0] con [3, 1] significa 'sube a 0.5 en 3 s, luego baja a 0 en 1 s'",
+      "Env solo define la forma; EnvGen es quien la reproduce y genera la señal de control",
+    ],
     sound: {
       freq: 440,
       amp: 0.5,
@@ -435,15 +498,20 @@ export const UGENS: UGen[] = [
       },
     ],
     example: `{
-	Saw.ar(220) * EnvGen.kr(
-		Env.new(
-			[0, 0.5, 0],
-			[0.5, 2],
-			\\lin
-		),
-		doneAction: Done.freeSelf
-	) ! 2
+  Saw.ar(220) * EnvGen.kr(
+    Env.new(
+      [0, 0.5, 0],
+      [0.5, 2],
+      \\lin
+    ),
+    doneAction: Done.freeSelf
+  ) ! 2
 }.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "doneAction: Done.freeSelf libera el nodo del servidor al terminar la envolvente, evitando acumular synths silenciosos en memoria",
+      "EnvGen corre a tasa de control (.kr) para modular la amplitud — más eficiente que .ar para este propósito",
+    ],
     sound: {
       freq: 220,
       amp: 0.5,
@@ -459,7 +527,7 @@ export const UGENS: UGen[] = [
     },
   },
 
-  // ── Spatial ───────────────────────────────────────────────────────────────
+  // ── Spatial --
   {
     name: "Pan2",
     category: "Spatial",
@@ -471,11 +539,15 @@ export const UGENS: UGen[] = [
       { name: "level", default: "1", desc: "Nivel de ganancia" },
     ],
     example: `{
-	Pan2.ar(
-		SinOsc.ar(440, 0, 0.3),
-		SinOsc.kr(0.5)
-	)
+  Pan2.ar(
+    SinOsc.ar(440, 0, 0.3),
+    SinOsc.kr(0.5)
+  )
 }.play`,
+    note: [
+      "Pan2 ya genera salida estéreo internamente (dos canales), por eso no necesita ! 2",
+      "SinOsc.kr(0.5) en 'pos' hace que el sonido barra de izquierda (-1) a derecha (1) cada 2 segundos",
+    ],
     sound: {
       freq: 440,
       amp: 0.3,

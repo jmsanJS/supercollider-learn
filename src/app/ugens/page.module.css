@@ -228,6 +228,22 @@
   overflow-x: auto;
 }
 
+.ud_notes {
+  margin-bottom: 16px;
+}
+
+.note_item {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  line-height: 1.5;
+}
+
+.note_item:last-child {
+  border-bottom: none;
+}
+
 .ud_controls {
   display: flex;
   gap: 8px;

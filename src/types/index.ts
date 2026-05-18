@@ -14,6 +14,7 @@ export type AudioConfig = {
   filter?: FilterConfig;
   reverb?: ReverbConfig;
   delay?: boolean;
+  stereo?: boolean;
 };
 
 type NoiseColor = "white" | "pink" | "brown";

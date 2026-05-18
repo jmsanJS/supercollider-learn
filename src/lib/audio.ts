@@ -15,6 +15,12 @@ function buildSynth(audio: AudioConfig) {
   });
 }
 
+function getOutput(audio: AudioConfig): { out: Tone.ToneAudioNode; panner?: Tone.Panner } {
+  if (audio.stereo !== false) return { out: Tone.getDestination() };
+  const panner = new Tone.Panner(-1).toDestination();
+  return { out: panner, panner };
+}
+
 function builtFilter(filter?: FilterConfig) {
   return new Tone.Filter({
     type: filter!.type,
@@ -23,21 +29,23 @@ function builtFilter(filter?: FilterConfig) {
   })
 }
 
-export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise"> {
-  const noise = new Tone.Noise(audio.color).toDestination();
+export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise" | "panner"> {
+  const { out, panner } = getOutput(audio);
+  const noise = new Tone.Noise(audio.color).connect(out);
 
   noise.volume.value = Tone.gainToDb(audio.amp ?? 1);
   noise.start();
 
-  return { noise };
+  return { noise, panner };
 }
 
 export function createDTMF(
   audio: AudioConfig,
-): Pick<AudioRefs, "synth" | "synth2"> {
+): Pick<AudioRefs, "synth" | "synth2" | "panner"> {
   const [f1, f2] = audio.freqs ?? [770, 1336];
+  const { out, panner } = getOutput(audio);
 
-  const gain = new Tone.Gain(audio.amp ?? 1).toDestination();
+  const gain = new Tone.Gain(audio.amp ?? 1).connect(out);
 
   const s1 = new Tone.Oscillator(f1, "sine").connect(gain);
   const s2 = new Tone.Oscillator(f2, "sine").connect(gain);
@@ -45,19 +53,20 @@ export function createDTMF(
   s1.start();
   s2.start();
 
-  return { synth: s1, synth2: s2 };
+  return { synth: s1, synth2: s2, panner };
 }
 
 export function createLFOSynth(
   audio: AudioConfig,
-): Pick<AudioRefs, "synth" | "lfo"> {
+): Pick<AudioRefs, "synth" | "lfo" | "panner"> {
   const freq = audio.freq ?? 440;
   const rate = audio.lfo!.rate;
   const depth = audio.lfo!.depth;
   const shape = audio.lfo!.shape ?? "sine";
   const target = audio.lfo!.target ?? "frequency";
 
-  const amp = new Tone.Gain(audio.amp ?? 1).toDestination();
+  const { out, panner } = getOutput(audio);
+  const amp = new Tone.Gain(audio.amp ?? 1).connect(out);
 
   const synth = buildSynth(audio);
   synth.connect(amp);
@@ -86,12 +95,13 @@ export function createLFOSynth(
 
   synth.triggerAttack(freq);
 
-  return { synth, lfo };
+  return { synth, lfo, panner };
 }
 
-export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
+export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth" | "panner"> {
+  const { out, panner } = getOutput(audio);
   const synth = buildSynth(audio);
-  synth.toDestination();
+  synth.connect(out);
 
   const timeInSecs =
     (audio.env?.attack ?? 0) +
@@ -101,16 +111,17 @@ export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
 
   synth.triggerAttackRelease(audio.freq ?? 440, timeInSecs);
 
-  return { synth };
+  return { synth, panner };
 }
 
-export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth"> {
+export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth" | "panner"> {
+  const { out, panner } = getOutput(audio);
   const synth = buildSynth(audio);
-  synth.toDestination();
+  synth.connect(out);
 
   synth.triggerAttack(audio.freq ?? 440);
 
-  return { synth };
+  return { synth, panner };
 }
 
 export function createPanner(
@@ -136,38 +147,40 @@ export function createPanner(
 
 export function createFilteredSynth(
   audio: AudioConfig,
-): Pick<AudioRefs, "synth" | "filter"> {
-  const filter = builtFilter(audio.filter)
-  filter.toDestination();
+): Pick<AudioRefs, "synth" | "filter" | "panner"> {
+  const { out, panner } = getOutput(audio);
+  const filter = builtFilter(audio.filter);
+  filter.connect(out);
 
   const synth = buildSynth(audio);
   synth.connect(filter);
   synth.triggerAttack(audio.freq ?? 220);
 
-  return { synth, filter };
+  return { synth, filter, panner };
 }
 
 export function createFilteredNoise(
   audio: AudioConfig,
-): Pick<AudioRefs, "noise" | "filter"> {
-  const filter = builtFilter(audio.filter)
-  filter.toDestination();
+): Pick<AudioRefs, "noise" | "filter" | "panner"> {
+  const { out, panner } = getOutput(audio);
+  const filter = builtFilter(audio.filter);
+  filter.connect(out);
 
   const noise = new Tone.Noise(audio.color ?? "white").connect(filter);
   noise.volume.value = Tone.gainToDb(audio.amp ?? 1);
   noise.start();
 
-  return { noise, filter };
+  return { noise, filter, panner };
 }
 
 export function createReverbSynth(
   audio: AudioConfig,
-): Pick<AudioRefs, "synth" | "reverb"> {
+): Pick<AudioRefs, "synth" | "reverb" | "panner"> {
+  const { out, panner } = getOutput(audio);
   const reverb = new Tone.Reverb({
     decay: (audio.reverb?.room ?? 0.5) * 6,
     wet: audio.reverb?.mix ?? 0.5,
-    // no damp arg in Tone
-  }).toDestination();
+  }).connect(out);
 
   // Env.linen -> attackTime + sustainTime + releaseTime
   const synth = buildSynth(audio);
@@ -182,18 +195,19 @@ export function createReverbSynth(
 
   synth.triggerAttackRelease(audio.freq ?? 440, now);
 
-  return { synth, reverb };
+  return { synth, reverb, panner };
 }
 
 export function createDelay(
   audio: AudioConfig,
-): Pick<AudioRefs, "sample" | "delay"> {
-  const delay = new Tone.Delay(1.5).toDestination();
-  const sample = new Tone.Player(audio.sample).toDestination();
+): Pick<AudioRefs, "sample" | "delay" | "panner"> {
+  const { out, panner } = getOutput(audio);
+  const delay = new Tone.Delay(1.5).connect(out);
+  const sample = new Tone.Player(audio.sample).connect(out);
 
   Tone.loaded().then(() => sample.start());
 
   sample.connect(delay);
 
-  return { sample, delay };
+  return { sample, delay, panner };
 }

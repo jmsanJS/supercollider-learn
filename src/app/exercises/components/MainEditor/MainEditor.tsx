@@ -88,8 +88,9 @@ export default function MainEditor() {
     const canPlayCode = scValidation.ok;
 
     if (canPlayCode) {
+      const stereo = /!\s*2/.test(code);
       const audioConfig = result.ok ? result.audio : parseSCCode(code);
-      play(audioConfig);
+      play({ ...audioConfig, stereo });
       setPlayingId(activeId);
     } else {
       setPlayingId(null);

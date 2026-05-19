@@ -10,7 +10,7 @@ import {
 } from "@/lib/glossary";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 
-const CATEGORIES: { id: GlossaryCategory; label: string; }[] = [
+const CATEGORIES: { id: GlossaryCategory; label: string }[] = [
   { id: "all", label: "Todos" },
   { id: "programming", label: "Programación" },
   { id: "audio", label: "Audio" },
@@ -21,9 +21,16 @@ const CATEGORIES: { id: GlossaryCategory; label: string; }[] = [
 export default function GlossaryClient() {
   const [activeCategory, setActiveCategory] = useState<GlossaryCategory>("all");
   const [activeTerm, setActiveTerm] = useState<GlossaryTerm | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const shouldScroll = useRef(false);
 
   const terms = getTermsByCategory(activeCategory);
+  const filteredTerms = searchQuery.trim()
+    ? terms.filter((t) => {
+        const q = searchQuery.toLowerCase();
+        return t.term.toLowerCase().includes(q);
+      })
+    : terms;
   const totals = getTotalByCategory();
 
   useEffect(() => {
@@ -39,6 +46,7 @@ export default function GlossaryClient() {
 
   const handleRelatedClick = (related: GlossaryTerm) => {
     shouldScroll.current = true;
+    setSearchQuery("");
     setActiveTerm(related);
     if (related.category !== activeCategory && activeCategory !== "all") {
       setActiveCategory("all");
@@ -48,7 +56,6 @@ export default function GlossaryClient() {
   return (
     <section className={styles.section_wrap} aria-label="Glosario">
       <div className={styles.glossary_layout}>
-
         <aside className={styles.sidebar}>
           <div className={styles.sidebar_header}>
             <span className={styles.section_label}>Categorías</span>
@@ -62,6 +69,7 @@ export default function GlossaryClient() {
                     onClick={() => {
                       setActiveCategory(cat.id);
                       setActiveTerm(null);
+                      setSearchQuery("");
                     }}
                     aria-current={activeCategory === cat.id}
                   >
@@ -77,9 +85,28 @@ export default function GlossaryClient() {
         <div className={styles.main}>
           <TerminalHeader title="glossary" desc="Términos y conceptos" />
 
+          <div className={styles.search_wrap}>
+            <input
+              className={styles.search_input}
+              type="search"
+              placeholder="Buscar término o definición…"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setActiveTerm(null);
+              }}
+              aria-label="Buscar en el glosario"
+            />
+          </div>
+
           <div className={styles.terms_wrap}>
             <ul className={styles.terms_list} aria-label="Lista de términos">
-              {terms.map((term) => (
+              {filteredTerms.length === 0 && (
+                <li className={styles.no_results}>
+                  Sin resultados para &quot;{searchQuery}&quot;
+                </li>
+              )}
+              {filteredTerms.map((term) => (
                 <li key={term.id} id={`term-${term.id}`}>
                   <button
                     className={`${styles.term_item} ${activeTerm?.id === term.id ? styles.active : ""}`}

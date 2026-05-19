@@ -6,18 +6,26 @@
 
 .ex_goal_bar {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 12px;
   padding: 10px 16px;
   background: var(--accent-dim);
   border-bottom: 1px solid var(--border-subtle);
-  font-size: 0.74rem;
-  color: var(--text-secondary);
 }
 
-.goal_sym {
+.goal_label {
+  font-size: 0.6rem;
   color: var(--accent);
-  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.goal_text {
+  font-size: 0.74rem;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 .ex_body {

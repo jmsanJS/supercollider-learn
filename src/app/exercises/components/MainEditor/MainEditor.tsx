@@ -146,7 +146,7 @@ export default function MainEditor() {
 
       <div className={styles.ex_main}>
         <p className={styles.ex_goal_bar}>
-          <span className={styles.goal_sym}>⊙</span>
+          <span className={styles.goal_label}>Ejercicio:</span>
           <span className={styles.goal_text}>{exercise?.goal}</span>
         </p>
 

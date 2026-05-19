@@ -21,15 +21,17 @@ El bloque { }.play envía el audio a los altavoces.
 
 Si tienes alguna duda de cómo funcionan los UGens, puedes consultar la pestaña de UGens comunes para revisar la sintaxis e incluso escuchar el sonido que producen.
 `,
-    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Aquí va tu código\n\n}.play`,
+    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Aquí va tu código\n  \n}.play`,
     answer: `// Genera un tono puro de 440 Hz\n{\n  SinOsc.ar(440, 0, 0.3) ! 2\n}.play`,
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
       const hasCorrectCall = /SinOsc\.ar\s*\(\s*440\s*,\s*0\s*,\s*0\.3\s*\)/.test(code);
+      const hasAllArgs = /SinOsc\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
       const ok = hasCorrectCall;
       const tips = [];
       if (!hasSinOsc) tips.push("El UGen para tonos puros se llama SinOsc. Escríbelo dentro del bloque { }.");
-      if (hasSinOsc && !hasCorrectCall) tips.push("SinOsc.ar necesita tres argumentos: la frecuencia (en Hz), la fase (empieza en 0) y el volumen (entre 0.0 y 1.0).");;
+      else if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else if (!ok) tips.push("SinOsc.ar necesita tres argumentos: la frecuencia (en Hz), la fase (empieza en 0) y el volumen (entre 0.0 y 1.0).");
       const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 440;
       return { ok, tips, audio: { freq, amp: 0.3, type: "sine" } };
@@ -56,10 +58,14 @@ Es la relación matemática fundamental de la música occidental.
       const freq = m ? parseFloat(m[1]) : 0;
       const ampMatch = code.match(/SinOsc\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*(\d+(?:\.\d+)?)/);
       const amp = ampMatch ? parseFloat(ampMatch[1]) : 0;
+      const hasAllArgs = /SinOsc\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
       const ok = freq === 880 && amp === 0.5;
       const tips = [];
-      if (freq !== 880) tips.push("Duplicar la frecuencia sube una octava. El primer argumento de SinOsc.ar es la frecuencia en Hz.");
-      if (amp !== 0.5) tips.push("Modifica la amplitud. El tercer argumento de SinOsc.ar (mul).");
+      if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else if (!ok) {
+        if (freq !== 880) tips.push("Duplicar la frecuencia sube una octava. El primer argumento de SinOsc.ar es la frecuencia en Hz.");
+        if (amp !== 0.5) tips.push("Modifica la amplitud. El tercer argumento de SinOsc.ar (mul).");
+      }
       return { ok, tips, audio: { freq, amp, type: "sine" } };
     },
   },
@@ -79,15 +85,17 @@ Sintaxis:
   width → ancho del pulso. Determina la forma de la onda. 0.5 produce una onda cuadrada perfecta (simétrica). Valores distintos de 0.5 crean asimetría y cambian el timbre.
 
   mul   → amplitud (o volumen). Usa un valor bajo como 0.2.`,
-    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n\n}.play`,
+    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n  \n}.play`,
     answer: `// Onda cuadrada a 220 Hz\n{\n  Pulse.ar(220, 0.5, 0.2) ! 2\n}.play`,
     validate(code) {
       const hasPulse = /Pulse\.ar/.test(code);
       const hasFreq220 = /Pulse\.ar\s*\(\s*220\s*,\s*0\.5/.test(code);
+      const hasAllArgs = /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+/.test(code);
       const ok = hasPulse && hasFreq220;
       const tips = [];
       if (!hasPulse) tips.push("Usa Pulse.ar(...) — es el UGen para ondas cuadradas y rectangulares.");
-      if (hasPulse && !hasFreq220) tips.push("Pulse.ar necesita: la frecuencia en Hz y el ancho del pulso (0.5 para onda cuadrada perfecta).");
+      else if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else if (!ok) tips.push("Pulse.ar necesita: la frecuencia en Hz y el ancho del pulso (0.5 para onda cuadrada perfecta).");
       const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 220;
       return { ok, tips, audio: { freq, amp: 0.2, type: "square" } };
@@ -114,15 +122,17 @@ Sintaxis:
   • Efectos de viento, agua, lluvia
   • Capas de textura
   • Síntesis de percusión`,
-    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n\n}.play`,
+    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n  \n}.play`,
     answer: `// Ruido blanco suave\n{\n  WhiteNoise.ar(0.1) ! 2\n}.play`,
     validate(code) {
       const hasWhiteNoise = /WhiteNoise/.test(code);
       const hasCorrectCall = /WhiteNoise\.ar\s*\(\s*0\.1\s*\)/.test(code);
+      const hasAnyArg = /WhiteNoise\.ar\s*\(\s*[\d.]+\s*\)/.test(code);
       const ok = hasWhiteNoise && hasCorrectCall;
       const tips = [];
       if (!hasWhiteNoise) tips.push("Usa el UGen que genera ruido con energía en todas las frecuencias.");
-      if (hasWhiteNoise && !hasCorrectCall) tips.push("WhiteNoise.ar solo necesita un argumento: el volumen (mul). Usa un valor bajo para no saturar.");
+      else if (hasAnyArg && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else if (!ok) tips.push("WhiteNoise.ar solo necesita un argumento: el volumen (mul). Usa un valor bajo para no saturar.");
       return { ok, tips, audio: { type: "noise", color: "white", amp: 0.1 } };
     },
   },
@@ -131,14 +141,14 @@ Sintaxis:
     level: 2,
     title: "Sirena de ambulancia",
     tag: "LFSaw",
-    goal: "Sirena de ambulancia: frecuencia que oscila entre 400 y 800 Hz a 2 veces por segundo, amplitud 0.4",
+    goal: "Frecuencia que oscila entre 400 y 800 Hz a 2 veces por segundo, amplitud 0.4",
     theory: `Para crear una sirena, necesitas que la frecuencia de SinOsc cambie sola con el tiempo. Esto se llama modulación de frecuencia.
 
 LFSaw es un oscilador lento (LFO) que genera una rampa ascendente que va de -1 a +1 de forma cíclica.
 
 Si multiplicas esa rampa por un rango y le sumas una frecuencia central, obtienes un barrido de frecuencias:
 
-  LFSaw.ar(velocidad) * rango + centro
+  LFSaw.ar(frecuencia) * rango + centro
 
   frecuencia → cuántas veces por segundo oscila (ej: 2 = dos veces/seg)
   rango      → cuántos Hz sube y baja respecto al centro
@@ -154,13 +164,17 @@ Coloca esa expresión como primer argumento de SinOsc.ar:
       const hasRate2 = /LFSaw\.ar\s*\(\s*2\s*\)/.test(code);
       const hasDepth200 = /200/.test(code);
       const hasCenter600 = /600/.test(code);
+      const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
       const ok = hasSinOsc && hasLFSaw && hasRate2 && hasDepth200 && hasCenter600;
       const tips = [];
       if (!hasSinOsc) tips.push("Necesitas SinOsc.ar como oscilador principal. El primer argumento es la frecuencia.");
-      if (!hasLFSaw) tips.push("Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia cambie sola.");
-      if (hasLFSaw && !hasRate2) tips.push("El primer argumento de LFSaw.ar es la velocidad de oscilación (cuántas veces por segundo).");
-      if (!hasDepth200) tips.push("Multiplica LFSaw.ar por el rango de frecuencias que quieres barrer.");
-      if (!hasCenter600) tips.push("Suma la frecuencia central al resultado de LFSaw para determinar alrededor de qué nota oscila.");
+      else if (!hasLFSaw) tips.push("Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia cambie sola.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasLFSaw && !hasRate2) tips.push("El primer argumento de LFSaw.ar es la velocidad de oscilación (cuántas veces por segundo).");
+        if (!hasDepth200) tips.push("Multiplica LFSaw.ar por el rango de frecuencias que quieres barrer.");
+        if (!hasCenter600) tips.push("Suma la frecuencia central al resultado de LFSaw para determinar alrededor de qué nota oscila.");
+      }
       const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const rate = m ? parseFloat(m[1]) : 2;
       return {
@@ -175,30 +189,33 @@ Coloca esa expresión como primer argumento de SinOsc.ar:
     level: 3,
     title: "Teclas de teléfono",
     tag: "DTMF",
-    goal: "Teclas de teléfono: mezcla dos tonos a 770 Hz y 1336 Hz con amplitud 0.2",
+    goal: "Mezcla dos tonos a 770 Hz y 1336 Hz con amplitud 0.2",
     theory: `Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).
-Cada tecla es la SUMA de dos frecuencias distintas:
+Cada tecla es la suma de dos frecuencias distintas:
 
      1209  1336  1477
-770:  4     5     6
+770:  4     5     6   ← teclas
 852:  7     8     9
 
 Tecla 5 = 770 Hz + 1336 Hz
 
 En SuperCollider, sumar dos UGens mezcla sus señales:
-  (SinOsc.ar(f1) + SinOsc.ar(f2)) * amplitud
+  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitud
 
-Los paréntesis son importantes para que la multiplicación
-de amplitud se aplique a la señal combinada.`,
-    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  (\n    UGEN(FRECUENCIA) +\n    UGEN(FRECUENCIA)\n  ) * AMPLITUD ! 2\n}.play`,
+Los paréntesis son importantes para que la multiplicación de amplitud se aplique a la señal combinada.`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  (\n    UGEN.ar(FRECUENCIA) +\n    UGEN.ar(FRECUENCIA)\n  ) * AMPLITUD ! 2\n}.play`,
     answer: `// Tecla 5 del teléfono: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
     validate(code) {
       const has770 = /SinOsc\.ar\s*\(\s*770\s*\)/.test(code);
       const has1336 = /SinOsc\.ar\s*\(\s*1336\s*\)/.test(code);
+      const hasTwoSinOscCalls = (code.match(/SinOsc\.ar\s*\(\s*[\d.]+\s*\)/g) ?? []).length >= 2;
       const ok = has770 && has1336;
       const tips = [];
-      if (!has770) tips.push("Falta uno de los dos SinOsc. Busca la frecuencia de fila de la tecla 5 en la tabla de la teoría.");
-      if (!has1336) tips.push("Falta el otro SinOsc. Busca la frecuencia de columna de la tecla 5 en la tabla de la teoría.");
+      if (hasTwoSinOscCalls && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (!has770) tips.push("Falta uno de los dos SinOsc. Busca la frecuencia de fila de la tecla 5 en la tabla de la teoría.");
+        if (!has1336) tips.push("Falta el otro SinOsc. Busca la frecuencia de columna de la tecla 5 en la tabla de la teoría.");
+      }
       return {
         ok,
         tips,
@@ -211,7 +228,7 @@ de amplitud se aplique a la señal combinada.`,
     level: 2,
     title: "Sirena de policía",
     tag: "SinOsc",
-    goal: "Sirena de policía: alterna entre 600 y 800 Hz una vez por segundo, amplitud 0.4",
+    goal: "Alterna entre 600 y 800 Hz una vez por segundo, amplitud 0.4",
     theory: `En algunos países, las sirenas de policía alternan entre dos tonos fijos,
  es decir, no hacen un barrido suave como la ambulancia, sino que saltan.
 
@@ -221,8 +238,8 @@ Si escalas ese 0/1 obtienes dos valores de frecuencia distintos:
   LFPulse.ar(frecuencia) * diferencia + base
 
   frecuencia  → cuántas veces por segundo alterna (ej: 1 = una vez/seg)
-  diferencia → cuántos Hz de diferencia hay entre los dos tonos
-  base       → la frecuencia más baja de las dos
+  diferencia  → cuántos Hz de diferencia hay entre los dos tonos
+  base        → la frecuencia más baja de las dos
 
 Cuando LFPulse vale 0: la frecuencia es (0 * diferencia + base) = base
 Cuando LFPulse vale 1: la frecuencia es (1 * diferencia + base) = base + diferencia
@@ -236,13 +253,17 @@ Utiliza esto como primer argumento de SinOsc.ar.`,
       const hasRate1 = /LFPulse\.ar\s*\(\s*1\s*\)/.test(code);
       const hasRange200 = /200/.test(code);
       const hasBase600 = /600/.test(code);
+      const hasStructure = hasSinOsc && hasLFPulse && /LFPulse\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
       const ok = hasSinOsc && hasLFPulse && hasRate1 && hasRange200 && hasBase600;
       const tips = [];
       if (!hasSinOsc) tips.push("Necesitas SinOsc.ar como oscilador principal.");
-      if (!hasLFPulse) tips.push("Usa LFPulse.ar dentro del primer argumento de SinOsc — genera 0 o 1 para alternar entre dos frecuencias.");
-      if (hasLFPulse && !hasRate1) tips.push("El primer argumento de LFPulse.ar es la velocidad de alternancia (veces por segundo).");
-      if (!hasRange200) tips.push("La diferencia entre 800 Hz y 600 Hz es el rango que debes multiplicar por LFPulse.");
-      if (!hasBase600) tips.push("La frecuencia más baja (base) se suma al resultado de LFPulse * diferencia.");
+      else if (!hasLFPulse) tips.push("Usa LFPulse.ar dentro del primer argumento de SinOsc — genera 0 o 1 para alternar entre dos frecuencias.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasLFPulse && !hasRate1) tips.push("El primer argumento de LFPulse.ar es la velocidad de alternancia (veces por segundo).");
+        if (!hasRange200) tips.push("La diferencia entre 800 Hz y 600 Hz es el rango que debes multiplicar por LFPulse.");
+        if (!hasBase600) tips.push("La frecuencia más baja (base) se suma al resultado de LFPulse * diferencia.");
+      }
       const m = code.match(/LFPulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const rate = m ? parseFloat(m[1]) : 1;
       return {
@@ -256,7 +277,7 @@ Utiliza esto como primer argumento de SinOsc.ar.`,
     level: 2,
     title: "Alarma de coche",
     tag: "SinOsc",
-    goal: "Alarma de coche: barrido descendente entre 700 y 900 Hz, 2 veces por segundo, amplitud 0.4",
+    goal: "Barrido descendente entre 700 y 900 Hz, 2 veces por segundo, amplitud 0.4",
     theory: `Las alarmas de coche suelen usar un barrido descendente rápido
 que se repite en bucle. Empieza agudo y cae.
 
@@ -265,8 +286,8 @@ Si usas iphase: 1 inviertes la dirección: baja de +1 a -1.
 
   LFSaw.ar(frq, iphase, mul, add) // Utiliza solo frea e iphase para este ejercicio 
 
-  freq    → las veces por segundo que se repite el barrido.
-  iphase  → fase inicial. Con 1 la rampa es descendente.
+  freq   → las veces por segundo que se repite el barrido.
+  iphase → fase inicial. Con 1 la rampa es descendente.
 
 Para que el barrido sea descendente en frecuencia, la
 diferencia de Hz que multiplicas debe ser negativa:
@@ -283,12 +304,19 @@ diferencia de Hz que multiplicas debe ser negativa:
       const hasLFSawWithIphase = /LFSaw\.ar\s*\(\s*2\s*,\s*1\s*\)/.test(code);
       const hasNeg200 = /\(\s*-\s*200\s*\)|\*\s*-\s*200\b/.test(code);
       const hasBase900 = /900/.test(code);
+      const hasStructure = hasSinOsc && hasLFSaw &&
+        /LFSaw\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        /\(\s*-\s*[\d.]+\s*\)|\*\s*-\s*[\d.]+/.test(code) &&
+        /\+\s*[\d.]+/.test(code);
       const ok = hasSinOsc && hasLFSaw && hasLFSawWithIphase && hasNeg200 && hasBase900;
       const tips = [];
       if (!hasLFSaw) tips.push("Usa LFSaw.ar dentro del primer argumento de SinOsc para barrer la frecuencia.");
-      if (hasLFSaw && !hasLFSawWithIphase) tips.push("LFSaw.ar tiene un segundo argumento llamado iphase. Cambiarlo a 1 invierte la dirección de la rampa.");
-      if (!hasNeg200) tips.push("Para que el barrido sea descendente, el rango de Hz que multiplicas debe ser negativo: * (-rango).");
-      if (!hasBase900) tips.push("La frecuencia central (centro) se suma al final y determina el punto de partida del barrido.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasLFSaw && !hasLFSawWithIphase) tips.push("LFSaw.ar tiene un segundo argumento llamado iphase. Cambiarlo a 1 invierte la dirección de la rampa.");
+        if (!hasNeg200) tips.push("Para que el barrido sea descendente, el rango de Hz que multiplicas debe ser negativo: * (-rango).");
+        if (!hasBase900) tips.push("La frecuencia central (centro) se suma al final y determina el punto de partida del barrido.");
+      }
       const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const rate = m ? parseFloat(m[1]) : 2;
       return {
@@ -302,36 +330,39 @@ diferencia de Hz que multiplicas debe ser negativa:
     level: 3,
     title: "Alarma de incendio",
     tag: "Pulse",
-    goal: "Alarma de incendio: pulsos agudos a 3200 Hz intermitentes a 2 veces por segundo, amplitud 0.3",
+    goal: "Pulsos agudos a 3200 Hz intermitentes a 2 veces por segundo, amplitud 0.3",
     theory: `Las alarmas de incendio emiten pulsos cortos y penetrantes.
 Se consigue con dos capas:
 
   1. Pulse.ar genera la onda aguda y continua.
-  2. LFPulse.ar actúa como interruptor (0 o 1) que enciende
-     y apaga esa onda a una velocidad lenta.
+  2. LFPulse.ar actúa como interruptor (0 o 1) que enciende y apaga esa onda a una velocidad lenta.
 
 Al multiplicar ambos:
-  Pulse.ar(frecuencia, ancho) * LFPulse.ar(velocidad)
+  Pulse.ar(frecuencia, ancho) * LFPulse.ar(frecuencia)
 
   frecuencia → qué tan agudo es el tono del pitido (en Hz)
   ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
-  velocidad  → cuántas veces por segundo parpadea la alarma
+  frecuencia (LFPulse) → cuántas veces por segundo parpadea la alarma
 
-La multiplicación hace que LFPulse "encienda" y "apague"
-el oscilador Pulse de forma rítmica.`,
-    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN * UGEN * AMPLITUD ! 2\n}.play`,
+La multiplicación hace que LFPulse "encienda" y "apague" el oscilador Pulse de forma rítmica.`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(FRECUENCIA, ANCHO) * \n  UGEN.ar(FRECUENCIA) * AMPLITUD ! 2\n}.play`,
     answer: `// Alarma de incendio: pulsos agudos\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
     validate(code) {
       const hasPulseAr = /Pulse\.ar/.test(code);
       const hasFreq3200 = /Pulse\.ar\s*\(\s*3200\b/.test(code);
       const hasLFPulse = /LFPulse/.test(code);
       const hasLFPulseRate2 = /LFPulse\.ar\s*\(\s*2\s*\)/.test(code);
+      const hasStructure = hasPulseAr && /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasLFPulse && /LFPulse\.ar\s*\(\s*[\d.]+\s*\)/.test(code);
       const ok = hasPulseAr && hasFreq3200 && hasLFPulse && hasLFPulseRate2;
       const tips = [];
       if (!hasPulseAr) tips.push("Usa Pulse.ar como oscilador principal para generar la onda cuadrada aguda.");
-      if (hasPulseAr && !hasFreq3200) tips.push("El primer argumento de Pulse.ar es la frecuencia del tono. Las alarmas de incendio son muy agudas.");
-      if (!hasLFPulse) tips.push("Usa LFPulse.ar y multiplícalo por Pulse.ar para crear la intermitencia rítmica.");
-      if (hasLFPulse && !hasLFPulseRate2) tips.push("El primer argumento de LFPulse.ar es la velocidad de parpadeo (veces por segundo).");
+      else if (!hasLFPulse) tips.push("Usa LFPulse.ar y multiplícalo por Pulse.ar para crear la intermitencia rítmica.");
+      else if (hasStructure && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasPulseAr && !hasFreq3200) tips.push("El primer argumento de Pulse.ar es la frecuencia del tono. Las alarmas de incendio son muy agudas.");
+        if (hasLFPulse && !hasLFPulseRate2) tips.push("El primer argumento de LFPulse.ar es la velocidad de parpadeo (veces por segundo).");
+      }
       const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 3200;
       const m2 = code.match(/LFPulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
@@ -347,7 +378,7 @@ el oscilador Pulse de forma rítmica.`,
     level: 2,
     title: "Pitido de microondas",
     tag: "EnvGen",
-    goal: "Pitido de microondas: tono a 1000 Hz con ataque 0.01s y caída 0.1s",
+    goal: "Tono a 1000 Hz con ataque 0.01s y caída 0.1s",
     theory: `Los electrodomésticos usan pitidos cortos con envolvente percusiva.
 En lugar de un tono continuo, el sonido sube y baja en amplitud rápidamente.
 
@@ -371,12 +402,17 @@ doneAction: Done.freeSelf libera el synth cuando termina la envolvente.`,
       const hasEnvGen = /EnvGen/.test(code);
       const hasEnvPerc = /Env\.perc/.test(code);
       const hasPercValues = /Env\.perc\s*\(\s*0\.01\s*,\s*0\.1\s*\)/.test(code);
+      const hasStructure = hasSinOsc && /SinOsc\.ar\s*\(\s*[\d.]+\s*\)/.test(code) &&
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
       const ok = hasSinOsc && hasFreq1000 && hasEnvGen && hasEnvPerc && hasPercValues;
       const tips = [];
       if (!hasEnvGen) tips.push("Usa EnvGen.kr y multiplícalo por SinOsc.ar para dar forma al volumen en el tiempo.");
-      if (!hasEnvPerc) tips.push("Usa Env.perc(ataque, caída) como envolvente dentro de EnvGen.kr.");
-      if (hasEnvPerc && !hasPercValues) tips.push("Env.perc necesita dos tiempos: el de ataque (subida) y el de caída, ambos en segundos.");
-      if (hasSinOsc && !hasFreq1000) tips.push("El primer argumento de SinOsc.ar es la frecuencia del pitido en Hz.");
+      else if (!hasEnvPerc) tips.push("Usa Env.perc(ataque, caída) como envolvente dentro de EnvGen.kr.");
+      else if (hasStructure && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasEnvPerc && !hasPercValues) tips.push("Env.perc necesita dos tiempos: el de ataque (subida) y el de caída, ambos en segundos.");
+        if (hasSinOsc && !hasFreq1000) tips.push("El primer argumento de SinOsc.ar es la frecuencia del pitido en Hz.");
+      }
       const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 1000;
       return {
@@ -393,16 +429,14 @@ doneAction: Done.freeSelf libera el synth cuando termina la envolvente.`,
     level: 2,
     title: "Temporizador de cocina",
     tag: "EnvGen",
-    goal: "Temporizador de cocina: tono a 880 Hz con ataque 0.05s y caída 0.3s",
+    goal: "Tono a 880 Hz con ataque 0.05s y caída 0.3s",
     theory: `Los temporizadores de cocina usan tonos con caída rápida.
 La envolvente define la "personalidad" del sonido:
 
   Env.perc(ataque, caída)
 
   ataque → tiempo que tarda en alcanzar el volumen máximo
-           Un ataque largo (0.05 s) da un inicio más suave.
   caída  → tiempo que tarda en apagarse
-           Una caída larga (0.3 s) deja que el sonido resuene.
 
 Compara con el ejercicio anterior (0.01/0.1):
   0.01 s ataque + 0.1 s caída = pitido seco (microondas)
@@ -417,12 +451,17 @@ Misma estructura: SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
       const hasEnvGen = /EnvGen/.test(code);
       const hasEnvPerc = /Env\.perc/.test(code);
       const hasPercValues = /Env\.perc\s*\(\s*0\.05\s*,\s*0\.3\s*\)/.test(code);
+      const hasStructure = hasSinOsc && /SinOsc\.ar\s*\(\s*[\d.]+\s*\)/.test(code) &&
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
       const ok = hasSinOsc && hasFreq880 && hasEnvGen && hasEnvPerc && hasPercValues;
       const tips = [];
       if (!hasEnvGen) tips.push("Usa EnvGen.kr multiplicado por SinOsc.ar para dar forma al volumen en el tiempo.");
-      if (!hasEnvPerc) tips.push("Usa Env.perc(ataque, caída) para definir cómo sube y baja el sonido.");
-      if (hasEnvPerc && !hasPercValues) tips.push("Los tiempos de ataque y caída del objetivo están en la descripción del ejercicio (en segundos).");
-      if (hasSinOsc && !hasFreq880) tips.push("El primer argumento de SinOsc.ar es la frecuencia en Hz. Busca cuál corresponde al objetivo.");
+      else if (!hasEnvPerc) tips.push("Usa Env.perc(ataque, caída) para definir cómo sube y baja el sonido.");
+      else if (hasStructure && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasEnvPerc && !hasPercValues) tips.push("Los tiempos de ataque y caída del objetivo están en la descripción del ejercicio (en segundos).");
+        if (hasSinOsc && !hasFreq880) tips.push("El primer argumento de SinOsc.ar es la frecuencia en Hz. Busca cuál corresponde al objetivo.");
+      }
       const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 880;
       const m2 = code.match(/Env\.perc\s*\(\s*[\d.]+\s*,\s*([\d.]+)/);
@@ -441,24 +480,22 @@ Misma estructura: SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
     level: 3,
     title: "Despertador digital",
     tag: "Pulse",
-    goal: "Despertador digital: onda cuadrada a 1200 Hz intermitente a 4 veces por segundo, amplitud 0.3",
+    goal: "Onda cuadrada a 1200 Hz intermitente a 4 veces por segundo, amplitud 0.3",
     theory: `Los despertadores digitales usan ondas cuadradas agudas
 con una intermitencia rítmica para captar la atención.
 
-La técnica es la misma que en la alarma de incendio:
-multiplica el oscilador por un LFPulse para la intermitencia:
+La técnica es la misma que en la alarma de incendio. Multiplica el oscilador por un LFPulse para la intermitencia:
 
-  Pulse.ar(frecuencia, ancho) * LFPulse.kr(velocidad) * amplitud
+  UGEN.ar(frecuencia, ancho) * LFPulse.kr(frecuencia) * amplitud
 
-  Nota: aquí usamos LFPulse.kr en lugar de .ar
-  .kr (control rate) es más eficiente para señales lentas
-  que no necesitan precisión de audio.
+  Nota: aquí usamos .kr en lugar de .ar
+  .kr (control rate) es más eficiente para señales lentas que no necesitan precisión de audio.
 
-  frecuencia            → el tono agudo del pitido (Hz)
-  ancho                 → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
-  frecuencia (LFPulse)  → cuántas veces por segundo parpadea (Hz)
-  amplitud              → volumen general`,
-    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN(FRECUENCIA, ANCHO) *\n  UGEN(FRECUENCIA) * AMPLITUD ! 2\n}.play`,
+  frecuencia → el tono agudo del pitido (Hz)
+  ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
+  frecuencia (LFPulse) → cuántas veces por segundo parpadea (Hz)
+  amplitud   → volumen general`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(FRECUENCIA, ANCHO) *\n  UGEN.kr(FRECUENCIA) * AMPLITUD ! 2\n}.play`,
     answer: `// Despertador digital\n{\n  Pulse.ar(1200, 0.5) * LFPulse.kr(4) * 0.3 ! 2\n}.play`,
     validate(code) {
       const hasPulseAr = /Pulse\.ar/.test(code);
@@ -466,13 +503,18 @@ multiplica el oscilador por un LFPulse para la intermitencia:
       const hasWidth05 = /Pulse\.ar\s*\(\s*1200\s*,\s*0\.5\s*\)/.test(code);
       const hasLFPulse = /LFPulse/.test(code);
       const hasRate4 = /LFPulse\.\w+\s*\(\s*4\s*\)/.test(code);
+      const hasStructure = hasPulseAr && /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasLFPulse && /LFPulse\.\w+\s*\(\s*[\d.]+\s*\)/.test(code);
       const ok = hasPulseAr && hasWidth05 && hasLFPulse && hasRate4;
       const tips = [];
       if (!hasPulseAr) tips.push("Usa Pulse.ar como oscilador principal para la onda cuadrada aguda.");
-      if (hasPulseAr && !hasFreq1200) tips.push("El primer argumento de Pulse.ar es la frecuencia del tono del despertador en Hz.");
-      if (hasPulseAr && hasFreq1200 && !hasWidth05) tips.push("El segundo argumento de Pulse.ar es el ancho del pulso. ¿Qué valor produce una onda cuadrada perfecta?");
-      if (!hasLFPulse) tips.push("Multiplica Pulse.ar por LFPulse.kr para crear el efecto de intermitencia rítmica.");
-      if (hasLFPulse && !hasRate4) tips.push("El primer argumento de LFPulse.kr es la velocidad de parpadeo en Hz.");
+      else if (!hasLFPulse) tips.push("Multiplica Pulse.ar por LFPulse.kr para crear el efecto de intermitencia rítmica.");
+      else if (hasStructure && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasPulseAr && !hasFreq1200) tips.push("El primer argumento de Pulse.ar es la frecuencia del tono del despertador en Hz.");
+        if (hasPulseAr && hasFreq1200 && !hasWidth05) tips.push("El segundo argumento de Pulse.ar es el ancho del pulso. ¿Qué valor produce una onda cuadrada perfecta?");
+        if (hasLFPulse && !hasRate4) tips.push("El primer argumento de LFPulse.kr es la velocidad de parpadeo en Hz.");
+      }
       const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const freq = m ? parseFloat(m[1]) : 1200;
       const m2 = code.match(/LFPulse\.\w+\s*\(\s*(\d+(?:\.\d+)?)/);
@@ -488,7 +530,7 @@ multiplica el oscilador por un LFPulse para la intermitencia:
     level: 3,
     title: "Señal de evacuación",
     tag: "SinOsc",
-    goal: "Señal de evacuación: barrido ascendente de 300 a 1200 Hz, una vez cada 2 segundos, amplitud 0.4",
+    goal: "Barrido ascendente de 300 a 1200 Hz, una vez cada 2 segundos, amplitud 0.4",
     theory: `Las señales de evacuación (WHOOP) usan un barrido ascendente
 lento que se repite, diseñado para ser inconfundible.
 
@@ -497,19 +539,17 @@ Para convertirlos en un rango de frecuencias útil:
 
   LFSaw.ar(frecuencia) * mitad_del_rango + centro
 
-  frecuencia       → cuántas veces por segundo se repite (Hz)
-  mitad_del_rango  → la mitad de la diferencia entre la frecuencia
-                     máxima y la mínima
-  centro           → el punto medio entre la frecuencia más alta y
-                     la más baja
+  frecuencia  → cuántas veces por segundo se repite (Hz)
+  mitad_rango → la mitad de la diferencia entre la frecuencia máxima y la mínima
+  centro      → el punto medio entre la frecuencia más alta y la más baja
 
 Ejemplo de cálculo:
-  mínimo          = 300 Hz, máximo = 1200 Hz
-  centro          = (300 + 1200) / 2 = 750
-  mitad_del_rango = (1200 - 300) / 2 = 450
+  mínimo      = 300 Hz, máximo   = 1200 Hz
+  centro      = (300 + 1200) / 2 = 750
+  mitad_rango = (1200 - 300) / 2 = 450
 
   → LFSaw.ar(vel) * 450 + 750 oscila entre 300 y 1200 Hz`,
-    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN(\n    UGEN(FRECUENCIA) * MITAD_RANGO + CENTRO,\n    FASE,\n    AMPLITUD\n  ) ! 2\n}.play`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.ar(FRECUENCIA) * MITAD_RANGO + CENTRO,\n    FASE,\n    AMPLITUD\n  ) ! 2\n}.play`,
     answer: `// Señal de evacuación: barrido ascendente\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  ) ! 2\n}.play`,
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
@@ -517,13 +557,17 @@ Ejemplo de cálculo:
       const hasRate05 = /LFSaw\.ar\s*\(\s*0\.5\s*\)/.test(code);
       const hasDepth450 = /450/.test(code);
       const hasCenter750 = /750/.test(code);
+      const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
       const ok = hasSinOsc && hasLFSaw && hasRate05 && hasDepth450 && hasCenter750;
       const tips = [];
       if (!hasSinOsc) tips.push("Usa SinOsc.ar como oscilador principal. El primer argumento será la expresión de frecuencia.");
-      if (!hasLFSaw) tips.push("Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia suba de forma cíclica.");
-      if (hasLFSaw && !hasRate05) tips.push("El primer argumento de LFSaw.ar es la velocidad del barrido. Una sirena de evacuación es lenta.");
-      if (!hasDepth450) tips.push("Multiplica LFSaw por la mitad del rango de frecuencias. Calcula: (máximo - mínimo) / 2.");
-      if (!hasCenter750) tips.push("Suma la frecuencia central. Calcula: (máximo + mínimo) / 2.");
+      else if (!hasLFSaw) tips.push("Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia suba de forma cíclica.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (hasLFSaw && !hasRate05) tips.push("El primer argumento de LFSaw.ar es la velocidad del barrido. Una sirena de evacuación es lenta.");
+        if (!hasDepth450) tips.push("Multiplica LFSaw por la mitad del rango de frecuencias. Calcula: (máximo - mínimo) / 2.");
+        if (!hasCenter750) tips.push("Suma la frecuencia central. Calcula: (máximo + mínimo) / 2.");
+      }
       const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
       const rate = m ? parseFloat(m[1]) : 0.5;
       return {

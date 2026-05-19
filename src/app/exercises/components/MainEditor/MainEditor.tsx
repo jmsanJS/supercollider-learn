@@ -29,6 +29,13 @@ export default function MainEditor() {
   const [showAnswerModal, setShowAnswerModal] = useState<boolean>(false);
 
   const textarea = useRef<HTMLTextAreaElement>(null);
+  const hlLayer = useRef<HTMLDivElement>(null);
+
+  const syncScroll = () => {
+    if (!textarea.current || !hlLayer.current) return;
+    hlLayer.current.scrollTop = textarea.current.scrollTop;
+    hlLayer.current.scrollLeft = textarea.current.scrollLeft;
+  };
 
   useEffect(() => {
     stop();
@@ -160,6 +167,7 @@ export default function MainEditor() {
               <div className={styles.editor_inner}>
                 <CopyToClipboard scCode={code} />
                 <div
+                  ref={hlLayer}
                   className={styles.hl_layer}
                   dangerouslySetInnerHTML={{ __html: highlight(code) }}
                 />
@@ -169,6 +177,7 @@ export default function MainEditor() {
                   value={code}
                   onChange={(e) => onChange(e.target.value)}
                   onKeyDown={handleTabPress}
+                  onScroll={syncScroll}
                   spellCheck={false}
                 />
               </div>

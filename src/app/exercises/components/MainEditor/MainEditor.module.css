@@ -93,7 +93,7 @@
   padding: 10px 12px;
   pointer-events: none;
   white-space: pre;
-  overflow: auto;
+  overflow: hidden;
   font-size: 0.76rem;
   line-height: 1.65;
   color: var(--text-secondary);
@@ -109,7 +109,7 @@
   caret-color: var(--accent);
   font-size: 0.76rem;
   line-height: 1.65;
-  padding: 10px 12px;
+  padding: 10px 20px;
   border: none;
   outline: none;
   resize: none;

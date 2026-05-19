@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { highlight } from "@/lib/highlight";
 import {
@@ -17,8 +18,15 @@ import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
 
 export default function UGensClient() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [activeUGen, setActiveUGen] = useState<string>("SinOsc");
+  const [activeUGen, setActiveUGen] = useState<string>(searchParams.get("name") ?? "SinOsc");
+
+  const handleSelectUGen = (name: string) => {
+    setActiveUGen(name);
+    router.replace(`/ugens?name=${name}`, { scroll: false });
+  };
   const [playingName, setPlayingName] = useState<string | null>(null);
   const [filter, setFilter] = useState<string>("All");
   const [showVolumeModal, setShowVolumeModal] = useState<boolean>(false);
@@ -78,7 +86,7 @@ export default function UGensClient() {
                 key={ug.name}
                 className={`${styles.ugen_item} ${activeUGen === ug.name ? styles.active : ""}`}
                 onClick={() => {
-                  setActiveUGen(ug.name);
+                  handleSelectUGen(ug.name);
                   handleStop();
                 }}
               >

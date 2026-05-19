@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import UGensClient from "./UGensClient";
 
 export const metadata: Metadata = {
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <UGensClient />
+  return (
+    <Suspense>
+      <UGensClient />
+    </Suspense>
+  );
 }

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import styles from "./page.module.css";
 
@@ -16,9 +17,9 @@ const steps = [
       <>
         Todo empieza por{" "}
         <span className={styles.concept}>la generación de sonido</span>.
-        Trabajarás con <span className={styles.term}>SinOsc</span> (onda
-        sinusoidal pura), <span className={styles.term}>Saw</span> (diente de
-        sierra) y <span className={styles.term}>Pulse</span> (onda cuadrada).
+        Trabajarás con <Link href="/ugens?name=SinOsc" className={styles.term_link}>SinOsc</Link> (onda
+        sinusoidal pura), <Link href="/ugens?name=Saw" className={styles.term_link}>Saw</Link> (diente de
+        sierra) y <Link href="/ugens?name=Pulse" className={styles.term_link}>Pulse</Link> (onda cuadrada).
         Aprenderás a controlar{" "}
         <span className={styles.concept}>frecuencia</span> y{" "}
         <span className={styles.concept}>amplitud</span>, los dos parámetros
@@ -31,9 +32,9 @@ const steps = [
     title: "Ruido",
     desc: (
       <>
-        <span className={styles.term}>WhiteNoise</span>,{" "}
-        <span className={styles.term}>PinkNoise</span> y{" "}
-        <span className={styles.term}>BrownNoise</span> son señales de ruido con
+        <Link href="/ugens?name=WhiteNoise" className={styles.term_link}>WhiteNoise</Link>,{" "}
+        <Link href="/ugens?name=PinkNoise" className={styles.term_link}>PinkNoise</Link> y{" "}
+        <Link href="/ugens?name=BrownNoise" className={styles.term_link}>BrownNoise</Link> son señales de ruido con
         distinto <span className={styles.concept}>carácter espectral</span>:
         desde el blanco estridente hasta el marrón grave y difuso.
       </>
@@ -45,9 +46,9 @@ const steps = [
     desc: (
       <>
         Un filtro moldea el timbre dejando pasar unas frecuencias y atenuando
-        otras. <span className={styles.term}>LPF</span> (paso-bajo),{" "}
-        <span className={styles.term}>HPF</span> (paso-alto) y{" "}
-        <span className={styles.term}>BPF</span> (paso-banda) son la base de la{" "}
+        otras. <Link href="/ugens?name=LPF" className={styles.term_link}>LPF</Link> (paso-bajo),{" "}
+        <Link href="/ugens?name=HPF" className={styles.term_link}>HPF</Link> (paso-alto) y{" "}
+        <Link href="/ugens?name=BPF" className={styles.term_link}>BPF</Link> (paso-banda) son la base de la{" "}
         <span className={styles.concept}>síntesis substractiva</span>: partir de
         un sonido y esculpirlo hasta el timbre deseado.
       </>
@@ -59,7 +60,7 @@ const steps = [
     desc: (
       <>
         Un sonido existe en el tiempo: tiene inicio, evolución y cierre.{" "}
-        <span className={styles.term}>Env</span> te permite definir esa
+        <Link href="/ugens?name=Env" className={styles.term_link}>Env</Link> te permite definir esa
         trayectoria. Trabajarás con el modelo{" "}
         <span className={styles.concept}>ADSR</span> (Attack, Decay, Sustain,
         Release) y otros perfiles. Las envolventes no solo controlan amplitud,
@@ -87,9 +88,9 @@ const steps = [
     title: "Efectos y espacio",
     desc: (
       <>
-        <span className={styles.term}>FreeVerb</span> añade reverberación,{" "}
-        <span className={styles.term}>DelayN</span> introduce retardos
-        controlados y <span className={styles.term}>Pan2</span> posiciona la
+        <Link href="/ugens?name=FreeVerb" className={styles.term_link}>FreeVerb</Link> añade reverberación,{" "}
+        <Link href="/ugens?name=DelayN" className={styles.term_link}>DelayN</Link> introduce retardos
+        controlados y <Link href="/ugens?name=Pan2" className={styles.term_link}>Pan2</Link> posiciona la
         señal en el campo estéreo. Estas son herramientas que transforman un
         evento sonoro en una experiencia espacial.
       </>

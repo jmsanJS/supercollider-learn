@@ -121,6 +121,17 @@
   color: var(--hl-ugen);
 }
 
+.term_link {
+  color: var(--hl-ugen);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--hl-ugen) 50%, transparent);
+  transition: border-color 0.1s;
+}
+
+.term_link:hover {
+  border-bottom-color: var(--hl-ugen);
+}
+
 .concept {
   color: var(--text-primary);
   font-style: italic;

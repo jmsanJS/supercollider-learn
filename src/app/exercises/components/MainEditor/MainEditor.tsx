@@ -89,15 +89,11 @@ export default function MainEditor() {
     const feedbackResult: ValidationResult = {
       ok: scValidation.ok && result.ok,
       tips: mergedTips,
-      audio: result.audio,
     };
     setResults((prev) => ({ ...prev, [exercise.id]: feedbackResult }));
-    const canPlayCode = scValidation.ok;
 
-    if (canPlayCode) {
-      const stereo = /!\s*2/.test(code);
-      const audioConfig = result.ok ? result.audio : parseSCCode(code);
-      play({ ...audioConfig, stereo });
+    if (scValidation.ok) {
+      play(parseSCCode(code));
       setPlayingId(activeId);
     } else {
       setPlayingId(null);

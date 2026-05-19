@@ -32,9 +32,7 @@ Si tienes alguna duda de cómo funcionan los UGens, puedes consultar la pestaña
       if (!hasSinOsc) tips.push("El UGen para tonos puros se llama SinOsc. Escríbelo dentro del bloque { }.");
       else if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
       else if (!ok) tips.push("SinOsc.ar necesita tres argumentos: la frecuencia (en Hz), la fase (empieza en 0) y el volumen (entre 0.0 y 1.0).");
-      const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 440;
-      return { ok, tips, audio: { freq, amp: 0.3, type: "sine" } };
+      return { ok, tips };
     },
   },
   {
@@ -66,7 +64,7 @@ Es la relación matemática fundamental de la música occidental.
         if (freq !== 880) tips.push("Duplicar la frecuencia sube una octava. El primer argumento de SinOsc.ar es la frecuencia en Hz.");
         if (amp !== 0.5) tips.push("Modifica la amplitud. El tercer argumento de SinOsc.ar (mul).");
       }
-      return { ok, tips, audio: { freq, amp, type: "sine" } };
+      return { ok, tips };
     },
   },
   {
@@ -96,9 +94,7 @@ Sintaxis:
       if (!hasPulse) tips.push("Usa Pulse.ar(...) — es el UGen para ondas cuadradas y rectangulares.");
       else if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
       else if (!ok) tips.push("Pulse.ar necesita: la frecuencia en Hz y el ancho del pulso (0.5 para onda cuadrada perfecta).");
-      const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 220;
-      return { ok, tips, audio: { freq, amp: 0.2, type: "square" } };
+      return { ok, tips };
     },
   },
   {
@@ -133,7 +129,7 @@ Sintaxis:
       if (!hasWhiteNoise) tips.push("Usa el UGen que genera ruido con energía en todas las frecuencias.");
       else if (hasAnyArg && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
       else if (!ok) tips.push("WhiteNoise.ar solo necesita un argumento: el volumen (mul). Usa un valor bajo para no saturar.");
-      return { ok, tips, audio: { type: "noise", color: "white", amp: 0.1 } };
+      return { ok, tips };
     },
   },
   {
@@ -175,13 +171,7 @@ Coloca esa expresión como primer argumento de SinOsc.ar:
         if (!hasDepth200) tips.push("Multiplica LFSaw.ar por el rango de frecuencias que quieres barrer.");
         if (!hasCenter600) tips.push("Suma la frecuencia central al resultado de LFSaw para determinar alrededor de qué nota oscila.");
       }
-      const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m ? parseFloat(m[1]) : 2;
-      return {
-        ok,
-        tips,
-        audio: { freq: 600, amp: 0.4, type: "sine", lfo: { rate, depth: 200 } },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -216,11 +206,7 @@ Los paréntesis son importantes para que la multiplicación de amplitud se apliq
         if (!has770) tips.push("Falta uno de los dos SinOsc. Busca la frecuencia de fila de la tecla 5 en la tabla de la teoría.");
         if (!has1336) tips.push("Falta el otro SinOsc. Busca la frecuencia de columna de la tecla 5 en la tabla de la teoría.");
       }
-      return {
-        ok,
-        tips,
-        audio: { type: "dtmf", freqs: [770, 1336], amp: 0.2 },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -264,12 +250,7 @@ Utiliza esto como primer argumento de SinOsc.ar.`,
         if (!hasRange200) tips.push("La diferencia entre 800 Hz y 600 Hz es el rango que debes multiplicar por LFPulse.");
         if (!hasBase600) tips.push("La frecuencia más baja (base) se suma al resultado de LFPulse * diferencia.");
       }
-      const m = code.match(/LFPulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m ? parseFloat(m[1]) : 1;
-      return {
-        ok, tips,
-        audio: { freq: 600, amp: 0.4, type: "sine", lfo: { rate, depth: 100, shape: "square", target: "frequency" } },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -317,12 +298,7 @@ diferencia de Hz que multiplicas debe ser negativa:
         if (!hasNeg200) tips.push("Para que el barrido sea descendente, el rango de Hz que multiplicas debe ser negativo: * (-rango).");
         if (!hasBase900) tips.push("La frecuencia central (centro) se suma al final y determina el punto de partida del barrido.");
       }
-      const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m ? parseFloat(m[1]) : 2;
-      return {
-        ok, tips,
-        audio: { freq: 900, amp: 0.4, type: "sine", lfo: { rate, depth: 200, shape: "sawtooth", target: "frequency" } },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -363,14 +339,7 @@ La multiplicación hace que LFPulse "encienda" y "apague" el oscilador Pulse de 
         if (hasPulseAr && !hasFreq3200) tips.push("El primer argumento de Pulse.ar es la frecuencia del tono. Las alarmas de incendio son muy agudas.");
         if (hasLFPulse && !hasLFPulseRate2) tips.push("El primer argumento de LFPulse.ar es la velocidad de parpadeo (veces por segundo).");
       }
-      const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 3200;
-      const m2 = code.match(/LFPulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m2 ? parseFloat(m2[1]) : 2;
-      return {
-        ok, tips,
-        audio: { freq, amp: 0.3, type: "square", lfo: { rate, depth: 1, shape: "square", target: "amplitude" } },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -413,15 +382,7 @@ doneAction: Done.freeSelf libera el synth cuando termina la envolvente.`,
         if (hasEnvPerc && !hasPercValues) tips.push("Env.perc necesita dos tiempos: el de ataque (subida) y el de caída, ambos en segundos.");
         if (hasSinOsc && !hasFreq1000) tips.push("El primer argumento de SinOsc.ar es la frecuencia del pitido en Hz.");
       }
-      const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 1000;
-      return {
-        ok, tips,
-        audio: {
-          freq, amp: 0.5, type: "sine",
-          env: { attack: 0.01, decay: 0.1, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
-        },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -462,17 +423,7 @@ Misma estructura: SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
         if (hasEnvPerc && !hasPercValues) tips.push("Los tiempos de ataque y caída del objetivo están en la descripción del ejercicio (en segundos).");
         if (hasSinOsc && !hasFreq880) tips.push("El primer argumento de SinOsc.ar es la frecuencia en Hz. Busca cuál corresponde al objetivo.");
       }
-      const m = code.match(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 880;
-      const m2 = code.match(/Env\.perc\s*\(\s*[\d.]+\s*,\s*([\d.]+)/);
-      const release = m2 ? parseFloat(m2[1]) : 0.3;
-      return {
-        ok, tips,
-        audio: {
-          freq, amp: 0.5, type: "sine",
-          env: { attack: 0.05, decay: release, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
-        },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -515,14 +466,7 @@ La técnica es la misma que en la alarma de incendio. Multiplica el oscilador po
         if (hasPulseAr && hasFreq1200 && !hasWidth05) tips.push("El segundo argumento de Pulse.ar es el ancho del pulso. ¿Qué valor produce una onda cuadrada perfecta?");
         if (hasLFPulse && !hasRate4) tips.push("El primer argumento de LFPulse.kr es la velocidad de parpadeo en Hz.");
       }
-      const m = code.match(/Pulse\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const freq = m ? parseFloat(m[1]) : 1200;
-      const m2 = code.match(/LFPulse\.\w+\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m2 ? parseFloat(m2[1]) : 4;
-      return {
-        ok, tips,
-        audio: { freq, amp: 0.3, type: "square", lfo: { rate, depth: 1, shape: "square", target: "amplitude" } },
-      };
+      return { ok, tips };
     },
   },
   {
@@ -568,12 +512,7 @@ Ejemplo de cálculo:
         if (!hasDepth450) tips.push("Multiplica LFSaw por la mitad del rango de frecuencias. Calcula: (máximo - mínimo) / 2.");
         if (!hasCenter750) tips.push("Suma la frecuencia central. Calcula: (máximo + mínimo) / 2.");
       }
-      const m = code.match(/LFSaw\.ar\s*\(\s*(\d+(?:\.\d+)?)/);
-      const rate = m ? parseFloat(m[1]) : 0.5;
-      return {
-        ok, tips,
-        audio: { freq: 750, amp: 0.4, type: "sine", lfo: { rate, depth: 450, shape: "sawtooth", target: "frequency" } },
-      };
+      return { ok, tips };
     },
   },
 ];

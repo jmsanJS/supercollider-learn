@@ -67,7 +67,6 @@ export type AudioRefs = {
 export type ValidationResult = {
   ok: boolean;
   tips: string[];
-  audio: AudioConfig;
 };
 
 export type Exercise = {

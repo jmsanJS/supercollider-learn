@@ -527,6 +527,83 @@ export const UGENS: UGen[] = [
     },
   },
 
+  // ── Lines ──
+  {
+    name: "XLine",
+    category: "Envelopes",
+    signature: "XLine.kr(start, end, dur, mul, add, doneAction)",
+    description:
+      "Genera una curva exponencial desde start hasta end en dur segundos. Ideal para barridos de frecuencia.",
+    args: [
+      { name: "start", default: "1", desc: "Valor inicial (distinto de cero)" },
+      { name: "end", default: "10", desc: "Valor final (mismo signo que start)" },
+      { name: "dur", default: "1", desc: "Duración del barrido en segundos" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
+      { name: "doneAction", default: "0", desc: "Done.freeSelf = libera el synth al terminar" },
+    ],
+    example: `{
+  SinOsc.ar(
+    XLine.kr(2000, 200, 0.4),
+    0,
+    EnvGen.kr(Env.perc(0.001, 0.4), doneAction: Done.freeSelf)
+  ) ! 2
+}.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "El oído percibe el tono en escala logarítmica, así que XLine (exponencial) suena como un deslizamiento 'natural' de pitch",
+      "start y end deben ser distintos de cero y tener el mismo signo; de lo contrario el servidor lanza un error",
+      "Usado como argumento de frecuencia de SinOsc, crea efectos de disparo láser, caída de bomba o sirena",
+    ],
+    sound: {
+      type: "sine",
+      amp: 0.4,
+      sweep: { start: 2000, end: 200, duration: 0.4, curve: "exponential" },
+      env: { attack: 0.001, decay: 0.4, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "exponential" },
+    },
+  },
+  {
+    name: "Line",
+    category: "Envelopes",
+    signature: "Line.kr(start, end, dur, mul, add, doneAction)",
+    description:
+      "Genera una rampa lineal desde start hasta end en dur segundos.",
+    args: [
+      { name: "start", default: "0", desc: "Valor inicial" },
+      { name: "end", default: "1", desc: "Valor final" },
+      { name: "dur", default: "1", desc: "Duración de la rampa en segundos" },
+      {
+        name: "mul",
+        default: "1",
+        desc: "Amplitud. La salida se multiplicará por este valor",
+      },
+      { name: "add", default: "0", desc: "Valor añadido a la salida" },
+      { name: "doneAction", default: "0", desc: "Done.freeSelf = libera el synth al terminar" },
+    ],
+    example: `{
+  SinOsc.ar(
+    Line.kr(200, 2000, 1),
+    0,
+    EnvGen.kr(Env.perc(0.001, 1), doneAction: Done.freeSelf)
+  ) ! 2
+}.play`,
+    note: [
+      "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo",
+      "A diferencia de XLine, Line acepta cero y valores de signos distintos, por lo que es más flexible para modular parámetros que no sean frecuencia",
+      "Para frecuencias, XLine suena más natural porque el oído percibe el tono en escala logarítmica; Line produce un deslizamiento que se acelera perceptualmente hacia los agudos",
+    ],
+    sound: {
+      type: "sine",
+      amp: 0.4,
+      sweep: { start: 200, end: 2000, duration: 1, curve: "linear" },
+      env: { attack: 0.001, decay: 1, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "linear" },
+    },
+  },
+
   // ── Spatial --
   {
     name: "Pan2",

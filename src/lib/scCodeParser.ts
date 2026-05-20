@@ -170,6 +170,45 @@ function getFmConfig(code: string, type: OscillatorType): AudioConfig | null {
   };
 }
 
+function getSweepConfig(code: string, type: OscillatorType): AudioConfig | null {
+  const xlineMatch = code.match(
+    /XLine\.(?:ar|kr)\s*\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/,
+  );
+  const lineMatch = code.match(
+    /(?<![A-Za-z])Line\.(?:ar|kr)\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/,
+  );
+
+  const activeMatch = xlineMatch ?? lineMatch;
+  if (!activeMatch) return null;
+
+  const curve = xlineMatch ? "exponential" : "linear";
+  const sweep = {
+    start: parseFloat(activeMatch[1]),
+    end: parseFloat(activeMatch[2]),
+    duration: parseFloat(activeMatch[3]),
+    curve,
+  } as const;
+
+  const perc = code.match(
+    /Env\.perc\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/,
+  );
+  if (!perc) return { type, amp: 0.4, sweep };
+
+  return {
+    type,
+    amp: 0.4,
+    sweep,
+    env: {
+      attack: parseFloat(perc[1]),
+      decay: parseFloat(perc[2]),
+      sustain: 0,
+      release: 0.001,
+      attackCurve: "linear",
+      decayCurve: curve,
+    },
+  };
+}
+
 function getEnvConfig(code: string, type: OscillatorType): AudioConfig | null {
   if (!/Env\.perc|EnvGen/.test(code)) return null;
 
@@ -241,6 +280,9 @@ export function parseSCCode(code: string): AudioConfig {
 
   const fm = getFmConfig(code, type);
   if (fm) return { ...fm, stereo };
+
+  const sweep = getSweepConfig(code, type);
+  if (sweep) return { ...sweep, stereo };
 
   const env = getEnvConfig(code, type);
   if (env) return { ...env, stereo };

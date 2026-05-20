@@ -7,7 +7,7 @@ function escape(str: string): string {
 function highlightCodeSegment(segment: string): string {
   return escape(segment)
     .replace(
-      /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|BrownNoise|LFSaw|LFTri|LFPulse|LPF|HPF|BPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix|Done|FreeVerb|DelayN|Buffer|PlayBuf)\b/g,
+      /\b(SinOsc|Saw|Pulse|WhiteNoise|PinkNoise|BrownNoise|LFSaw|LFTri|LFPulse|XLine|Line|LPF|HPF|BPF|Env|EnvGen|Pan2|Out|SynthDef|Synth|Mix|Done|FreeVerb|DelayN|Buffer|PlayBuf)\b/g,
       '<span class="hl-ugen">$1</span>',
     )
     .replace(

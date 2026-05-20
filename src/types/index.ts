@@ -15,6 +15,14 @@ export type AudioConfig = {
   reverb?: ReverbConfig;
   delay?: boolean;
   stereo?: boolean;
+  sweep?: SweepConfig;
+};
+
+export type SweepConfig = {
+  start: number;
+  end: number;
+  duration: number;
+  curve?: "linear" | "exponential";
 };
 
 type NoiseColor = "white" | "pink" | "brown";

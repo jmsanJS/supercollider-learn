@@ -8,6 +8,7 @@ import {
   createDTMF,
   createLFOSynth,
   createEnvSynth,
+  createSweepSynth,
   createSynth,
   createPanner,
   createFilteredSynth,
@@ -61,6 +62,8 @@ export function useAudio() {
           refs = createReverbSynth(audio);
         } else if (audio.delay) {
           refs = createDelay(audio);
+        } else if (audio.sweep) {
+          refs = createSweepSynth(audio);
         } else if (audio.env) {
           refs = createEnvSynth(audio);
         } else if (audio.filter) {

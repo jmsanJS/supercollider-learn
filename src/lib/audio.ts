@@ -114,6 +114,30 @@ export function createEnvSynth(audio: AudioConfig): Pick<AudioRefs, "synth" | "p
   return { synth, panner };
 }
 
+export function createSweepSynth(audio: AudioConfig): Pick<AudioRefs, "synth" | "panner"> {
+  const { out, panner } = getOutput(audio);
+  const synth = buildSynth(audio);
+  synth.connect(out);
+
+  const { start, end, duration } = audio.sweep!;
+  const totalTime =
+    (audio.env?.attack ?? 0) +
+    (audio.env?.decay ?? 0) +
+    (audio.env?.sustain ?? 0) +
+    (audio.env?.release ?? 0);
+
+  const now = Tone.now();
+  synth.oscillator.frequency.setValueAtTime(start, now);
+  if (audio.sweep!.curve === "linear") {
+    synth.oscillator.frequency.linearRampToValueAtTime(end, now + duration);
+  } else {
+    synth.oscillator.frequency.exponentialRampToValueAtTime(end, now + duration);
+  }
+  synth.triggerAttackRelease(start, totalTime || duration, now);
+
+  return { synth, panner };
+}
+
 export function createSynth(audio: AudioConfig): Pick<AudioRefs, "synth" | "panner"> {
   const { out, panner } = getOutput(audio);
   const synth = buildSynth(audio);

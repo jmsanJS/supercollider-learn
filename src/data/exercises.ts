@@ -515,4 +515,124 @@ Ejemplo de cálculo:
       return { ok, tips };
     },
   },
+  {
+    id: "ex14",
+    level: 1,
+    title: "Diente de sierra",
+    tag: "Saw",
+    goal: "Genera una onda de diente de sierra a 330 Hz con amplitud 0.2",
+    theory: `La onda de diente de sierra es una de las formas de onda más ricas en armónicos. A diferencia de SinOsc (onda pura y suave), Saw contiene todos los armónicos de la serie, lo que le da un timbre brillante y penetrante.
+
+Sintaxis:
+  Saw.ar(freq, mul)
+
+  freq → la frecuencia en Hz, igual que en SinOsc. 330 Hz corresponde aproximadamente a la nota Mi3.
+
+  mul  → la amplitud (volumen). Usa valores moderados (0.1 – 0.3) porque su riqueza armónica puede sonar muy cargada a volúmenes altos.
+
+La onda de diente de sierra es el punto de partida ideal para la síntesis substractiva: se filtra después para esculpir el timbre.`,
+    starter: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n  \n}.play`,
+    answer: `// Onda de diente de sierra a 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
+    validate(code) {
+      const hasSaw = /Saw\.ar/.test(code);
+      const hasCorrectCall = /Saw\.ar\s*\(\s*330\s*,\s*0\.2\s*\)/.test(code);
+      const hasAllArgs = /Saw\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasCorrectCall;
+      const tips = [];
+      if (!hasSaw) tips.push("El UGen para la onda de diente de sierra se llama Saw. Escríbelo dentro del bloque { }.");
+      else if (hasAllArgs && !ok) tips.push("Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.");
+      else if (!ok) tips.push("Saw.ar necesita dos argumentos: la frecuencia en Hz y la amplitud (mul).");
+      return { ok, tips };
+    },
+  },
+  {
+    id: "ex15",
+    level: 3,
+    title: "Disparo láser",
+    tag: "XLine",
+    goal: "Barrido exponencial de 2000 a 200 Hz en 0.3 segundos, con ataque 0.001s y caída 0.3s",
+    theory: `Un disparo láser es una frecuencia que cae rápido, no de forma lineal, sino exponencial. El oído percibe los cambios de tono en escala logarítmica, así que una caída exponencial suena mucho más natural.
+
+XLine.kr genera ese barrido de un solo disparo:
+
+  XLine.kr(start, end, dur)
+
+  start → frecuencia inicial (Hz)
+  end   → frecuencia final (Hz)
+  dur   → duración del barrido en segundos
+
+A diferencia de LFSaw o LFPulse, XLine.kr no se repite: recorre el rango una vez y se detiene.
+
+Úsalo como primer argumento del oscilador sinusoidal para modular la frecuencia. Para que el sonido tenga duración definida, multiplica el resultado por una envolvente percusiva.
+`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    FASE,\n    UGEN.kr(UGEN.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    answer: `// Disparo láser\n{\n  SinOsc.ar(\n    XLine.kr(2000, 200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.001, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    validate(code) {
+      const hasSinOsc = /SinOsc/.test(code);
+      const hasXLine = /XLine/.test(code);
+      const hasEnvGen = /EnvGen/.test(code);
+      const hasEnvPerc = /Env\.perc/.test(code);
+      const hasCorrectXLine = /XLine\.kr\s*\(\s*2000\s*,\s*200\s*,\s*0\.2\s*\)/.test(code);
+      const hasPercValues = /Env\.perc\s*\(\s*0\.001\s*,\s*0\.3\s*\)/.test(code);
+      const hasStructure = hasSinOsc && hasXLine &&
+        /XLine\.kr\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasSinOsc && hasXLine && hasCorrectXLine && hasEnvGen && hasEnvPerc && hasPercValues;
+      const tips = [];
+      if (!hasSinOsc) tips.push("Necesitas SinOsc.ar como oscilador. La frecuencia será el barrido de XLine.kr.");
+      else if (!hasXLine) tips.push("Usa XLine.kr como primer argumento de SinOsc.ar para que la frecuencia caiga de forma exponencial.");
+      else if (!hasEnvGen) tips.push("Multiplica por EnvGen.kr para que el disparo tenga una duración definida y se libere solo.");
+      else if (!hasEnvPerc) tips.push("Usa Env.perc dentro de EnvGen.kr para definir el ataque y la caída del disparo.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (!hasCorrectXLine) tips.push("Revisa los tres argumentos de XLine.kr: frecuencia inicial, frecuencia final y duración en segundos.");
+        if (!hasPercValues) tips.push("Revisa los tiempos de Env.perc: el ataque es muy corto y la caída coincide con la duración del barrido.");
+      }
+      return { ok, tips };
+    },
+  },
+  {
+    id: "ex16",
+    level: 2,
+    title: "Recarga de poder",
+    tag: "Line",
+    goal: "Subida lineal de 200 a 1200 Hz en 0.2 segundos, con ataque 0.01s y caída 1s",
+    theory: `Line.kr genera una rampa lineal: la frecuencia sube o baja a velocidad constante desde un valor hasta otro.
+
+Line.kr(start, end, dur)
+
+  start → frecuencia inicial en Hz
+  end   → frecuencia final en Hz
+  dur   → duración del recorrido en segundos
+
+A diferencia de XLine (que usa una curva exponencial), Line avanza en pasos iguales. Eso significa que sube los mismos Hz por segundo durante todo el recorrido.
+
+Como el oído percibe el tono en escala logarítmica, una rampa lineal de 200 a 1200 Hz suena más rápida al principio que al final. Es el efecto de "power-up" o "señal de videojuego".
+`,
+    starter: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    Line.kr(INICIO, FIN, DUR),\n    FASE,\n    EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    answer: `// Subida de tono lineal\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    validate(code) {
+      const hasSinOsc = /SinOsc/.test(code);
+      const hasLine = /(?<![A-Za-z])Line\.kr/.test(code);
+      const hasEnvGen = /EnvGen/.test(code);
+      const hasEnvPerc = /Env\.perc/.test(code);
+      const hasCorrectLine = /(?<![A-Za-z])Line\.kr\s*\(\s*200\s*,\s*1200\s*,\s*1\s*\)/.test(code);
+      const hasPercValues = /Env\.perc\s*\(\s*0\.01\s*,\s*1\s*\)/.test(code);
+      const hasStructure = hasSinOsc && hasLine &&
+        /(?<![A-Za-z])Line\.kr\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasSinOsc && hasLine && hasCorrectLine && hasEnvGen && hasEnvPerc && hasPercValues;
+      const tips = [];
+      if (!hasSinOsc) tips.push("Necesitas SinOsc.ar como oscilador. La frecuencia vendrá del barrido de Line.kr.");
+      else if (!hasLine) tips.push("Usa Line.kr como primer argumento de SinOsc.ar para que la frecuencia suba de forma lineal.");
+      else if (!hasEnvGen) tips.push("Multiplica por EnvGen.kr para darle duración al sonido y que se libere al terminar.");
+      else if (!hasEnvPerc) tips.push("Usa Env.perc dentro de EnvGen.kr para definir el ataque y la caída del tono.");
+      else if (hasStructure && !ok) tips.push("La estructura es correcta pero algún valor no es el esperado. Revisa los números.");
+      else {
+        if (!hasCorrectLine) tips.push("Revisa los tres argumentos de Line.kr: frecuencia inicial, frecuencia final y duración en segundos.");
+        if (!hasPercValues) tips.push("Revisa los tiempos de Env.perc: ataque muy corto y caída igual a la duración del barrido.");
+      }
+      return { ok, tips };
+    },
+  },
 ];

@@ -1,10 +1,10 @@
-# SC Learn
+# SuperCollider Learn
 
 An interactive platform to **introduce SuperCollider** through hands-on exercises in the browser. No installation required.
 
 ## Scope and design intent
 
-**SC Learn** is not meant to be a full SuperCollider environment or a complete reference of the language. The goal is to lower the barrier to entry — give beginners a feel for SuperCollider's syntax and audio concepts before they commit to installing and learning the real software.
+**SuperCollider Learn** is not meant to be a full SuperCollider environment or a complete reference of the language. The goal is to lower the barrier to entry — give beginners a feel for SuperCollider's syntax and audio concepts before they commit to installing and learning the real software.
 
 A few things this project deliberately does not do:
 
@@ -21,6 +21,7 @@ If you want to contribute content, keep this scope in mind: the aim is a clear, 
 - **Code editor** — syntax-highlighted editor with SuperCollider coloring
 - **UGen reference** — built-in glossary and UGen catalog
 - **Progress tracking** — exercise completion is saved to `localStorage`, no account needed
+- **Multilingual** — UI available in English, Spanish, and French
 
 ## Tech stack
 
@@ -31,6 +32,7 @@ If you want to contribute content, keep this scope in mind: the aim is a clear, 
 | Styling | CSS Modules, CSS custom properties |
 | Code editor | Custom `<textarea>` with syntax highlighting |
 | Audio engine | [Tone.js 15](https://tonejs.github.io/) |
+| i18n | Built-in EN / ES / FR translations |
 
 ## Project structure
 

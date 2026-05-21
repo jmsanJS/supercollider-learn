@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import GlossaryClient from "./GlossaryClient";
 
 export const metadata: Metadata = {
-  title: "Glosario",
+  title: "Glossary",
   description:
-    "Términos de SuperCollider, audio, música y programación explicados de forma clara.",
+    "SuperCollider, audio, music and programming terms clearly explained.",
 };
 
 export default function GlossaryPage() {

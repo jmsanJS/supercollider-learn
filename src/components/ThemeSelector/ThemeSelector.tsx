@@ -6,13 +6,16 @@ import styles from "./ThemeSelector.module.css";
 import type { ThemeName } from "@/types";
 import { getCurrentTheme } from "@/lib/themes";
 import { THEMES } from "@/data/themes";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function ThemeSelector() {
   const { theme, setTheme } = useTheme();
+  const { lang } = useLang();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = getCurrentTheme(theme)
+  const current = getCurrentTheme(theme);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -44,7 +47,7 @@ export default function ThemeSelector() {
         onClick={() => setOpen((value) => !value)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Seleccionar tema"
+        aria-label={t(lang, "theme_select_aria")}
       >
         <span
           className={styles.swatch}
@@ -52,7 +55,7 @@ export default function ThemeSelector() {
         >
           <span className={styles.dot} style={{ background: current.accent }} />
         </span>
-        <span className={styles.trigger_label}>{current.label}</span>
+        <span className={styles.trigger_label}>{current.label[lang]}</span>
         <span className={`${styles.chevron} ${open ? styles.open : ""}`}>
           ▾
         </span>
@@ -62,7 +65,7 @@ export default function ThemeSelector() {
         <ul
           className={styles.dropdown}
           role="listbox"
-          aria-label="Temas disponibles"
+          aria-label={t(lang, "theme_list_aria")}
         >
           {THEMES.map((th) => (
             <li
@@ -81,7 +84,7 @@ export default function ThemeSelector() {
                   style={{ background: th.accent }}
                 />
               </span>
-              <span className={styles.option_label}>{th.label}</span>
+              <span className={styles.option_label}>{th.label[lang]}</span>
               {theme === th.name && (
                 <span className={styles.check} aria-hidden="true">
                   ✓

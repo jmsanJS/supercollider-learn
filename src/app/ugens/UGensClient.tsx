@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
 import { useState } from "react";
@@ -16,10 +15,13 @@ import { useAudio } from "@/hooks/useAudio";
 import CopyToClipboard from "@/components/CopyToClipboard/CopyToClipboard";
 import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function UGensClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { lang } = useLang();
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [activeUGen, setActiveUGen] = useState<string>(searchParams.get("name") ?? "SinOsc");
 
@@ -66,7 +68,7 @@ export default function UGensClient() {
         <div className={styles.ugen_list_container}>
           <div className={styles.sidebar_header}>
             <span className={styles.section_label} style={{ marginBottom: 0 }}>
-              UGens comunes
+              {t(lang, "ugens_sidebar_label")}
             </span>
           </div>
           <div className={styles.cat_filter}>
@@ -104,24 +106,24 @@ export default function UGensClient() {
             <div className={styles.ud_name}>{ugen.name}</div>
             <div className={styles.ud_cat}>{ugen.category}</div>
             <div className={styles.ud_sig}>{ugen.signature}</div>
-            <p className={styles.ud_desc}>{ugen.description}</p>
+            <p className={styles.ud_desc}>{ugen.description[lang]}</p>
 
             <div className={styles.ud_args}>
               <div className={styles.pane_label} style={{ marginBottom: 8 }}>
-                // argumentos
+                {t(lang, "ugens_args_label")}
               </div>
               {ugen.args.map((arg) => (
                 <div key={arg.name} className={styles.arg_row}>
                   <span className={styles.arg_name}>{arg.name}</span>
                   <span className={styles.arg_default}>{arg.default}</span>
-                  <span className={styles.arg_desc}>{arg.desc}</span>
+                  <span className={styles.arg_desc}>{arg.desc[lang]}</span>
                 </div>
               ))}
             </div>
 
             <div className={styles.ud_example}>
               <div className={styles.pane_label} style={{ marginBottom: 8 }}>
-                // ejemplo
+                {t(lang, "ugens_example_label")}
               </div>
               <div className={styles.example_block}>
                 <CopyToClipboard scCode={ugen.example} />
@@ -134,10 +136,10 @@ export default function UGensClient() {
             {ugen.note && (
               <div className={styles.ud_notes}>
                 <div className={styles.pane_label} style={{ marginBottom: 8 }}>
-                  // notas
+                  {t(lang, "ugens_notes_label")}
                 </div>
                 {ugen.note.map((n, i) => (
-                  <p key={i} className={styles.note_item}>{n}</p>
+                  <p key={i} className={styles.note_item}>{n[lang]}</p>
                 ))}
               </div>
             )}
@@ -152,7 +154,7 @@ export default function UGensClient() {
                 onClick={() => handlePlay(ugen)}
                 disabled={isDisabled}
               >
-                ▶ Escuchar
+                {t(lang, "ugens_listen")}
               </button>
               {playingName === ugen.name && (
                 <button className={styles.btn_stop} onClick={handleStop}>

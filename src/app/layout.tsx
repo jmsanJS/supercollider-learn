@@ -5,6 +5,7 @@ import TopNavbar from "@/components/TopNavbar/TopNavbar";
 import Footer from "@/components/Footer/Footer";
 import { ProgressProvider } from "@/context/ProgressContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { LangProvider } from "@/context/LangContext";
 
 const JetBrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -16,20 +17,19 @@ const JetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: { default: "SC learn", template: "%s | SC Learn" },
   description:
-    "Aprende SuperCollider con ejercicios prácticos y progresivos desde el navegador",
+    "Learn SuperCollider with practical, progressive exercises directly in your browser",
   keywords:
     "SuperCollider, audio, sound, algorithmic music, live coding, exercises",
   authors: { name: "Juan Sanchez" },
   openGraph: {
     siteName: "SC Learn",
-    locale: "es_ES",
     type: "website",
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -39,11 +39,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={JetBrainsMono.variable}>
         <ThemeProvider>
-          <ProgressProvider>
-            <TopNavbar />
-            <main>{children}</main>
-            <Footer />
-          </ProgressProvider>
+          <LangProvider>
+            <ProgressProvider>
+              <TopNavbar />
+              <main>{children}</main>
+              <Footer />
+            </ProgressProvider>
+          </LangProvider>
         </ThemeProvider>
       </body>
     </html>

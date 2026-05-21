@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import UGensClient from "./UGensClient";
 
 export const metadata: Metadata = {
-  title: "UGens comunes",
+  title: "Common UGens",
   description:
-    "Lista de los UGens más comunes y utilizados en SuperCollider. Los UGens son componentes básicos para la creación y modifica sonido.",
+    "A reference for the most commonly used UGens in SuperCollider — the building blocks for creating and shaping sound.",
 };
 
 export default function Page() {

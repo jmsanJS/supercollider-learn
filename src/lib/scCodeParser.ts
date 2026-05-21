@@ -1,4 +1,5 @@
-import type { AudioConfig, SCCodeValidation } from "@/types";
+import type { AudioConfig, LocalizedString, SCCodeValidation } from "@/types";
+import { t, type UIKey } from "@/i18n/ui";
 
 const MAIN_UGEN = "SinOsc|Saw|Pulse|LFTri";
 const NOISE_UGEN = "WhiteNoise|PinkNoise|BrownNoise";
@@ -40,23 +41,21 @@ function hasBalancedPairs(
 }
 
 export function validateSCCode(code: string): SCCodeValidation {
-  const errors: string[] = [];
+  const errorKeys: UIKey[] = [];
 
-  if (!hasBalancedPairs(code, "{", "}"))
-    errors.push("Falta cerrar o abrir correctamente llaves { }.");
-  if (!hasBalancedPairs(code, "(", ")"))
-    errors.push("Falta cerrar o abrir correctamente paréntesis ( ).");
-  if (!hasBalancedPairs(code, "[", "]"))
-    errors.push("Falta cerrar o abrir correctamente corchetes [ ].");
+  if (!hasBalancedPairs(code, "{", "}")) errorKeys.push("sc_err_braces");
+  if (!hasBalancedPairs(code, "(", ")")) errorKeys.push("sc_err_parens");
+  if (!hasBalancedPairs(code, "[", "]")) errorKeys.push("sc_err_brackets");
+  if (!/\.play\b/.test(code)) errorKeys.push("sc_err_play");
 
-  if (!/\.play\b/.test(code))
-    errors.push("Agrega .play al final para ejecutar el bloque de audio.");
+  const soundUgenPattern = new RegExp(`\\b(${MAIN_UGEN}|${NOISE_UGEN})\\.ar\\s*\\(`);
+  if (!soundUgenPattern.test(code)) errorKeys.push("sc_err_ugen");
 
-  const soundUgenPattern = new RegExp(
-    `\\b(${MAIN_UGEN}|${NOISE_UGEN})\\.ar\\s*\\(`,
-  );
-  if (!soundUgenPattern.test(code))
-    errors.push("Usa un UGen con llamada .ar(...) para generar audio.");
+  const errors: LocalizedString[] = errorKeys.map((key) => ({
+    en: t("en", key),
+    es: t("es", key),
+    fr: t("fr", key),
+  }));
 
   return { ok: errors.length === 0, errors };
 }

@@ -1,6 +1,9 @@
 import * as Tone from "tone";
 import type { ReactNode } from "react";
 
+export type Locale = "en" | "es" | "fr";
+export type LocalizedString = Record<Locale, string>;
+
 export type AudioConfig = {
   freq?: number;
   amp?: number;
@@ -74,18 +77,18 @@ export type AudioRefs = {
 
 export type ValidationResult = {
   ok: boolean;
-  tips: string[];
+  tips: LocalizedString[];
 };
 
 export type Exercise = {
   id: string;
   level: 1 | 2 | 3;
-  title: string;
+  title: LocalizedString;
   tag: string;
-  goal: string;
-  theory: string;
-  starter: string;
-  answer: string;
+  goal: LocalizedString;
+  theory: LocalizedString;
+  starter: LocalizedString;
+  answer: LocalizedString;
   validate: (code: string) => ValidationResult;
 };
 
@@ -110,6 +113,12 @@ export type ProgressStats = {
   byLevel: LevelStats[];
 };
 
+// Lang
+export type LangContextType = {
+  lang: Locale;
+  setLang: (lang: Locale) => void;
+};
+
 // Contexts
 export type ExercisesContextType = {
   activeId: string;
@@ -126,7 +135,7 @@ export type ThemeName = "paper" | "phosphor" | "warm" | "cold";
 
 export type ThemeOption = {
   name: ThemeName;
-  label: string;
+  label: LocalizedString;
   accent: string;
   bg: string;
 };
@@ -141,17 +150,17 @@ export type UGen = {
   name: string;
   category: string;
   signature: string;
-  description: string;
+  description: LocalizedString;
   args: UGenArgument[];
   example: string;
-  note?: string[];
+  note?: LocalizedString[];
   sound: AudioConfig;
 };
 
 type UGenArgument = {
   name: string;
   default: string;
-  desc: string;
+  desc: LocalizedString;
 };
 
 // Components
@@ -199,10 +208,10 @@ export type GlossaryCategory =
 
 export type GlossaryTerm = {
   id: string;
-  term: string;
+  term: LocalizedString;
   category: Exclude<GlossaryCategory, "all">;
-  definition: string;
-  related?: string[];  // ids de términos relacionados
+  definition: LocalizedString;
+  related?: string[];
 };
 
 // Highlight
@@ -215,5 +224,5 @@ export type HighlightResult = {
 
 export type SCCodeValidation = {
   ok: boolean;
-  errors: string[];
+  errors: LocalizedString[];
 };

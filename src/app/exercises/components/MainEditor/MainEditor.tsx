@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-no-comment-textnodes */
 "use client";
 
 import { useExercises } from "@/context/ExercisesContext";
 import styles from "./MainEditor.module.css";
-import { getExerciseById, getInitialCodes } from "@/lib/exercises";
+import { getExerciseById } from "@/lib/exercises";
 import { useEffect, useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
@@ -14,13 +13,16 @@ import { hasSeenVolumeReminder, markVolumeReminderSeen } from "@/lib/reminder";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
 import { useAudio } from "@/hooks/useAudio";
 import type { ValidationResult } from "@/types";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function MainEditor() {
   const { activeId } = useExercises();
   const { markCompleted } = useProgress();
   const { play, stop } = useAudio();
+  const { lang } = useLang();
 
-  const [codes, setCodes] = useState(getInitialCodes);
+  const [codes, setCodes] = useState<Record<string, string>>({});
   const [results, setResults] = useState<
     Record<string, ValidationResult | null>
   >({});
@@ -44,7 +46,7 @@ export default function MainEditor() {
   const exercise = getExerciseById(activeId);
   if (!exercise) return null;
 
-  const code: string = codes[activeId] ?? exercise.starter ?? "";
+  const code: string = codes[activeId] ?? exercise.starter[lang];
   const activeResult = results[exercise.id] ?? null;
 
   const onChange = (newCode: string): void => {
@@ -115,7 +117,7 @@ export default function MainEditor() {
   };
 
   const handleReset = (): void => {
-    onChange(exercise.starter ?? "");
+    onChange(exercise.starter[lang]);
     setResults((prev) => ({ ...prev, [activeId]: null }));
     setPlayingId(null);
     stop();
@@ -127,7 +129,7 @@ export default function MainEditor() {
 
   const handleShowAnswerConfirm = (): void => {
     setShowAnswerModal(false);
-    onChange(exercise.answer ?? "");
+    onChange(exercise.answer[lang]);
     setPlayingId(null);
     stop();
   };
@@ -138,22 +140,22 @@ export default function MainEditor() {
 
   return (
     <section>
-      <TerminalHeader title={exercise?.id} desc={exercise?.title} />
+      <TerminalHeader title={exercise?.id} desc={exercise?.title[lang]} />
 
       <div className={styles.ex_main}>
         <p className={styles.ex_goal_bar}>
-          <span className={styles.goal_label}>Ejercicio:</span>
-          <span className={styles.goal_text}>{exercise?.goal}</span>
+          <span className={styles.goal_label}>{t(lang, "exercises_goal_label")}</span>
+          <span className={styles.goal_text}>{exercise?.goal[lang]}</span>
         </p>
 
         <div className={styles.ex_body}>
           <div className={styles.theory_pane}>
-            <div className={styles.pane_label}>// teoría</div>
-            <pre className={styles.theory_pre}>{exercise?.theory}</pre>
+            <div className={styles.pane_label}>{t(lang, "exercises_theory_label")}</div>
+            <pre className={styles.theory_pre}>{exercise?.theory[lang]}</pre>
           </div>
 
           <div className={styles.editor_pane}>
-            <div className={styles.pane_label}>// editor</div>
+            <div className={styles.pane_label}>{t(lang, "exercises_editor_label")}</div>
             <div className={styles.editor_wrap}>
               <div className={styles.line_nums}>
                 {lines.map((_, i) => (
@@ -187,10 +189,10 @@ export default function MainEditor() {
               <ReminderModal
                 onConfirm={handleShowAnswerConfirm}
                 onCancel={handleShowAnswerCancel}
-                title="Mostrar respuesta"
-                description="Si confirmas, se cargará la solución del ejercicio actual en el editor."
-                confirmLabel="Mostrar"
-                cancelLabel="Cancelar"
+                title={t(lang, "exercises_answer_modal_title")}
+                description={t(lang, "exercises_answer_modal_desc")}
+                confirmLabel={t(lang, "exercises_answer_modal_confirm")}
+                cancelLabel={t(lang, "exercises_cancel")}
                 headerTitle="show-the-answer"
                 showRemindOption={false}
                 icon="warning"
@@ -203,18 +205,18 @@ export default function MainEditor() {
                 onClick={handleRun}
                 disabled={playingId === activeId}
               >
-                ▶ Ejecutar
+                {t(lang, "exercises_run")}
               </button>
               {playingId === activeId && (
                 <button className={styles.btn_stop} onClick={handleStop}>
-                  ■ Stop
+                  {t(lang, "exercises_stop")}
                 </button>
               )}
               <button className={styles.btn_reset} onClick={handleReset}>
-                ↺ Reiniciar
+                {t(lang, "exercises_reset")}
               </button>
               <button className={styles.btn_reset} onClick={handleShowAnswer}>
-                💡 Mostrar respuesta
+                {t(lang, "exercises_show_answer")}
               </button>
             </div>
 
@@ -226,22 +228,20 @@ export default function MainEditor() {
               >
                 {activeResult.ok ? (
                   <>
-                    <span className={styles.fb_icon}>✓</span> ¡Correcto! El
-                    sonido se está generando.
+                    <span className={styles.fb_icon}>✓</span>{" "}
+                    {t(lang, "exercises_correct")}
                   </>
                 ) : (
                   <>
                     <div className={styles.fb_icon_err}>
-                      ✗ Revisa tu código:
+                      {t(lang, "exercises_error")}
                     </div>
                     {(activeResult.tips.length
-                      ? activeResult.tips
-                      : [
-                          "La solución no cumple aún los requisitos del ejercicio.",
-                        ]
-                    ).map((t, i) => (
+                      ? activeResult.tips.map((tip) => tip[lang])
+                      : [t(lang, "exercises_fallback_tip")]
+                    ).map((msg, i) => (
                       <div key={i} className={styles.fb_tip}>
-                        ▸ {t}
+                        ▸ {msg}
                       </div>
                     ))}
                   </>

@@ -1,16 +1,16 @@
-import type { GlossaryCategory, GlossaryTerm } from "@/types";
+import type { GlossaryCategory, GlossaryTerm, Locale } from "@/types";
 import { GLOSSARY } from "@/data/glossary";
 
 function getTermById(id: string): GlossaryTerm | undefined {
   return GLOSSARY.find(t => t.id === id);
 }
 
-function getAllTermsSorted(): GlossaryTerm[] {
-  return GLOSSARY.sort((a, b) => a.term.localeCompare(b.term));
+function getAllTermsSorted(lang: Locale = "en"): GlossaryTerm[] {
+  return [...GLOSSARY].sort((a, b) => a.term[lang].localeCompare(b.term[lang]));
 }
 
-export function getTermsByCategory(category: GlossaryCategory): GlossaryTerm[] {
-  if (category === "all") return getAllTermsSorted();
+export function getTermsByCategory(category: GlossaryCategory, lang: Locale = "en"): GlossaryTerm[] {
+  if (category === "all") return getAllTermsSorted(lang);
   return GLOSSARY.filter(t => t.category === category);
 }
 

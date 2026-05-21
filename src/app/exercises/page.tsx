@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import ExercisesClient from "./ExercisesClient";
 
 export const metadata: Metadata = {
-  title: "Ejercicios",
+  title: "Exercises",
   description:
-    "Ejercicios interactivos y progresivos para entender cómo programar en SuperCollider.",
+    "Interactive, progressive exercises to learn how to program in SuperCollider.",
 };
 
 export default function ExercisesPage() {

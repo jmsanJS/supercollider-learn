@@ -1,0 +1,31 @@
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.lang_btn {
+  padding: 5px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.lang_btn:hover {
+  color: var(--text-secondary);
+  background: var(--bg-card);
+}
+
+.lang_btn.active {
+  color: var(--accent);
+  background: var(--bg-card);
+}

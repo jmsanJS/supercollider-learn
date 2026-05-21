@@ -4,26 +4,35 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./ReminderModal.module.css";
 import type { ReminderModalProps } from "@/types";
 import TerminalHeader from "../TerminalHeader/TerminalHeader";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function ReminderModal({
   onConfirm,
   onCancel,
-  title = "Antes de continuar",
-  description = (
-    <>
-      Los sonidos generados pueden ser intensos.
-      <br />
-      <strong>Baja el volumen a los mínimos</strong> antes de escuchar.
-    </>
-  ),
-  confirmLabel = "Entendido",
-  cancelLabel = "Cancelar",
+  title,
+  description,
+  confirmLabel,
+  cancelLabel,
   headerTitle = "volume",
   showRemindOption = true,
-  remindLabel = "Recordarme la próxima sesión",
+  remindLabel,
   initialRemindNextSession = true,
   icon = "volume",
 }: ReminderModalProps) {
+  const { lang } = useLang();
+
+  const _title = title ?? t(lang, "reminder_title");
+  const _confirmLabel = confirmLabel ?? t(lang, "reminder_confirm");
+  const _cancelLabel = cancelLabel ?? t(lang, "reminder_cancel");
+  const _remindLabel = remindLabel ?? t(lang, "reminder_remind");
+  const _description = description ?? (
+    <>
+      {t(lang, "reminder_desc_line1")}
+      <br />
+      <strong>{t(lang, "reminder_desc_line2")}</strong>
+    </>
+  );
   const btnRef = useRef<HTMLButtonElement>(null);
   const [remindNextSession, setRemindNextSession] = useState<boolean>(
     initialRemindNextSession,
@@ -99,17 +108,17 @@ export default function ReminderModal({
           </div>
 
           <h2 id="volume-title" className={styles.title}>
-            {title}
+            {_title}
           </h2>
 
           <p id="volume-desc" className={styles.desc}>
-            {description}
+            {_description}
           </p>
 
           <div className={styles.actions}>
             {onCancel && (
               <button className={styles.cancel_btn} onClick={onCancel}>
-                {cancelLabel}
+                {_cancelLabel}
               </button>
             )}
             <button
@@ -117,7 +126,7 @@ export default function ReminderModal({
               className={styles.confirm_btn}
               onClick={() => onConfirm(remindNextSession)}
             >
-              {confirmLabel}
+              {_confirmLabel}
             </button>
           </div>
 
@@ -129,7 +138,7 @@ export default function ReminderModal({
                 checked={remindNextSession}
                 onChange={(e) => setRemindNextSession(e.target.checked)}
               />
-              <span>{remindLabel}</span>
+              <span>{_remindLabel}</span>
             </label>
           )}
         </div>

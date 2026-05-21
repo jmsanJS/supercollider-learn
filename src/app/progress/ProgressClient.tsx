@@ -8,9 +8,12 @@ import { getProgressStats } from "@/lib/progress";
 import styles from "./page.module.css";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import ReminderModal from "@/components/ReminderModal/ReminderModal";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function ProgressClient() {
   const { progress, resetProgress } = useProgress();
+  const { lang } = useLang();
   const [showResetModal, setShowResetModal] = useState(false);
   const progressStats = getProgressStats(progress);
 
@@ -28,21 +31,21 @@ export default function ProgressClient() {
   };
 
   return (
-    <section className={styles.section_wrap} aria-label="Progreso del curso">
-      <TerminalHeader title="progreso" />
+    <section className={styles.section_wrap} aria-label={t(lang, "progress_aria")}>
+      <TerminalHeader title="progress" />
 
       <div
         className={styles.progress_hero}
         role="status"
-        aria-label={`${progressStats.percentage}% completado`}
+        aria-label={`${progressStats.percentage}%`}
       >
         <p className={styles.big_pct} aria-hidden="true">
           {progressStats.percentage}
           <span className={styles.pct_sym}>%</span>
         </p>
         <p className={styles.big_label}>
-          {progressStats.completed} de {progressStats.total} ejercicios
-          completados
+          {progressStats.completed} {t(lang, "progress_of")} {progressStats.total}{" "}
+          {t(lang, "progress_exercises_completed")}
         </p>
         <div
           className={styles.main_bar}
@@ -50,7 +53,7 @@ export default function ProgressClient() {
           aria-valuenow={progressStats.percentage}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="Progreso total"
+          aria-label={t(lang, "progress_total_aria")}
         >
           <div
             className={styles.main_bar_fill}
@@ -61,11 +64,11 @@ export default function ProgressClient() {
 
       <ul
         className={styles.level_progress_grid}
-        aria-label="Progreso por nivel"
+        aria-label={t(lang, "progress_by_level_aria")}
       >
         {progressStats.byLevel.map(({ level, total, done }) => (
           <li key={level} className={styles.lp_card}>
-            <h3 className={styles.lp_level}>Nivel {level}</h3>
+            <h3 className={styles.lp_level}>{t(lang, "progress_level")} {level}</h3>
             <p className={styles.lp_nums}>
               {done}/{total}
             </p>
@@ -75,7 +78,7 @@ export default function ProgressClient() {
               aria-valuenow={done}
               aria-valuemin={0}
               aria-valuemax={total}
-              aria-label={`Nivel ${level}: ${done} de ${total} completados`}
+              aria-label={`${t(lang, "progress_level")} ${level}: ${done} / ${total}`}
             >
               <div
                 className={styles.lp_bar_fill}
@@ -84,17 +87,17 @@ export default function ProgressClient() {
             </div>
             <p className={styles.lp_label}>
               {done === total
-                ? "✓ Completado"
+                ? t(lang, "progress_done")
                 : done === 0
-                  ? "Sin iniciar"
-                  : "En progreso"}
+                  ? t(lang, "progress_not_started")
+                  : t(lang, "progress_in_progress")}
             </p>
           </li>
         ))}
       </ul>
 
-      <section aria-label="Detalle por ejercicio">
-        <h2 className={styles.section_label}>Detalle por ejercicio</h2>
+      <section aria-label={t(lang, "progress_detail_label")}>
+        <h2 className={styles.section_label}>{t(lang, "progress_detail_label")}</h2>
         <ul className={styles.ex_detail_list}>
           {EXERCISES.map((ex) => {
             const p = progress[ex.id];
@@ -104,16 +107,16 @@ export default function ProgressClient() {
                 <Link
                   href={`/exercises?id=${ex.id}`}
                   className={`${styles.ex_detail_row} ${completed ? styles.ex_done : ""}`}
-                  aria-label={`${ex.title} — ${completed ? "completado" : "pendiente"}`}
+                  aria-label={`${ex.title[lang]} — ${completed ? t(lang, "progress_completed") : t(lang, "progress_pending")}`}
                 >
                   <span className={styles.edr_check} aria-hidden="true">
                     {completed ? "✓" : "○"}
                   </span>
-                  <span className={styles.edr_title}>{ex.title}</span>
+                  <span className={styles.edr_title}>{ex.title[lang]}</span>
                   <span className={styles.edr_tag}>{ex.tag}</span>
-                  <span className={styles.edr_level}>Nv.{ex.level}</span>
+                  <span className={styles.edr_level}>{t(lang, "progress_lv")}{ex.level}</span>
                   <span className={styles.edr_status}>
-                    {completed ? "completado" : "pendiente"}
+                    {completed ? t(lang, "progress_completed") : t(lang, "progress_pending")}
                   </span>
                   <span className={styles.edr_arrow} aria-hidden="true">→</span>
                 </Link>
@@ -127,9 +130,9 @@ export default function ProgressClient() {
         <button
           className={styles.reset_btn}
           onClick={handleReset}
-          aria-label="Borrar todo el progreso del curso"
+          aria-label={t(lang, "progress_reset_btn")}
         >
-          Borrar progreso
+          {t(lang, "progress_reset_btn")}
         </button>
       </section>
 
@@ -139,10 +142,10 @@ export default function ProgressClient() {
           onCancel={handleResetCancel}
           headerTitle="confirm"
           icon="warning"
-          title="Confirmar borrado"
-          description="¿Quieres borrar todo tu progreso? Esta acción no se puede deshacer."
-          confirmLabel="Borrar progreso"
-          cancelLabel="Cancelar"
+          title={t(lang, "progress_reset_modal_title")}
+          description={t(lang, "progress_reset_modal_desc")}
+          confirmLabel={t(lang, "progress_reset_modal_confirm")}
+          cancelLabel={t(lang, "progress_cancel")}
           showRemindOption={false}
         />
       )}

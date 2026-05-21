@@ -9,26 +9,32 @@ import {
   getTotalByCategory,
 } from "@/lib/glossary";
 import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
-
-const CATEGORIES: { id: GlossaryCategory; label: string }[] = [
-  { id: "all", label: "Todos" },
-  { id: "programming", label: "Programación" },
-  { id: "audio", label: "Audio" },
-  { id: "music", label: "Música" },
-  { id: "supercollider", label: "SuperCollider" },
-];
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function GlossaryClient() {
+  const { lang } = useLang();
   const [activeCategory, setActiveCategory] = useState<GlossaryCategory>("all");
   const [activeTerm, setActiveTerm] = useState<GlossaryTerm | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const shouldScroll = useRef(false);
 
-  const terms = getTermsByCategory(activeCategory);
+  const CATEGORIES: { id: GlossaryCategory; label: string }[] = [
+    { id: "all", label: t(lang, "glossary_cat_all") },
+    { id: "programming", label: t(lang, "glossary_cat_programming") },
+    { id: "audio", label: t(lang, "glossary_cat_audio") },
+    { id: "music", label: t(lang, "glossary_cat_music") },
+    { id: "supercollider", label: t(lang, "glossary_cat_sc") },
+  ];
+
+  const terms = getTermsByCategory(activeCategory, lang);
   const filteredTerms = searchQuery.trim()
-    ? terms.filter((t) => {
+    ? terms.filter((item) => {
         const q = searchQuery.toLowerCase();
-        return t.term.toLowerCase().includes(q);
+        return (
+          item.term[lang].toLowerCase().includes(q) ||
+          item.definition[lang].toLowerCase().includes(q)
+        );
       })
     : terms;
   const totals = getTotalByCategory();
@@ -54,13 +60,13 @@ export default function GlossaryClient() {
   };
 
   return (
-    <section className={styles.section_wrap} aria-label="Glosario">
+    <section className={styles.section_wrap} aria-label="Glossary">
       <div className={styles.glossary_layout}>
         <aside className={styles.sidebar}>
           <div className={styles.sidebar_header}>
-            <span className={styles.section_label}>Categorías</span>
+            <span className={styles.section_label}>{t(lang, "glossary_categories_label")}</span>
           </div>
-          <nav aria-label="Filtrar por categoría">
+          <nav aria-label="Filter by category">
             <ul className={styles.cat_list}>
               {CATEGORIES.map((cat) => (
                 <li key={cat.id}>
@@ -83,27 +89,27 @@ export default function GlossaryClient() {
         </aside>
 
         <div className={styles.main}>
-          <TerminalHeader title="glossary" desc="Términos y conceptos" />
+          <TerminalHeader title="glossary" desc={t(lang, "glossary_desc")} />
 
           <div className={styles.search_wrap}>
             <input
               className={styles.search_input}
               type="search"
-              placeholder="Buscar término o definición…"
+              placeholder={t(lang, "glossary_search_placeholder")}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 setActiveTerm(null);
               }}
-              aria-label="Buscar en el glosario"
+              aria-label={t(lang, "glossary_search_aria")}
             />
           </div>
 
           <div className={styles.terms_wrap}>
-            <ul className={styles.terms_list} aria-label="Lista de términos">
+            <ul className={styles.terms_list} aria-label="Terms list">
               {filteredTerms.length === 0 && (
                 <li className={styles.no_results}>
-                  Sin resultados para &quot;{searchQuery}&quot;
+                  {t(lang, "glossary_no_results")} &quot;{searchQuery}&quot;
                 </li>
               )}
               {filteredTerms.map((term) => (
@@ -114,7 +120,7 @@ export default function GlossaryClient() {
                     aria-expanded={activeTerm?.id === term.id}
                   >
                     <div className={styles.term_top}>
-                      <span className={styles.term_name}>{term.term}</span>
+                      <span className={styles.term_name}>{term.term[lang]}</span>
                       <span className={styles.term_cat}>{term.category}</span>
                       <span className={styles.term_chevron} aria-hidden="true">
                         {activeTerm?.id === term.id ? "▴" : "▾"}
@@ -124,13 +130,13 @@ export default function GlossaryClient() {
                     {activeTerm?.id === term.id && (
                       <div className={styles.term_detail} role="region">
                         <p className={styles.term_definition}>
-                          {term.definition}
+                          {term.definition[lang]}
                         </p>
 
                         {term.related && term.related.length > 0 && (
                           <div className={styles.related_wrap}>
                             <span className={styles.related_label}>
-                              Ver también:
+                              {t(lang, "glossary_see_also")}
                             </span>
                             <div className={styles.related_list}>
                               {getRelatedTerms(term).map((rel) => (
@@ -142,7 +148,7 @@ export default function GlossaryClient() {
                                     handleRelatedClick(rel);
                                   }}
                                 >
-                                  {rel.term}
+                                  {rel.term[lang]}
                                 </span>
                               ))}
                             </div>

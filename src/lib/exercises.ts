@@ -1,5 +1,5 @@
 import { EXERCISES } from "@/data/exercises";
-import { Exercise } from "@/types";
+import type { Exercise, Locale } from "@/types";
 
 export function getLevels(): number[] {
   return [...new Set(EXERCISES.map(ex => ex.level))].sort();
@@ -17,6 +17,6 @@ export function getTotalExercises(): number {
   return EXERCISES.length;
 }
 
-export function getInitialCodes(): Record<string, string> {
-  return Object.fromEntries(EXERCISES.map(e => [e.id, e.starter]));
+export function getInitialCodes(lang: Locale = "en"): Record<string, string> {
+  return Object.fromEntries(EXERCISES.map(e => [e.id, e.starter[lang]]));
 }

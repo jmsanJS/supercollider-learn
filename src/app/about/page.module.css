@@ -135,6 +135,19 @@
   font-style: italic;
 }
 
+.hero_sub span,
+.step_desc span {
+  color: var(--text-primary);
+  font-style: italic;
+}
+
+.notice code {
+  background: var(--bg-card);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 0.88em;
+}
+
 /* Notice */
 .notice {
   border: 1px solid var(--border-medium);

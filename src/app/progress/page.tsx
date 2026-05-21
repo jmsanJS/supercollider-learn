@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import ProgressClient from "./ProgressClient"
 
 export const metadata: Metadata = {
-  title: "Progreso",
-  description: "Registro del progreso de los ejercicios de SC Learn.",
+  title: "Progress",
+  description: "Track your SC Learn exercise progress.",
 };
 
 export default function ProgressPage() {

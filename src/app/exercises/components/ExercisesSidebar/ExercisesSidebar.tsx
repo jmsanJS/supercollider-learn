@@ -9,11 +9,14 @@ import {
 import { useExercises } from "@/context/ExercisesContext";
 import { useProgress } from "@/context/ProgressContext";
 import { useAudio } from "@/hooks/useAudio";
+import { useLang } from "@/context/LangContext";
+import { t } from "@/i18n/ui";
 
 export default function ExercisesSidebar() {
   const { activeId, setActiveId } = useExercises();
   const { progress } = useProgress();
   const { stop } = useAudio();
+  const { lang } = useLang();
 
   const levels = getLevels();
   const totalExercises = getTotalExercises();
@@ -28,13 +31,13 @@ export default function ExercisesSidebar() {
     <aside className={styles.ex_sidebar}>
       <div className={styles.sidebar_header}>
         <span className={styles.section_label} style={{ marginBottom: 0 }}>
-          Ejercicios
+          {t(lang, "exercises_sidebar_label")}
         </span>
         <span className={styles.ex_count}>{completedCount}/{totalExercises}</span>
       </div>
       {levels.map((lv) => (
         <div key={lv} className={styles.level_group}>
-          <div className={styles.level_label}>Nivel {lv}</div>
+          <div className={styles.level_label}>{t(lang, "exercises_level")} {lv}</div>
           {getExercisesByLevel(lv).map((e) => {
             const p = progress[e.id];
             const completed = p?.completed ?? false;
@@ -45,7 +48,7 @@ export default function ExercisesSidebar() {
                 onClick={() => handleClick(e.id)}
               >
                 <span className={styles.ex_check}>{completed ? "✓" : "○"}</span>
-                <span className={styles.ex_name}>{e.title}</span>
+                <span className={styles.ex_name}>{e.title[lang]}</span>
                 <span className={styles.ex_tag}>{e.tag}</span>
               </button>
             );

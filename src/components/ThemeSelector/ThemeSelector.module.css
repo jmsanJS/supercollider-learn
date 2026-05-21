@@ -109,3 +109,9 @@
   font-size: 0.8rem;
   color: var(--accent);
 }
+
+@media (max-width: 480px) {
+  .trigger_label {
+    display: none;
+  }
+}

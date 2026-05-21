@@ -54,6 +54,62 @@ src/
 
 Content lives in `src/data/`. Adding a new exercise, UGen entry, or glossary term only requires editing those files — no logic changes needed.
 
+## Translations (i18n)
+
+The site supports **English (default), Spanish, and French**. You do not need to speak all three languages to contribute — see the convention below.
+
+### How it works
+
+There are two places where text lives:
+
+**1. UI strings** — labels, buttons, aria attributes, error messages. All live in `src/i18n/ui.ts` under three locale keys:
+
+```ts
+const ui = {
+  en: { exercises_run: "▶ Run" },
+  es: { exercises_run: "▶ Ejecutar" },
+  fr: { exercises_run: "▶ Exécuter" },
+}
+```
+
+Components read the current locale via `useLang()` and call `t(lang, "key")` to get the right string.
+
+**2. Content strings** — exercise titles, theory text, glossary definitions, UGen descriptions. These are stored inline in `src/data/` as `LocalizedString` objects:
+
+```ts
+title: {
+  en: "Basic sine wave",
+  es: "Onda sinusoidal básica",
+  fr: "Onde sinusoïdale de base",
+}
+```
+
+### Contributing a translation
+
+**You only need to translate what you know.** For locales you don't speak, write `"NEEDS_TRANSLATION"` as a placeholder:
+
+```ts
+// In src/i18n/ui.ts — adding a new UI key:
+en: { my_new_label: "My label" },
+es: { my_new_label: "NEEDS_TRANSLATION" },
+fr: { my_new_label: "NEEDS_TRANSLATION" },
+
+// In src/data/exercises.ts — adding a new exercise:
+title: {
+  en: "Ring modulation",
+  es: "NEEDS_TRANSLATION",
+  fr: "NEEDS_TRANSLATION",
+},
+```
+
+The build will still pass. Another contributor can follow up with a focused PR that only fills in the missing strings.
+
+**Translation-only PRs are very welcome** — if you find a `NEEDS_TRANSLATION` and know the language, open a PR that fills it in. No other code changes needed.
+
+### TypeScript enforcement
+
+The type system ensures every locale key exists. If you add a key to `en` but forget `es` or `fr`, `tsc` will fail. The `NEEDS_TRANSLATION` string is the safe way to satisfy the type checker while marking the work as incomplete.
+
 ## Getting started
 
 ```bash
@@ -74,15 +130,15 @@ npm run lint
 
 ### New exercise
 
-Add an entry to `src/data/exercises.ts`. Each exercise implements a `validate(code: string)` function that returns `{ ok, tips, audio }`. Look at existing exercises for reference — the pattern is straightforward.
+Add an entry to `src/data/exercises.ts`. Text fields (`title`, `goal`, `theory`, `starter`, `answer`) are `LocalizedString` — provide all three locales or use `"NEEDS_TRANSLATION"` for the ones you don't know. Each exercise also implements a `validate(code: string)` function that returns `{ ok, tips }` where `tips` is a `LocalizedString[]`. Look at existing exercises for reference.
 
 ### New UGen entry
 
-Add an entry to `src/data/ugens.ts`.
+Add an entry to `src/data/ugens.ts`. The `description`, `note[]`, and each argument's `desc` are `LocalizedString`.
 
 ### New glossary term
 
-Add an entry to `src/data/glossary.ts`.
+Add an entry to `src/data/glossary.ts`. Both `term` and `definition` are `LocalizedString`.
 
 ## Contributing
 
@@ -108,6 +164,7 @@ Contributions are welcome. The project follows a standard open-source workflow:
 - Improvements to existing exercise feedback/tips
 - UGen reference entries
 - Glossary terms
+- Filling in `NEEDS_TRANSLATION` placeholders for any language you speak
 - Accessibility improvements
 - UI bugs
 

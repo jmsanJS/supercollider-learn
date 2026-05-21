@@ -39,15 +39,16 @@ If you want to contribute content, keep this scope in mind: the aim is a clear, 
 ```
 src/
 ├── app/                  # Next.js App Router pages
+│   ├── about/            # About page
 │   ├── exercises/        # Exercise player
 │   ├── glossary/         # Glossary page
-│   ├── ugens/            # UGen reference
 │   ├── progress/         # Progress overview
-│   └── about/            # About page
+│   └── ugens/            # UGen reference
 ├── components/           # Shared UI components
 ├── context/              # React contexts (Theme, Progress, Exercises)
 ├── data/                 # Static content (exercises, UGens, glossary, themes)
 ├── hooks/                # Custom hooks (useAudio)
+├── i18n/                 # Translations (EN / ES / FR)
 ├── lib/                  # Utilities (audio engine, parser, highlight, progress)
 └── types/                # TypeScript types
 ```
@@ -109,6 +110,68 @@ The build will still pass. Another contributor can follow up with a focused PR t
 ### TypeScript enforcement
 
 The type system ensures every locale key exists. If you add a key to `en` but forget `es` or `fr`, `tsc` will fail. The `NEEDS_TRANSLATION` string is the safe way to satisfy the type checker while marking the work as incomplete.
+
+## Audio architecture
+
+No real SuperCollider runs in the browser. The audio pipeline is a custom approximation built on [Tone.js](https://tonejs.github.io/).
+
+### Flow
+
+```
+User writes SC code
+  │
+  ▼
+scCodeParser.ts ──── validateSCCode()  →  structural checks (braces, .play, UGen presence)
+                └─── parseSCCode()     →  AudioConfig object
+  │
+  ▼
+AudioConfig  (intermediate data format — freq, amp, type, lfo, env, filter, reverb…)
+  │
+  ▼
+useAudio.ts ── play(AudioConfig)  →  selects the right factory function
+  │
+  ▼
+audio.ts  (factory functions)  →  creates and connects Tone.js nodes
+  │
+  ▼
+Tone.js  →  browser audio output
+```
+
+### Key files
+
+| File | Role |
+|---|---|
+| `src/lib/scCodeParser.ts` | Parses SC syntax into `AudioConfig` via regex. Also validates structure. |
+| `src/types/index.ts` | Defines `AudioConfig` — the data contract between parser and engine. |
+| `src/hooks/useAudio.ts` | React hook. Manages Tone.js lifecycle: starts context, routes `AudioConfig` to the right factory, disposes nodes on stop. |
+| `src/lib/audio.ts` | Factory functions (`createSynth`, `createNoise`, `createLFOSynth`, `createEnvSynth`, `createSweepSynth`, `createFilteredSynth`, `createReverbSynth`, `createDelay`…). Each one wires Tone.js nodes together. |
+
+### What the parser understands
+
+The parser covers a deliberate subset of SuperCollider UGens:
+
+- **Oscillators** — `SinOsc`, `Saw`, `Pulse`, `LFTri`
+- **Noise** — `WhiteNoise`, `PinkNoise`, `BrownNoise`
+- **LFO modulation** — `LFSaw`, `LFPulse`, `LFTri` used as modulators (FM and AM)
+- **Envelopes** — `Env.perc`
+- **Frequency sweeps** — `XLine`, `Line`
+- **Spatial** — `Pan2` (stereo panning)
+
+Anything outside this list will not produce audio. Complex signal graphs, multiple sound sources, and routing chains are not supported.
+
+### Adding a new UGen sound
+
+There are two cases depending on where the sound is needed:
+
+**UGen reference page** — the `sound` field on each entry in `src/data/ugens.ts` is a hardcoded `AudioConfig` object. The parser is not involved. Just set the fields directly:
+
+```ts
+sound: { type: "sine", freq: 440, amp: 0.3 }
+```
+
+**Exercise editor** — the user writes code and clicks Run. The parser must be able to extract the right parameters from the text. This requires:
+1. Adding a regex-based detection function in `scCodeParser.ts` that reads the relevant arguments and returns the right `AudioConfig` fields
+2. If the sound type is new, adding a factory function in `audio.ts` and a matching branch in `useAudio.ts`
 
 ## Getting started
 

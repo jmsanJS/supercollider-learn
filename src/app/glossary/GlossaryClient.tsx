@@ -31,10 +31,7 @@ export default function GlossaryClient() {
   const filteredTerms = searchQuery.trim()
     ? terms.filter((item) => {
         const q = searchQuery.toLowerCase();
-        return (
-          item.term[lang].toLowerCase().includes(q) ||
-          item.definition[lang].toLowerCase().includes(q)
-        );
+        return item.term[lang].toLowerCase().includes(q);
       })
     : terms;
   const totals = getTotalByCategory();
@@ -64,7 +61,9 @@ export default function GlossaryClient() {
       <div className={styles.glossary_layout}>
         <aside className={styles.sidebar}>
           <div className={styles.sidebar_header}>
-            <span className={styles.section_label}>{t(lang, "glossary_categories_label")}</span>
+            <span className={styles.section_label}>
+              {t(lang, "glossary_categories_label")}
+            </span>
           </div>
           <nav aria-label="Filter by category">
             <ul className={styles.cat_list}>
@@ -120,7 +119,9 @@ export default function GlossaryClient() {
                     aria-expanded={activeTerm?.id === term.id}
                   >
                     <div className={styles.term_top}>
-                      <span className={styles.term_name}>{term.term[lang]}</span>
+                      <span className={styles.term_name}>
+                        {term.term[lang]}
+                      </span>
                       <span className={styles.term_cat}>{term.category}</span>
                       <span className={styles.term_chevron} aria-hidden="true">
                         {activeTerm?.id === term.id ? "▴" : "▾"}

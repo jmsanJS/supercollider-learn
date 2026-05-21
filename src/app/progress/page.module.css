@@ -80,9 +80,28 @@
   list-style: none;
 }
 
+@media (max-width: 700px) {
+  .section_wrap {
+    padding: 0 10px;
+  }
+  .level_progress_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 500px) {
+  .section_wrap {
+    padding: 0 8px;
+  }
+  .progress_hero {
+    padding: 24px 16px;
+  }
   .level_progress_grid {
     grid-template-columns: 1fr;
+  }
+  .edr_tag,
+  .edr_level {
+    display: none;
   }
 }
 

@@ -6,6 +6,13 @@
   height: fit-content;
 }
 
+@media (max-width: 700px) {
+  .ex_sidebar {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}
+
 .sidebar_header {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border-subtle);
@@ -91,4 +98,13 @@
   font-size: 0.58rem;
   color: var(--text-muted);
   white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .sidebar_header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--bg-base);
+  }
 }

@@ -98,4 +98,10 @@
   .cards_grid {
     grid-template-columns: 1fr;
   }
+  .section_wrap {
+    padding: 20px 12px;
+  }
+  .terminal_section {
+    padding: 24px 16px;
+  }
 }

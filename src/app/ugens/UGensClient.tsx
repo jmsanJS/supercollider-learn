@@ -97,7 +97,7 @@ export default function UGensClient() {
           </div>
         </div>
 
-        <div>
+        <div className={styles.ugen_main}>
           <TerminalHeader title="ugens" desc="Unit Generators" />
 
           <div className={styles.ugen_detail}>

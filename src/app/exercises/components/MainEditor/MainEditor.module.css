@@ -35,9 +35,25 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1120px) {
   .ex_body {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .theory_pane,
+  .editor_pane {
+    padding: 10px 12px;
+  }
+  .ex_goal_bar {
+    padding: 8px 12px;
+  }
+  .btn_run,
+  .btn_stop,
+  .btn_reset {
+    padding: 8px 10px;
+    font-size: 0.7rem;
   }
 }
 

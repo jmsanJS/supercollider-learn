@@ -8,6 +8,7 @@ export type AudioConfig = {
   freq?: number;
   amp?: number;
   type?: OscillatorType | "noise" | "dtmf";
+  pulseWidth?: number;
   sample?: string;
   lfo?: LFOConfig;
   freqs?: number[];
@@ -53,8 +54,10 @@ type LFOTarget = "frequency" | "amplitude";
 type LFOConfig = {
   rate: number;
   depth: number;
-  shape?: LFOShape
+  shape?: LFOShape;
   target?: LFOTarget;
+  phase?: number;
+  width?: number;
 };
 
 export type ReverbConfig = {
@@ -67,7 +70,7 @@ export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;
   synth2?: Tone.Oscillator;
   sample?: Tone.Player;
-  lfo?: Tone.LFO;
+  lfo?: Tone.LFO | Tone.Oscillator;
   noise?: Tone.Noise;
   panner?: Tone.Panner;
   filter?: Tone.Filter;

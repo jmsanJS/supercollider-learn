@@ -2,8 +2,16 @@ import * as Tone from "tone";
 import type { AudioConfig, AudioRefs, FilterConfig } from "@/types";
 
 function buildSynth(audio: AudioConfig) {
+  // When pulseWidth is present, use Tone's "pulse" oscillator so the duty cycle
+  // is honoured. SC width (0–1) maps to Tone width (-1 to 1): toneW = 2*scW - 1.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const oscOptions: any =
+    audio.pulseWidth !== undefined
+      ? { type: "pulse", width: audio.pulseWidth * 2 - 1 }
+      : { type: audio.type as OscillatorType };
+
   return new Tone.Synth({
-    oscillator: { type: audio.type as OscillatorType },
+    oscillator: oscOptions,
     envelope: {
       attack: audio.env?.attack ?? 0.01,
       decay: audio.env?.decay ?? 0,
@@ -71,7 +79,7 @@ export function createLFOSynth(
   const synth = buildSynth(audio);
   synth.connect(amp);
 
-  let lfo: Tone.LFO;
+  let lfo: Tone.LFO | Tone.Oscillator;
 
   if (target === "amplitude") {
     lfo = new Tone.LFO({
@@ -82,12 +90,41 @@ export function createLFOSynth(
     })
       .connect(amp.gain)
       .start();
+  } else if (shape === "square" && audio.lfo!.width !== undefined) {
+    // Variable duty-cycle pulse: sawtooth → WaveShaper → AudioToGain → Scale.
+    // Tone.Scale maps [0,1]→[min,max], so we need AudioToGain to convert ±1→[0,1]
+    // first (matching Tone.LFO's internal chain). Then we emulate connectSignal by
+    // zeroing the frequency Signal so triggerAttack doesn't add on top of our output.
+    const lfoWidth = audio.lfo!.width;
+    const threshold = 1 - 2 * lfoWidth;
+    const osc = new Tone.Oscillator({
+      type: "sawtooth",
+      frequency: rate,
+      phase: audio.lfo!.phase ?? 0,
+    });
+    const shaper = new Tone.WaveShaper(
+      (x: number) => (x > threshold ? 1 : -1),
+      4096,
+    );
+    const a2g = new Tone.AudioToGain();
+    const scaler = new Tone.Scale(freq - depth, freq + depth);
+    osc.connect(shaper);
+    shaper.connect(a2g);
+    a2g.connect(scaler);
+    // Emulate connectSignal: zero the freq Signal so it doesn't add to our output
+    synth.oscillator.frequency.cancelScheduledValues(0);
+    synth.oscillator.frequency.setValueAtTime(0, 0);
+    synth.oscillator.frequency.overridden = true;
+    scaler.connect(synth.oscillator.frequency);
+    osc.start();
+    lfo = osc;
   } else {
     lfo = new Tone.LFO({
       frequency: rate,
       min: freq - depth,
       max: freq + depth,
       type: shape,
+      phase: audio.lfo!.phase ?? 0,
     })
       .connect(synth.oscillator.frequency)
       .start();

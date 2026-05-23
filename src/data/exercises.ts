@@ -149,9 +149,9 @@ C'est la relation mathématique fondamentale de la musique occidentale.
     title: { en: "Square wave", es: "Onda cuadrada", fr: "Onde carrée" },
     tag: "Pulse",
     goal: {
-      en: "Generate a square wave at 220 Hz with amplitude 0.2",
-      es: "Genera una onda cuadrada a 220 Hz con amplitud 0.2",
-      fr: "Génère une onde carrée à 220 Hz avec une amplitude de 0.2",
+      en: "Generate a perfect square wave at 220 Hz with amplitude 0.2",
+      es: "Genera una onda cuadrada perfecta a 220 Hz con amplitud 0.2",
+      fr: "Génère une onde carrée parfaite à 220 Hz avec une amplitude de 0.2",
     },
     theory: {
       en: `To produce square or rectangular waves use Pulse. It has a brighter timbre than SinOsc.
@@ -163,7 +163,9 @@ Syntax:
 
   width → pulse width. Determines the shape of the wave. 0.5 produces a perfect square wave (symmetric). Values other than 0.5 create asymmetry and change the timbre.
 
-  mul   → amplitude (or volume). Use a low value like 0.2.`,
+  mul   → amplitude (or volume). Use a low value like 0.2.
+
+As in the previous exercises, remember you can duplicate the signal to both channels with ! 2.`,
       es: `Para producir ondas cuadradas o rectangulares debes utilizar Pulse. Tiene un timbre más brillante que SinOsc.
 
 Sintaxis:
@@ -173,7 +175,9 @@ Sintaxis:
 
   width → ancho del pulso. Determina la forma de la onda. 0.5 produce una onda cuadrada perfecta (simétrica). Valores distintos de 0.5 crean asimetría y cambian el timbre.
 
-  mul   → amplitud (o volumen). Usa un valor bajo como 0.2.`,
+  mul   → amplitud (o volumen). Usa un valor bajo como 0.2.
+
+Como en los ejercicios anteriores, recuerda que puedes duplicar la señal a ambos canales con "! 2".`,
       fr: `Pour produire des ondes carrées ou rectangulaires, utilisez Pulse. Son timbre est plus brillant que SinOsc.
 
 Syntaxe :
@@ -183,7 +187,9 @@ Syntaxe :
 
   width → largeur d'impulsion. Détermine la forme de l'onde. 0.5 produit une onde carrée parfaite (symétrique). Des valeurs différentes de 0.5 créent une asymétrie et modifient le timbre.
 
-  mul   → amplitude (ou volume). Utilisez une faible valeur comme 0.2.`,
+  mul   → amplitude (ou volume). Utilisez une faible valeur comme 0.2.
+
+Comme dans les exercices précédents, rappelle-toi que tu peux dupliquer le signal sur les deux canaux avec ! 2.`,
     },
     starter: {
       en: `// Write your code inside the { }.play block:\n{\n  // Your code goes here\n  \n}.play`,
@@ -197,13 +203,13 @@ Syntaxe :
     },
     validate(code) {
       const hasPulse = /Pulse\.ar/.test(code);
-      const hasFreq220 = /Pulse\.ar\s*\(\s*220\s*,\s*0\.5/.test(code);
-      const hasAllArgs = /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+/.test(code);
-      const ok = hasPulse && hasFreq220;
+      const hasCorrectCall = /Pulse\.ar\s*\(\s*220\s*,\s*0\.5\s*,\s*0\.2/.test(code);
+      const hasAllArgs = /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+/.test(code);
+      const ok = hasCorrectCall;
       const tips = [];
       if (!hasPulse) tips.push({ en: "Use Pulse.ar(...) — it is the UGen for square and rectangular waves.", es: "Usa Pulse.ar(...) — es el UGen para ondas cuadradas y rectangulares.", fr: "Utilisez Pulse.ar(...) — c'est l'UGen pour les ondes carrées et rectangulaires." });
       else if (hasAllArgs && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
-      else if (!ok) tips.push({ en: "Pulse.ar needs: the frequency in Hz and the pulse width (0.5 for a perfect square wave).", es: "Pulse.ar necesita: la frecuencia en Hz y el ancho del pulso (0.5 para onda cuadrada perfecta).", fr: "Pulse.ar a besoin : de la fréquence en Hz et de la largeur d'impulsion (0.5 pour une onde carrée parfaite)." });
+      else if (!ok) tips.push({ en: "Pulse.ar needs three arguments: the frequency in Hz, the pulse width (0.5 for a perfect square wave), and the amplitude (mul).", es: "Pulse.ar necesita tres argumentos: la frecuencia en Hz, el ancho del pulso (0.5 para onda cuadrada perfecta) y la amplitud (mul).", fr: "Pulse.ar a besoin de trois arguments : la fréquence en Hz, la largeur d'impulsion (0.5 pour une onde carrée parfaite) et l'amplitude (mul)." });
       return { ok, tips };
     },
   },
@@ -288,6 +294,70 @@ Utilisez-le pour :
   },
   {
     id: "ex5",
+    level: 1,
+    title: { en: "Sawtooth wave", es: "Diente de sierra", fr: "Dent de scie" },
+    tag: "Saw",
+    goal: {
+      en: "Generate a sawtooth wave at 330 Hz with amplitude 0.2",
+      es: "Genera una onda de diente de sierra a 330 Hz con amplitud 0.2",
+      fr: "Génère une onde en dent de scie à 330 Hz avec une amplitude de 0.2",
+    },
+    theory: {
+      en: `The sawtooth wave is one of the richest waveforms in harmonics. Unlike SinOsc (pure and smooth wave), Saw contains all harmonics of the series, giving it a bright and piercing timbre.
+
+Syntax:
+  Saw.ar(freq, mul)
+
+  freq → the frequency in Hz, same as in SinOsc. 330 Hz corresponds approximately to the note E3.
+
+  mul  → the amplitude (volume). Use moderate values (0.1 – 0.3) because its harmonic richness can sound very full at high volumes.
+
+The sawtooth wave is the ideal starting point for subtractive synthesis: it is filtered afterwards to sculpt the timbre.`,
+      es: `La onda de diente de sierra es una de las formas de onda más ricas en armónicos. A diferencia de SinOsc (onda pura y suave), Saw contiene todos los armónicos de la serie, lo que le da un timbre brillante y penetrante.
+
+Sintaxis:
+  Saw.ar(freq, mul)
+
+  freq → la frecuencia en Hz, igual que en SinOsc. 330 Hz corresponde aproximadamente a la nota Mi3.
+
+  mul  → la amplitud (volumen). Usa valores moderados (0.1 – 0.3) porque su riqueza armónica puede sonar muy cargada a volúmenes altos.
+
+La onda de diente de sierra es el punto de partida ideal para la síntesis substractiva: se filtra después para esculpir el timbre.`,
+      fr: `L'onde en dent de scie est l'une des formes d'onde les plus riches en harmoniques. Contrairement à SinOsc (onde pure et douce), Saw contient tous les harmoniques de la série, ce qui lui donne un timbre brillant et perçant.
+
+Syntaxe :
+  Saw.ar(freq, mul)
+
+  freq → la fréquence en Hz, comme dans SinOsc. 330 Hz correspond approximativement à la note Mi3.
+
+  mul  → l'amplitude (volume). Utilisez des valeurs modérées (0.1 – 0.3) car sa richesse harmonique peut sonner très chargée à des volumes élevés.
+
+L'onde en dent de scie est le point de départ idéal pour la synthèse soustractive : elle est ensuite filtrée pour sculpter le timbre.`,
+    },
+    starter: {
+      en: `// Write your code inside the { }.play block:\n{\n  // Your code goes here\n  \n}.play`,
+      es: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n  \n}.play`,
+      fr: `// Écrivez votre code dans le bloc { }.play :\n{\n  // Votre code va ici\n  \n}.play`,
+    },
+    answer: {
+      en: `// Sawtooth wave at 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
+      es: `// Onda de diente de sierra a 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
+      fr: `// Onde en dent de scie à 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
+    },
+    validate(code) {
+      const hasSaw = /Saw\.ar/.test(code);
+      const hasCorrectCall = /Saw\.ar\s*\(\s*330\s*,\s*0\.2\s*\)/.test(code);
+      const hasAllArgs = /Saw\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasCorrectCall;
+      const tips = [];
+      if (!hasSaw) tips.push({ en: "The UGen for the sawtooth wave is called Saw. Write it inside the { } block.", es: "El UGen para la onda de diente de sierra se llama Saw. Escríbelo dentro del bloque { }.", fr: "L'UGen pour l'onde en dent de scie s'appelle Saw. Écrivez-le à l'intérieur du bloc { }." });
+      else if (hasAllArgs && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
+      else if (!ok) tips.push({ en: "Saw.ar needs two arguments: the frequency in Hz and the amplitude (mul).", es: "Saw.ar necesita dos argumentos: la frecuencia en Hz y la amplitud (mul).", fr: "Saw.ar a besoin de deux arguments : la fréquence en Hz et l'amplitude (mul)." });
+      return { ok, tips };
+    },
+  },
+  {
+    id: "ex6",
     level: 2,
     title: { en: "Ambulance siren", es: "Sirena de ambulancia", fr: "Sirène d'ambulance" },
     tag: "LFSaw",
@@ -297,150 +367,79 @@ Utilisez-le pour :
       fr: "Fréquence oscillant entre 400 et 800 Hz à 2 fois par seconde, amplitude 0.4",
     },
     theory: {
-      en: `To create a siren, you need the frequency of SinOsc to change on its own over time. This is called frequency modulation.
+      en: `Now that you've finished the level 1 exercises, let's step it up. We'll recreate sounds you could hear every day in real life.
+
+To create a siren, you need the frequency of SinOsc to change on its own over time. This is called frequency modulation.
 
 LFSaw is a slow oscillator (LFO) that generates an ascending ramp from -1 to +1 cyclically.
 
 If you multiply that ramp by a range and add a center frequency, you get a frequency sweep:
 
-  LFSaw.ar(rate) * range + center
+  LFSaw.ar(rate, iphase) * range + center
 
   rate   → how many times per second it oscillates (e.g. 2 = twice/sec)
+  iphase → initial phase of the ramp. Ranges from 0 to 2. 0 starts at the bottom (-1), 1 starts in the middle (0), 2 starts at the top (+1).
   range  → how many Hz it goes up and down from the center
-  center → the central frequency around which it oscillates
+  center → the central frequency around which it oscillates`,
+      es: `Ahora que terminaste los ejercicios de nivel 1, subamos la intensidad. Vamos a recrear sonidos que podrías escuchar en el día a día.
 
-Place that expression as the first argument of SinOsc.ar:
-  SinOsc.ar( LFSaw.ar(...) * ... + ..., 0, amplitude )`,
-      es: `Para crear una sirena, necesitas que la frecuencia de SinOsc cambie sola con el tiempo. Esto se llama modulación de frecuencia.
+Para crear una sirena, necesitas que la frecuencia de SinOsc cambie sola con el tiempo. Esto se llama modulación de frecuencia.
 
 LFSaw es un oscilador lento (LFO) que genera una rampa ascendente que va de -1 a +1 de forma cíclica.
 
 Si multiplicas esa rampa por un rango y le sumas una frecuencia central, obtienes un barrido de frecuencias:
 
-  LFSaw.ar(frecuencia) * rango + centro
+  LFSaw.ar(frecuencia, fase_inicial) * rango + centro
 
-  frecuencia → cuántas veces por segundo oscila (ej: 2 = dos veces/seg)
-  rango      → cuántos Hz sube y baja respecto al centro
-  centro     → frecuencia central alrededor de la que oscila
+  frecuencia    → cuántas veces por segundo oscila (ej: 2 = dos veces/seg)
+  fase_inicial  → fase inicial de la rampa. Va de 0 a 2. 0 empieza abajo (-1), 1 empieza en el medio (0), 2 empieza arriba (+1)
+  rango         → cuántos Hz sube y baja respecto al centro
+  centro        → frecuencia central alrededor de la que oscila`,
+      fr: `Maintenant que vous avez terminé les exercices de niveau 1, passons à la vitesse supérieure. Nous allons recréer des sons que vous pourriez entendre au quotidien.
 
-Coloca esa expresión como primer argumento de SinOsc.ar:
-  SinOsc.ar( LFSaw.ar(...) * ... + ..., 0, amplitud )`,
-      fr: `Pour créer une sirène, vous devez faire varier la fréquence de SinOsc automatiquement dans le temps. C'est ce qu'on appelle la modulation de fréquence.
+Pour créer une sirène, vous devez faire varier la fréquence de SinOsc automatiquement dans le temps. C'est ce qu'on appelle la modulation de fréquence.
 
 LFSaw est un oscillateur lent (LFO) qui génère une rampe ascendante allant de -1 à +1 de façon cyclique.
 
 Si vous multipliez cette rampe par une plage et y ajoutez une fréquence centrale, vous obtenez un balayage de fréquences :
 
-  LFSaw.ar(rate) * range + center
+  LFSaw.ar(rate, phase) * range + center
 
   rate   → combien de fois par seconde il oscille (ex : 2 = deux fois/sec)
+  iphase → phase initiale de la rampe. Va de 0 à 2. 0 commence en bas (-1), 1 commence au milieu (0), 2 commence en haut (+1)
   range  → de combien de Hz il monte et descend par rapport au centre
-  center → la fréquence centrale autour de laquelle il oscille
-
-Placez cette expression comme premier argument de SinOsc.ar :
-  SinOsc.ar( LFSaw.ar(...) * ... + ..., 0, amplitude )`,
+  center → la fréquence centrale autour de laquelle il oscille`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE) * RANGE + CENTER,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFSaw.ar(FRECUENCIA) * RANGO + CENTRO,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE) * RANGE + CENTER,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, IPHASE) * RANGE + CENTER,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFSaw.ar(FRECUENCIA, FASE_INICIAL) * RANGO + CENTRO,\n    0, AMPLITUD\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, PHASE_INITIALE) * RANGE + CENTER,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Siren: oscillates between 400 and 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Sirena: oscila entre 400 y 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Sirène : oscille entre 400 et 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Siren: oscillates between 400 and 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
+      es: `// Sirena: oscila entre 400 y 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
+      fr: `// Sirène : oscille entre 400 et 800 Hz\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
     },
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
       const hasLFSaw = /LFSaw/.test(code);
-      const hasRate2 = /LFSaw\.ar\s*\(\s*2\s*\)/.test(code);
+      const hasRate2 = /LFSaw\.ar\s*\(\s*2\s*[,)]/.test(code);
+      const hasIphase1 = /LFSaw\.ar\s*\(\s*[\d.]+\s*,\s*1\s*\)/.test(code);
       const hasDepth200 = /200/.test(code);
       const hasCenter600 = /600/.test(code);
-      const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
-      const ok = hasSinOsc && hasLFSaw && hasRate2 && hasDepth200 && hasCenter600;
+      const hasAmp = /,\s*0\s*,\s*0\.4/.test(code);
+      const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+(?:\s*,\s*[\d.]+)?\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
+      const ok = hasSinOsc && hasLFSaw && hasRate2 && hasIphase1 && hasDepth200 && hasCenter600 && hasAmp;
       const tips = [];
       if (!hasSinOsc) tips.push({ en: "You need SinOsc.ar as the main oscillator. The first argument is the frequency.", es: "Necesitas SinOsc.ar como oscilador principal. El primer argumento es la frecuencia.", fr: "Vous avez besoin de SinOsc.ar comme oscillateur principal. Le premier argument est la fréquence." });
       else if (!hasLFSaw) tips.push({ en: "Use LFSaw.ar inside the first argument of SinOsc so the frequency changes on its own.", es: "Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia cambie sola.", fr: "Utilisez LFSaw.ar dans le premier argument de SinOsc pour que la fréquence change automatiquement." });
       else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
       else {
         if (hasLFSaw && !hasRate2) tips.push({ en: "The first argument of LFSaw.ar is the oscillation rate (how many times per second).", es: "El primer argumento de LFSaw.ar es la velocidad de oscilación (cuántas veces por segundo).", fr: "Le premier argument de LFSaw.ar est la vitesse d'oscillation (combien de fois par seconde)." });
+        if (!hasIphase1) tips.push({ en: "The second argument of LFSaw.ar is the initial phase (iphase). It ranges from 0 to 2.", es: "El segundo argumento de LFSaw.ar es la fase inicial (iphase). Va de 0 a 2.", fr: "Le deuxième argument de LFSaw.ar est la phase initiale (iphase). Elle va de 0 à 2." });
         if (!hasDepth200) tips.push({ en: "Multiply LFSaw.ar by the frequency range you want to sweep.", es: "Multiplica LFSaw.ar por el rango de frecuencias que quieres barrer.", fr: "Multipliez LFSaw.ar par la plage de fréquences que vous voulez balayer." });
         if (!hasCenter600) tips.push({ en: "Add the center frequency to the result of LFSaw to determine which note it oscillates around.", es: "Suma la frecuencia central al resultado de LFSaw para determinar alrededor de qué nota oscila.", fr: "Ajoutez la fréquence centrale au résultat de LFSaw pour déterminer autour de quelle note il oscille." });
-      }
-      return { ok, tips };
-    },
-  },
-  {
-    id: "ex6",
-    level: 3,
-    title: { en: "Phone keypad", es: "Teclas de teléfono", fr: "Clavier téléphonique" },
-    tag: "DTMF",
-    goal: {
-      en: "Mix two tones at 770 Hz and 1336 Hz with amplitude 0.2",
-      es: "Mezcla dos tonos a 770 Hz y 1336 Hz con amplitud 0.2",
-      fr: "Mélange deux tons à 770 Hz et 1336 Hz avec une amplitude de 0.2",
-    },
-    theory: {
-      en: `Phone keypads use DTMF (Dual-Tone Multi-Frequency).
-Each key is the sum of two different frequencies:
-
-     1209  1336  1477
-770:  4     5     6   ← keys
-852:  7     8     9
-
-Key 5 = 770 Hz + 1336 Hz
-
-In SuperCollider, adding two UGens mixes their signals:
-  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitude
-
-Parentheses are important so that the amplitude multiplication applies to the combined signal.`,
-      es: `Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).
-Cada tecla es la suma de dos frecuencias distintas:
-
-     1209  1336  1477
-770:  4     5     6   ← teclas
-852:  7     8     9
-
-Tecla 5 = 770 Hz + 1336 Hz
-
-En SuperCollider, sumar dos UGens mezcla sus señales:
-  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitud
-
-Los paréntesis son importantes para que la multiplicación de amplitud se aplique a la señal combinada.`,
-      fr: `Les touches de téléphone utilisent le DTMF (Dual-Tone Multi-Frequency).
-Chaque touche est la somme de deux fréquences différentes :
-
-     1209  1336  1477
-770:  4     5     6   ← touches
-852:  7     8     9
-
-Touche 5 = 770 Hz + 1336 Hz
-
-Dans SuperCollider, additionner deux UGens mélange leurs signaux :
-  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitude
-
-Les parenthèses sont importantes pour que la multiplication d'amplitude s'applique au signal combiné.`,
-    },
-    starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  (\n    UGEN.ar(FREQUENCY) +\n    UGEN.ar(FREQUENCY)\n  ) * AMPLITUDE ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  (\n    UGEN.ar(FRECUENCIA) +\n    UGEN.ar(FRECUENCIA)\n  ) * AMPLITUD ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  (\n    UGEN.ar(FREQUENCE) +\n    UGEN.ar(FREQUENCE)\n  ) * AMPLITUDE ! 2\n}.play`,
-    },
-    answer: {
-      en: `// Key 5 on the phone: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
-      es: `// Tecla 5 del teléfono: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
-      fr: `// Touche 5 du téléphone : 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
-    },
-    validate(code) {
-      const has770 = /SinOsc\.ar\s*\(\s*770\s*\)/.test(code);
-      const has1336 = /SinOsc\.ar\s*\(\s*1336\s*\)/.test(code);
-      const hasTwoSinOscCalls = (code.match(/SinOsc\.ar\s*\(\s*[\d.]+\s*\)/g) ?? []).length >= 2;
-      const ok = has770 && has1336;
-      const tips = [];
-      if (hasTwoSinOscCalls && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
-      else {
-        if (!has770) tips.push({ en: "One of the two SinOscs is missing. Look for the row frequency of key 5 in the theory table.", es: "Falta uno de los dos SinOsc. Busca la frecuencia de fila de la tecla 5 en la tabla de la teoría.", fr: "Il manque un des deux SinOsc. Cherchez la fréquence de ligne de la touche 5 dans le tableau de la théorie." });
-        if (!has1336) tips.push({ en: "The other SinOsc is missing. Look for the column frequency of key 5 in the theory table.", es: "Falta el otro SinOsc. Busca la frecuencia de columna de la tecla 5 en la tabla de la teoría.", fr: "L'autre SinOsc manque. Cherchez la fréquence de colonne de la touche 5 dans le tableau de la théorie." });
+        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of SinOsc.ar (after the frequency expression and phase 0).", es: "La amplitud es el tercer argumento de SinOsc.ar (tras la expresión de frecuencia y la fase 0).", fr: "L'amplitude est le troisième argument de SinOsc.ar (après l'expression de fréquence et la phase 0)." });
       }
       return { ok, tips };
     },
@@ -451,9 +450,9 @@ Les parenthèses sont importantes pour que la multiplication d'amplitude s'appli
     title: { en: "Police siren", es: "Sirena de policía", fr: "Sirène de police" },
     tag: "SinOsc",
     goal: {
-      en: "Alternate between 600 and 800 Hz once per second, amplitude 0.4",
-      es: "Alterna entre 600 y 800 Hz una vez por segundo, amplitud 0.4",
-      fr: "Alterne entre 600 et 800 Hz une fois par seconde, amplitude 0.4",
+      en: "Alternate between 600 and 800 Hz once per second, amplitude 0.3",
+      es: "Alterna entre 600 y 800 Hz una vez por segundo, amplitud 0.3",
+      fr: "Alterne entre 600 et 800 Hz une fois par seconde, amplitude 0.3",
     },
     theory: {
       en: `In some countries, police sirens alternate between two fixed tones,
@@ -462,11 +461,13 @@ meaning they do not make a smooth sweep like the ambulance, but instead jump.
 LFPulse is a slow oscillator that only produces 0 or 1 cyclically.
 If you scale that 0/1 you get two different frequency values:
 
-  LFPulse.ar(rate) * difference + base
+  LFPulse.ar(rate, iphase, width) * difference + base
 
   rate       → how many times per second it alternates (e.g. 1 = once/sec)
   difference → how many Hz of difference there are between the two tones
   base       → the lower of the two frequencies
+
+LFPulse also accepts iphase (0 to 1, default 0) and width (0 to 1, default 0.5), but they are not needed for this exercise.
 
 When LFPulse is 0: frequency is (0 * difference + base) = base
 When LFPulse is 1: frequency is (1 * difference + base) = base + difference
@@ -478,11 +479,13 @@ Use this as the first argument of SinOsc.ar.`,
 LFPulse es un oscilador lento que solo produce 0 o 1 de forma cíclica.
 Si escalas ese 0/1 obtienes dos valores de frecuencia distintos:
 
-  LFPulse.ar(frecuencia) * diferencia + base
+  LFPulse.ar(frecuencia, fase_inicial, ancho) * diferencia + base
 
   frecuencia  → cuántas veces por segundo alterna (ej: 1 = una vez/seg)
   diferencia  → cuántos Hz de diferencia hay entre los dos tonos
   base        → la frecuencia más baja de las dos
+
+LFPulse también acepta fase_inicial (0 a 1, por defecto 0) y ancho (0 a 1, por defecto 0.5), pero no son necesarios para este ejercicio.
 
 Cuando LFPulse vale 0: la frecuencia es (0 * diferencia + base) = base
 Cuando LFPulse vale 1: la frecuencia es (1 * diferencia + base) = base + diferencia
@@ -494,11 +497,13 @@ c'est-à-dire qu'elles ne font pas un balayage progressif comme l'ambulance, mai
 LFPulse est un oscillateur lent qui ne produit que 0 ou 1 de façon cyclique.
 Si vous mettez à l'échelle ce 0/1 vous obtenez deux valeurs de fréquence différentes :
 
-  LFPulse.ar(rate) * difference + base
+  LFPulse.ar(rate, iphase, width) * difference + base
 
   rate       → combien de fois par seconde il alterne (ex : 1 = une fois/sec)
   difference → de combien de Hz de différence il y a entre les deux tons
   base       → la fréquence la plus basse des deux
+
+LFPulse accepte aussi iphase (0 à 1, défaut 0) et width (0 à 1, défaut 0.5), mais ils ne sont pas nécessaires pour cet exercice.
 
 Quand LFPulse vaut 0 : la fréquence est (0 * difference + base) = base
 Quand LFPulse vaut 1 : la fréquence est (1 * difference + base) = base + difference
@@ -506,14 +511,14 @@ Quand LFPulse vaut 1 : la fréquence est (1 * difference + base) = base + differ
 Utilisez ceci comme premier argument de SinOsc.ar.`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFPulse.ar(RATE) * DIFFERENCE + BASE,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFPulse.ar(FRECUENCIA) * DIFERENCIA + BASE,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFPulse.ar(RATE) * DIFFERENCE + BASE,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFPulse.ar(RATE, IPHASE) * DIFFERENCE + BASE,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFPulse.ar(FRECUENCIA, FASE_INICIAL) * DIFERENCIA + BASE,\n    0, AMPLITUD\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFPulse.ar(RATE, IPHASE) * DIFFERENCE + BASE,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Police siren: alternates 600 and 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Sirena de policía: alterna 600 y 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Sirène de police : alterne 600 et 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1) * 200 + 600,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Police siren: alternates 600 and 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1, 0) * 200 + 600,\n    0, 0.3\n  ) ! 2\n}.play`,
+      es: `// Sirena de policía: alterna 600 y 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1, 0) * 200 + 600,\n    0, 0.3\n  ) ! 2\n}.play`,
+      fr: `// Sirène de police : alterne 600 et 800 Hz\n{\n  SinOsc.ar(\n    LFPulse.ar(1, 0) * 200 + 600,\n    0, 0.3\n  ) ! 2\n}.play`,
     },
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
@@ -521,8 +526,9 @@ Utilisez ceci comme premier argument de SinOsc.ar.`,
       const hasRate1 = /LFPulse\.ar\s*\(\s*1\s*\)/.test(code);
       const hasRange200 = /200/.test(code);
       const hasBase600 = /600/.test(code);
+      const hasAmp = /,\s*0\s*,\s*0\.3/.test(code);
       const hasStructure = hasSinOsc && hasLFPulse && /LFPulse\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
-      const ok = hasSinOsc && hasLFPulse && hasRate1 && hasRange200 && hasBase600;
+      const ok = hasSinOsc && hasLFPulse && hasRate1 && hasRange200 && hasBase600 && hasAmp;
       const tips = [];
       if (!hasSinOsc) tips.push({ en: "You need SinOsc.ar as the main oscillator.", es: "Necesitas SinOsc.ar como oscilador principal.", fr: "Vous avez besoin de SinOsc.ar comme oscillateur principal." });
       else if (!hasLFPulse) tips.push({ en: "Use LFPulse.ar inside the first argument of SinOsc — it generates 0 or 1 to alternate between two frequencies.", es: "Usa LFPulse.ar dentro del primer argumento de SinOsc — genera 0 o 1 para alternar entre dos frecuencias.", fr: "Utilisez LFPulse.ar dans le premier argument de SinOsc — il génère 0 ou 1 pour alterner entre deux fréquences." });
@@ -531,6 +537,7 @@ Utilisez ceci comme premier argument de SinOsc.ar.`,
         if (hasLFPulse && !hasRate1) tips.push({ en: "The first argument of LFPulse.ar is the alternation rate (times per second).", es: "El primer argumento de LFPulse.ar es la velocidad de alternancia (veces por segundo).", fr: "Le premier argument de LFPulse.ar est la vitesse d'alternance (fois par seconde)." });
         if (!hasRange200) tips.push({ en: "The difference between 800 Hz and 600 Hz is the range you must multiply by LFPulse.", es: "La diferencia entre 800 Hz y 600 Hz es el rango que debes multiplicar por LFPulse.", fr: "La différence entre 800 Hz et 600 Hz est la plage que vous devez multiplier par LFPulse." });
         if (!hasBase600) tips.push({ en: "The lowest frequency (base) is added to the result of LFPulse * difference.", es: "La frecuencia más baja (base) se suma al resultado de LFPulse * diferencia.", fr: "La fréquence la plus basse (base) est ajoutée au résultat de LFPulse * difference." });
+        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of SinOsc.ar (after the frequency expression and phase 0). Set it to 0.3.", es: "La amplitud es el tercer argumento de SinOsc.ar (tras la expresión de frecuencia y la fase 0). Ponla en 0.3.", fr: "L'amplitude est le troisième argument de SinOsc.ar (après l'expression de fréquence et la phase 0). Mettez-la à 0.3." });
       }
       return { ok, tips };
     },
@@ -541,9 +548,9 @@ Utilisez ceci comme premier argument de SinOsc.ar.`,
     title: { en: "Car alarm", es: "Alarma de coche", fr: "Alarme de voiture" },
     tag: "SinOsc",
     goal: {
-      en: "Descending sweep between 700 and 900 Hz, 2 times per second, amplitude 0.4",
-      es: "Barrido descendente entre 700 y 900 Hz, 2 veces por segundo, amplitud 0.4",
-      fr: "Balayage descendant entre 700 et 900 Hz, 2 fois par seconde, amplitude 0.4",
+      en: "Descending sweep between 700 and 900 Hz, 2 times per second, amplitude 0.5",
+      es: "Barrido descendente entre 700 y 900 Hz, 2 veces por segundo, amplitud 0.5",
+      fr: "Balayage descendant entre 700 et 900 Hz, 2 fois par seconde, amplitude 0.5",
     },
     theory: {
       en: `Car alarms typically use a fast descending sweep
@@ -560,7 +567,7 @@ If you use iphase: 1 you reverse the direction: it goes down from +1 to -1.
 For the sweep to be descending in frequency, the
 Hz difference you multiply must be negative:
 
-  LFSaw.ar(freq, 1) * (-range) + center
+  LFSaw.ar(freq, iphase) * (-range) + center
 
   center - range = minimum frequency
   center + 0     = maximum frequency (at the start of the cycle)`,
@@ -570,7 +577,7 @@ que se repite en bucle. Empieza agudo y cae.
 LFSaw normalmente sube de -1 a +1 (rampa ascendente).
 Si usas iphase: 1 inviertes la dirección: baja de +1 a -1.
 
-  LFSaw.ar(frq, iphase, mul, add) // Utiliza solo frea e iphase para este ejercicio
+  LFSaw.ar(frq, iphase, mul, add) // Utiliza solo freq e iphase para este ejercicio
 
   freq   → las veces por segundo que se repite el barrido.
   iphase → fase inicial. Con 1 la rampa es descendente.
@@ -578,7 +585,7 @@ Si usas iphase: 1 inviertes la dirección: baja de +1 a -1.
 Para que el barrido sea descendente en frecuencia, la
 diferencia de Hz que multiplicas debe ser negativa:
 
-  LFSaw.ar(freq, 1) * (-rango) + centro
+  LFSaw.ar(freq, fase) * (-rango) + centro
 
   centro - rango = frecuencia mínima
   centro + 0     = frecuencia máxima (al inicio del ciclo)`,
@@ -596,20 +603,20 @@ Si vous utilisez iphase: 1 vous inversez la direction : il descend de +1 à -1.
 Pour que le balayage soit descendant en fréquence, la
 différence de Hz que vous multipliez doit être négative :
 
-  LFSaw.ar(freq, 1) * (-range) + center
+  LFSaw.ar(freq, phase) * (-range) + center
 
   center - range = fréquence minimale
   center + 0     = fréquence maximale (au début du cycle)`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, 1) * (-RANGE) + CENTER,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFSaw.ar(FRECUENCIA, 1) * (-RANGO) + CENTRO,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, 1) * (-RANGE) + CENTER,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, PHASE) * (-RANGE) + CENTER,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    LFSaw.ar(FRECUENCIA, PHASE) * (-RANGO) + CENTRO,\n    0, AMPLITUD\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    LFSaw.ar(RATE, PHASE) * (-RANGE) + CENTER,\n    0, AMPLITUDE\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Car alarm: descending sweep\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Alarma de coche: barrido descendente\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Alarme de voiture : balayage descendant\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Car alarm: descending sweep\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.5\n  ) ! 2\n}.play`,
+      es: `// Alarma de coche: barrido descendente\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.5\n  ) ! 2\n}.play`,
+      fr: `// Alarme de voiture : balayage descendant\n{\n  SinOsc.ar(\n    LFSaw.ar(2, 1) * (-200) + 900,\n    0, 0.5\n  ) ! 2\n}.play`,
     },
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
@@ -617,11 +624,12 @@ différence de Hz que vous multipliez doit être négative :
       const hasLFSawWithIphase = /LFSaw\.ar\s*\(\s*2\s*,\s*1\s*\)/.test(code);
       const hasNeg200 = /\(\s*-\s*200\s*\)|\*\s*-\s*200\b/.test(code);
       const hasBase900 = /900/.test(code);
+      const hasAmp = /,\s*0\s*,\s*0\.5/.test(code);
       const hasStructure = hasSinOsc && hasLFSaw &&
         /LFSaw\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
         /\(\s*-\s*[\d.]+\s*\)|\*\s*-\s*[\d.]+/.test(code) &&
         /\+\s*[\d.]+/.test(code);
-      const ok = hasSinOsc && hasLFSaw && hasLFSawWithIphase && hasNeg200 && hasBase900;
+      const ok = hasSinOsc && hasLFSaw && hasLFSawWithIphase && hasNeg200 && hasBase900 && hasAmp;
       const tips = [];
       if (!hasLFSaw) tips.push({ en: "Use LFSaw.ar inside the first argument of SinOsc to sweep the frequency.", es: "Usa LFSaw.ar dentro del primer argumento de SinOsc para barrer la frecuencia.", fr: "Utilisez LFSaw.ar dans le premier argument de SinOsc pour balayer la fréquence." });
       else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
@@ -629,95 +637,13 @@ différence de Hz que vous multipliez doit être négative :
         if (hasLFSaw && !hasLFSawWithIphase) tips.push({ en: "LFSaw.ar has a second argument called iphase. Setting it to 1 reverses the direction of the ramp.", es: "LFSaw.ar tiene un segundo argumento llamado iphase. Cambiarlo a 1 invierte la dirección de la rampa.", fr: "LFSaw.ar a un second argument appelé iphase. Le mettre à 1 inverse la direction de la rampe." });
         if (!hasNeg200) tips.push({ en: "For the sweep to be descending, the Hz range you multiply must be negative: * (-range).", es: "Para que el barrido sea descendente, el rango de Hz que multiplicas debe ser negativo: * (-rango).", fr: "Pour que le balayage soit descendant, la plage de Hz que vous multipliez doit être négative : * (-range)." });
         if (!hasBase900) tips.push({ en: "The center frequency is added at the end and determines the starting point of the sweep.", es: "La frecuencia central (centro) se suma al final y determina el punto de partida del barrido.", fr: "La fréquence centrale est ajoutée à la fin et détermine le point de départ du balayage." });
+        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of SinOsc.ar (after the frequency expression and phase 0).", es: "La amplitud es el tercer argumento de SinOsc.ar (tras la expresión de frecuencia y la fase 0).", fr: "L'amplitude est le troisième argument de SinOsc.ar (après l'expression de fréquence et la phase 0)." });
       }
       return { ok, tips };
     },
   },
   {
     id: "ex9",
-    level: 3,
-    title: { en: "Fire alarm", es: "Alarma de incendio", fr: "Alarme incendie" },
-    tag: "Pulse",
-    goal: {
-      en: "Sharp pulses at 3200 Hz intermittent at 2 times per second, amplitude 0.3",
-      es: "Pulsos agudos a 3200 Hz intermitentes a 2 veces por segundo, amplitud 0.3",
-      fr: "Impulsions aiguës à 3200 Hz intermittentes à 2 fois par seconde, amplitude 0.3",
-    },
-    theory: {
-      en: `Fire alarms emit short, piercing pulses.
-This is achieved with two layers:
-
-  1. Pulse.ar generates the sharp, continuous wave.
-  2. LFPulse.ar acts as a switch (0 or 1) that turns that wave on and off at a slow rate.
-
-By multiplying both:
-  Pulse.ar(frequency, width) * LFPulse.ar(rate)
-
-  frequency → how high-pitched the beep is (in Hz)
-  width     → pulse width of Pulse (0.5 for perfect square)
-  rate (LFPulse) → how many times per second the alarm flashes
-
-The multiplication causes LFPulse to rhythmically "switch on" and "switch off" the Pulse oscillator.`,
-      es: `Las alarmas de incendio emiten pulsos cortos y penetrantes.
-Se consigue con dos capas:
-
-  1. Pulse.ar genera la onda aguda y continua.
-  2. LFPulse.ar actúa como interruptor (0 o 1) que enciende y apaga esa onda a una velocidad lenta.
-
-Al multiplicar ambos:
-  Pulse.ar(frecuencia, ancho) * LFPulse.ar(frecuencia)
-
-  frecuencia → qué tan agudo es el tono del pitido (en Hz)
-  ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
-  frecuencia (LFPulse) → cuántas veces por segundo parpadea la alarma
-
-La multiplicación hace que LFPulse "encienda" y "apague" el oscilador Pulse de forma rítmica.`,
-      fr: `Les alarmes incendie émettent de courtes impulsions perçantes.
-Cela s'obtient avec deux couches :
-
-  1. Pulse.ar génère l'onde aiguë et continue.
-  2. LFPulse.ar agit comme un interrupteur (0 ou 1) qui allume et éteint cette onde à une vitesse lente.
-
-En multipliant les deux :
-  Pulse.ar(frequency, width) * LFPulse.ar(rate)
-
-  frequency → à quel point le bip est aigu (en Hz)
-  width     → largeur d'impulsion de Pulse (0.5 pour une onde carrée parfaite)
-  rate (LFPulse) → combien de fois par seconde l'alarme clignote
-
-La multiplication fait que LFPulse "allume" et "éteint" l'oscillateur Pulse de façon rythmique.`,
-    },
-    starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(FREQUENCY, WIDTH) * \n  UGEN.ar(RATE) * AMPLITUDE ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(FRECUENCIA, ANCHO) * \n  UGEN.ar(FRECUENCIA) * AMPLITUD ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(FREQUENCE, LARGEUR) * \n  UGEN.ar(RATE) * AMPLITUDE ! 2\n}.play`,
-    },
-    answer: {
-      en: `// Fire alarm: sharp pulses\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
-      es: `// Alarma de incendio: pulsos agudos\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
-      fr: `// Alarme incendie : impulsions aiguës\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
-    },
-    validate(code) {
-      const hasPulseAr = /Pulse\.ar/.test(code);
-      const hasFreq3200 = /Pulse\.ar\s*\(\s*3200\b/.test(code);
-      const hasLFPulse = /LFPulse/.test(code);
-      const hasLFPulseRate2 = /LFPulse\.ar\s*\(\s*2\s*\)/.test(code);
-      const hasStructure = hasPulseAr && /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
-        hasLFPulse && /LFPulse\.ar\s*\(\s*[\d.]+\s*\)/.test(code);
-      const ok = hasPulseAr && hasFreq3200 && hasLFPulse && hasLFPulseRate2;
-      const tips = [];
-      if (!hasPulseAr) tips.push({ en: "Use Pulse.ar as the main oscillator to generate the sharp square wave.", es: "Usa Pulse.ar como oscilador principal para generar la onda cuadrada aguda.", fr: "Utilisez Pulse.ar comme oscillateur principal pour générer l'onde carrée aiguë." });
-      else if (!hasLFPulse) tips.push({ en: "Use LFPulse.ar and multiply it by Pulse.ar to create the rhythmic intermittence.", es: "Usa LFPulse.ar y multiplícalo por Pulse.ar para crear la intermitencia rítmica.", fr: "Utilisez LFPulse.ar et multipliez-le par Pulse.ar pour créer l'intermittence rythmique." });
-      else if (hasStructure && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
-      else {
-        if (hasPulseAr && !hasFreq3200) tips.push({ en: "The first argument of Pulse.ar is the tone frequency. Fire alarms are very high-pitched.", es: "El primer argumento de Pulse.ar es la frecuencia del tono. Las alarmas de incendio son muy agudas.", fr: "Le premier argument de Pulse.ar est la fréquence du ton. Les alarmes incendie sont très aiguës." });
-        if (hasLFPulse && !hasLFPulseRate2) tips.push({ en: "The first argument of LFPulse.ar is the flash rate (times per second).", es: "El primer argumento de LFPulse.ar es la velocidad de parpadeo (veces por segundo).", fr: "Le premier argument de LFPulse.ar est la vitesse de clignotement (fois par seconde)." });
-      }
-      return { ok, tips };
-    },
-  },
-  {
-    id: "ex10",
     level: 2,
     title: { en: "Microwave beep", es: "Pitido de microondas", fr: "Bip de micro-ondes" },
     tag: "EnvGen",
@@ -804,7 +730,7 @@ doneAction: Done.freeSelf libère le synth quand l'enveloppe se termine.`,
     },
   },
   {
-    id: "ex11",
+    id: "ex10",
     level: 2,
     title: { en: "Kitchen timer", es: "Temporizador de cocina", fr: "Minuteur de cuisine" },
     tag: "EnvGen",
@@ -885,7 +811,253 @@ Même structure : SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
     },
   },
   {
+    id: "ex11",
+    level: 2,
+    title: { en: "Power-up", es: "Recarga de poder", fr: "Recharge de pouvoir" },
+    tag: "Line",
+    goal: {
+      en: "Linear rise from 200 to 1200 Hz in 0.2 seconds, with attack 0.01s and decay 1s",
+      es: "Subida lineal de 200 a 1200 Hz en 0.2 segundos, con ataque 0.01s y caída 1s",
+      fr: "Montée linéaire de 200 à 1200 Hz en 0.2 secondes, avec attaque 0.01s et chute 1s",
+    },
+    theory: {
+      en: `Line.kr generates a linear ramp: the frequency rises or falls at constant speed from one value to another.
+
+Line.kr(start, end, dur)
+
+  start → initial frequency in Hz
+  end   → final frequency in Hz
+  dur   → duration of the traverse in seconds
+
+Unlike XLine (which uses an exponential curve), Line advances in equal steps. This means it rises the same number of Hz per second throughout the traverse.
+
+Since the ear perceives pitch on a logarithmic scale, a linear ramp from 200 to 1200 Hz sounds faster at the beginning than at the end. This is the "power-up" or "video game signal" effect.
+`,
+      es: `Line.kr genera una rampa lineal: la frecuencia sube o baja a velocidad constante desde un valor hasta otro.
+
+Line.kr(start, end, dur)
+
+  start → frecuencia inicial en Hz
+  end   → frecuencia final en Hz
+  dur   → duración del recorrido en segundos
+
+A diferencia de XLine (que usa una curva exponencial), Line avanza en pasos iguales. Eso significa que sube los mismos Hz por segundo durante todo el recorrido.
+
+Como el oído percibe el tono en escala logarítmica, una rampa lineal de 200 a 1200 Hz suena más rápida al principio que al final. Es el efecto de "power-up" o "señal de videojuego".
+`,
+      fr: `Line.kr génère une rampe linéaire : la fréquence monte ou descend à vitesse constante d'une valeur à une autre.
+
+Line.kr(start, end, dur)
+
+  start → fréquence initiale en Hz
+  end   → fréquence finale en Hz
+  dur   → durée du parcours en secondes
+
+Contrairement à XLine (qui utilise une courbe exponentielle), Line avance par pas égaux. Cela signifie qu'il monte du même nombre de Hz par seconde tout au long du parcours.
+
+Comme l'oreille perçoit la hauteur sur une échelle logarithmique, une rampe linéaire de 200 à 1200 Hz sonne plus vite au début qu'à la fin. C'est l'effet "power-up" ou "signal de jeu vidéo".
+`,
+    },
+    starter: {
+      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    Line.kr(INICIO, FIN, DUR),\n    FASE,\n    EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    },
+    answer: {
+      en: `// Linear pitch rise\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Subida de tono lineal\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Montée linéaire de hauteur\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+    },
+    validate(code) {
+      const hasSinOsc = /SinOsc/.test(code);
+      const hasLine = /(?<![A-Za-z])Line\.kr/.test(code);
+      const hasEnvGen = /EnvGen/.test(code);
+      const hasEnvPerc = /Env\.perc/.test(code);
+      const hasCorrectLine = /(?<![A-Za-z])Line\.kr\s*\(\s*200\s*,\s*1200\s*,\s*0.2\s*\)/.test(code);
+      const hasPercValues = /Env\.perc\s*\(\s*0\.01\s*,\s*1\s*\)/.test(code);
+      const hasStructure = hasSinOsc && hasLine &&
+        /(?<![A-Za-z])Line\.kr\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasSinOsc && hasLine && hasCorrectLine && hasEnvGen && hasEnvPerc && hasPercValues;
+      const tips = [];
+      if (!hasSinOsc) tips.push({ en: "You need SinOsc.ar as the oscillator. The frequency will come from the Line.kr sweep.", es: "Necesitas SinOsc.ar como oscilador. La frecuencia vendrá del barrido de Line.kr.", fr: "Vous avez besoin de SinOsc.ar comme oscillateur. La fréquence viendra du balayage de Line.kr." });
+      else if (!hasLine) tips.push({ en: "Use Line.kr as the first argument of SinOsc.ar so the frequency rises linearly.", es: "Usa Line.kr como primer argumento de SinOsc.ar para que la frecuencia suba de forma lineal.", fr: "Utilisez Line.kr comme premier argument de SinOsc.ar pour que la fréquence monte de façon linéaire." });
+      else if (!hasEnvGen) tips.push({ en: "Multiply by EnvGen.kr to give the sound a duration and have it release when done.", es: "Multiplica por EnvGen.kr para darle duración al sonido y que se libere al terminar.", fr: "Multipliez par EnvGen.kr pour donner une durée au son et qu'il se libère à la fin." });
+      else if (!hasEnvPerc) tips.push({ en: "Use Env.perc inside EnvGen.kr to define the attack and decay of the tone.", es: "Usa Env.perc dentro de EnvGen.kr para definir el ataque y la caída del tono.", fr: "Utilisez Env.perc dans EnvGen.kr pour définir l'attaque et la chute du ton." });
+      else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
+      else {
+        if (!hasCorrectLine) tips.push({ en: "Check the three arguments of Line.kr: start frequency, end frequency and duration in seconds.", es: "Revisa los tres argumentos de Line.kr: frecuencia inicial, frecuencia final y duración en segundos.", fr: "Vérifiez les trois arguments de Line.kr : fréquence de départ, fréquence finale et durée en secondes." });
+        if (!hasPercValues) tips.push({ en: "Check the Env.perc times: very short attack and decay equal to the sweep duration.", es: "Revisa los tiempos de Env.perc: ataque muy corto y caída igual a la duración del barrido.", fr: "Vérifiez les durées d'Env.perc : attaque très courte et chute égale à la durée du balayage." });
+      }
+      return { ok, tips };
+    },
+  },
+  {
     id: "ex12",
+    level: 3,
+    title: { en: "Phone keypad", es: "Teclas de teléfono", fr: "Clavier téléphonique" },
+    tag: "DTMF",
+    goal: {
+      en: "Mix two tones at 770 Hz and 1336 Hz with amplitude 0.2",
+      es: "Mezcla dos tonos a 770 Hz y 1336 Hz con amplitud 0.2",
+      fr: "Mélange deux tons à 770 Hz et 1336 Hz avec une amplitude de 0.2",
+    },
+    theory: {
+      en: `Phone keypads use DTMF (Dual-Tone Multi-Frequency).
+Each key is the sum of two different frequencies:
+
+     1209  1336  1477
+770:  4     5     6   ← keys
+852:  7     8     9
+
+Key 5 = 770 Hz + 1336 Hz
+
+In SuperCollider, adding two UGens mixes their signals:
+  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitude
+
+Parentheses are important so that the amplitude multiplication applies to the combined signal.`,
+      es: `Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).
+Cada tecla es la suma de dos frecuencias distintas:
+
+     1209  1336  1477
+770:  4     5     6   ← teclas
+852:  7     8     9
+
+Tecla 5 = 770 Hz + 1336 Hz
+
+En SuperCollider, sumar dos UGens mezcla sus señales:
+  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitud
+
+Los paréntesis son importantes para que la multiplicación de amplitud se aplique a la señal combinada.`,
+      fr: `Les touches de téléphone utilisent le DTMF (Dual-Tone Multi-Frequency).
+Chaque touche est la somme de deux fréquences différentes :
+
+     1209  1336  1477
+770:  4     5     6   ← touches
+852:  7     8     9
+
+Touche 5 = 770 Hz + 1336 Hz
+
+Dans SuperCollider, additionner deux UGens mélange leurs signaux :
+  (UGEN.ar(f1) + UGEN.ar(f2)) * amplitude
+
+Les parenthèses sont importantes pour que la multiplication d'amplitude s'applique au signal combiné.`,
+    },
+    starter: {
+      en: `// Replace the UPPERCASE words:\n{\n  (\n    UGEN.ar(FREQUENCY) +\n    UGEN.ar(FREQUENCY)\n  ) * AMPLITUDE ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  (\n    UGEN.ar(FRECUENCIA) +\n    UGEN.ar(FRECUENCIA)\n  ) * AMPLITUD ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  (\n    UGEN.ar(FREQUENCE) +\n    UGEN.ar(FREQUENCE)\n  ) * AMPLITUDE ! 2\n}.play`,
+    },
+    answer: {
+      en: `// Key 5 on the phone: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
+      es: `// Tecla 5 del teléfono: 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
+      fr: `// Touche 5 du téléphone : 770 Hz + 1336 Hz\n{\n  (\n    SinOsc.ar(770) +\n    SinOsc.ar(1336)\n  ) * 0.2 ! 2\n}.play`,
+    },
+    validate(code) {
+      const has770 = /SinOsc\.ar\s*\(\s*770\s*\)/.test(code);
+      const has1336 = /SinOsc\.ar\s*\(\s*1336\s*\)/.test(code);
+      const hasAmp = /\*\s*0\.2\b/.test(code);
+      const hasTwoSinOscCalls = (code.match(/SinOsc\.ar\s*\(\s*[\d.]+\s*\)/g) ?? []).length >= 2;
+      const ok = has770 && has1336 && hasAmp;
+      const tips = [];
+      if (hasTwoSinOscCalls && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
+      else {
+        if (!has770) tips.push({ en: "One of the two SinOscs is missing. Look for the row frequency of key 5 in the theory table.", es: "Falta uno de los dos SinOsc. Busca la frecuencia de fila de la tecla 5 en la tabla de la teoría.", fr: "Il manque un des deux SinOsc. Cherchez la fréquence de ligne de la touche 5 dans le tableau de la théorie." });
+        if (!has1336) tips.push({ en: "The other SinOsc is missing. Look for the column frequency of key 5 in the theory table.", es: "Falta el otro SinOsc. Busca la frecuencia de columna de la tecla 5 en la tabla de la teoría.", fr: "L'autre SinOsc manque. Cherchez la fréquence de colonne de la touche 5 dans le tableau de la théorie." });
+        if (!hasAmp) tips.push({ en: "Multiply the combined signal by the amplitude to control the volume.", es: "Multiplica la señal combinada por la amplitud para controlar el volumen.", fr: "Multipliez le signal combiné par l'amplitude pour contrôler le volume." });
+      }
+      return { ok, tips };
+    },
+  },
+
+  {
+    id: "ex13",
+    level: 3,
+    title: { en: "Fire alarm", es: "Alarma de incendio", fr: "Alarme incendie" },
+    tag: "Pulse",
+    goal: {
+      en: "Sharp pulses at 3200 Hz intermittent at 2 times per second, amplitude 0.3",
+      es: "Pulsos agudos a 3200 Hz intermitentes a 2 veces por segundo, amplitud 0.3",
+      fr: "Impulsions aiguës à 3200 Hz intermittentes à 2 fois par seconde, amplitude 0.3",
+    },
+    theory: {
+      en: `Fire alarms emit short, piercing pulses.
+This is achieved with two layers:
+
+  1. Pulse.ar generates the sharp, continuous wave.
+  2. LFPulse.ar acts as a switch (0 or 1) that turns that wave on and off at a slow rate.
+
+By multiplying both:
+  Pulse.ar(frequency, width) * LFPulse.ar(rate)
+
+  frequency → how high-pitched the beep is (in Hz)
+  width     → pulse width of Pulse (0.5 for perfect square)
+  rate (LFPulse) → how many times per second the alarm flashes
+
+The multiplication causes LFPulse to rhythmically "switch on" and "switch off" the Pulse oscillator.`,
+      es: `Las alarmas de incendio emiten pulsos cortos y penetrantes.
+Se consigue con dos capas:
+
+  1. Pulse.ar genera la onda aguda y continua.
+  2. LFPulse.ar actúa como interruptor (0 o 1) que enciende y apaga esa onda a una velocidad lenta.
+
+Al multiplicar ambos:
+  Pulse.ar(frecuencia, ancho) * LFPulse.ar(frecuencia)
+
+  frecuencia → qué tan agudo es el tono del pitido (en Hz)
+  ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
+  frecuencia (LFPulse) → cuántas veces por segundo parpadea la alarma
+
+La multiplicación hace que LFPulse "encienda" y "apague" el oscilador Pulse de forma rítmica.`,
+      fr: `Les alarmes incendie émettent de courtes impulsions perçantes.
+Cela s'obtient avec deux couches :
+
+  1. Pulse.ar génère l'onde aiguë et continue.
+  2. LFPulse.ar agit comme un interrupteur (0 ou 1) qui allume et éteint cette onde à une vitesse lente.
+
+En multipliant les deux :
+  Pulse.ar(frequency, width) * LFPulse.ar(rate)
+
+  frequency → à quel point le bip est aigu (en Hz)
+  width     → largeur d'impulsion de Pulse (0.5 pour une onde carrée parfaite)
+  rate (LFPulse) → combien de fois par seconde l'alarme clignote
+
+La multiplication fait que LFPulse "allume" et "éteint" l'oscillateur Pulse de façon rythmique.`,
+    },
+    starter: {
+      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(FREQUENCY, WIDTH) * \n  UGEN.ar(RATE) * AMPLITUDE ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(FRECUENCIA, ANCHO) * \n  UGEN.ar(FRECUENCIA) * AMPLITUD ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(FREQUENCE, LARGEUR) * \n  UGEN.ar(RATE) * AMPLITUDE ! 2\n}.play`,
+    },
+    answer: {
+      en: `// Fire alarm: sharp pulses\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
+      es: `// Alarma de incendio: pulsos agudos\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
+      fr: `// Alarme incendie : impulsions aiguës\n{\n  Pulse.ar(3200, 0.5) * LFPulse.ar(2) * 0.3 ! 2\n}.play`,
+    },
+    validate(code) {
+      const hasPulseAr = /Pulse\.ar/.test(code);
+      const hasFreq3200 = /Pulse\.ar\s*\(\s*3200\b/.test(code);
+      const hasLFPulse = /LFPulse/.test(code);
+      const hasLFPulseRate2 = /LFPulse\.ar\s*\(\s*2\s*\)/.test(code);
+      const hasAmp = /\*\s*0\.3\b/.test(code);
+      const hasStructure = hasPulseAr && /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
+        hasLFPulse && /LFPulse\.ar\s*\(\s*[\d.]+\s*\)/.test(code);
+      const ok = hasPulseAr && hasFreq3200 && hasLFPulse && hasLFPulseRate2 && hasAmp;
+      const tips = [];
+      if (!hasPulseAr) tips.push({ en: "Use Pulse.ar as the main oscillator to generate the sharp square wave.", es: "Usa Pulse.ar como oscilador principal para generar la onda cuadrada aguda.", fr: "Utilisez Pulse.ar comme oscillateur principal pour générer l'onde carrée aiguë." });
+      else if (!hasLFPulse) tips.push({ en: "Use LFPulse.ar and multiply it by Pulse.ar to create the rhythmic intermittence.", es: "Usa LFPulse.ar y multiplícalo por Pulse.ar para crear la intermitencia rítmica.", fr: "Utilisez LFPulse.ar et multipliez-le par Pulse.ar pour créer l'intermittence rythmique." });
+      else if (hasStructure && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
+      else {
+        if (hasPulseAr && !hasFreq3200) tips.push({ en: "The first argument of Pulse.ar is the tone frequency. Fire alarms are very high-pitched.", es: "El primer argumento de Pulse.ar es la frecuencia del tono. Las alarmas de incendio son muy agudas.", fr: "Le premier argument de Pulse.ar est la fréquence du ton. Les alarmes incendie sont très aiguës." });
+        if (hasLFPulse && !hasLFPulseRate2) tips.push({ en: "The first argument of LFPulse.ar is the flash rate (times per second).", es: "El primer argumento de LFPulse.ar es la velocidad de parpadeo (veces por segundo).", fr: "Le premier argument de LFPulse.ar est la vitesse de clignotement (fois par seconde)." });
+        if (!hasAmp) tips.push({ en: "Multiply the result by the amplitude to set the volume.", es: "Multiplica el resultado por la amplitud para ajustar el volumen.", fr: "Multipliez le résultat par l'amplitude pour régler le volume." });
+      }
+      return { ok, tips };
+    },
+  },
+
+  {
+    id: "ex14",
     level: 3,
     title: { en: "Digital alarm clock", es: "Despertador digital", fr: "Réveil numérique" },
     tag: "Pulse",
@@ -954,9 +1126,10 @@ La technique est la même que pour l'alarme incendie. Multipliez l'oscillateur p
       const hasWidth05 = /Pulse\.ar\s*\(\s*1200\s*,\s*0\.5\s*\)/.test(code);
       const hasLFPulse = /LFPulse/.test(code);
       const hasRate4 = /LFPulse\.\w+\s*\(\s*4\s*\)/.test(code);
+      const hasAmp = /\*\s*0\.3\b/.test(code);
       const hasStructure = hasPulseAr && /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
         hasLFPulse && /LFPulse\.\w+\s*\(\s*[\d.]+\s*\)/.test(code);
-      const ok = hasPulseAr && hasWidth05 && hasLFPulse && hasRate4;
+      const ok = hasPulseAr && hasWidth05 && hasLFPulse && hasRate4 && hasAmp;
       const tips = [];
       if (!hasPulseAr) tips.push({ en: "Use Pulse.ar as the main oscillator for the sharp square wave.", es: "Usa Pulse.ar como oscilador principal para la onda cuadrada aguda.", fr: "Utilisez Pulse.ar comme oscillateur principal pour l'onde carrée aiguë." });
       else if (!hasLFPulse) tips.push({ en: "Multiply Pulse.ar by LFPulse.kr to create the rhythmic flashing effect.", es: "Multiplica Pulse.ar por LFPulse.kr para crear el efecto de intermitencia rítmica.", fr: "Multipliez Pulse.ar par LFPulse.kr pour créer l'effet d'intermittence rythmique." });
@@ -965,12 +1138,13 @@ La technique est la même que pour l'alarme incendie. Multipliez l'oscillateur p
         if (hasPulseAr && !hasFreq1200) tips.push({ en: "The first argument of Pulse.ar is the alarm clock tone frequency in Hz.", es: "El primer argumento de Pulse.ar es la frecuencia del tono del despertador en Hz.", fr: "Le premier argument de Pulse.ar est la fréquence du ton du réveil en Hz." });
         if (hasPulseAr && hasFreq1200 && !hasWidth05) tips.push({ en: "The second argument of Pulse.ar is the pulse width. What value produces a perfect square wave?", es: "El segundo argumento de Pulse.ar es el ancho del pulso. ¿Qué valor produce una onda cuadrada perfecta?", fr: "Le second argument de Pulse.ar est la largeur d'impulsion. Quelle valeur produit une onde carrée parfaite ?" });
         if (hasLFPulse && !hasRate4) tips.push({ en: "The first argument of LFPulse.kr is the flash rate in Hz.", es: "El primer argumento de LFPulse.kr es la velocidad de parpadeo en Hz.", fr: "Le premier argument de LFPulse.kr est la vitesse de clignotement en Hz." });
+        if (!hasAmp) tips.push({ en: "Multiply the result by the amplitude to set the volume.", es: "Multiplica el resultado por la amplitud para ajustar el volumen.", fr: "Multipliez le résultat par l'amplitude pour régler le volume." });
       }
       return { ok, tips };
     },
   },
   {
-    id: "ex13",
+    id: "ex15",
     level: 3,
     title: { en: "Evacuation signal", es: "Señal de evacuación", fr: "Signal d'évacuation" },
     tag: "SinOsc",
@@ -1051,8 +1225,9 @@ Exemple de calcul :
       const hasRate05 = /LFSaw\.ar\s*\(\s*0\.5\s*\)/.test(code);
       const hasDepth450 = /450/.test(code);
       const hasCenter750 = /750/.test(code);
+      const hasAmp = /,\s*0\s*,\s*0\.4/.test(code);
       const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
-      const ok = hasSinOsc && hasLFSaw && hasRate05 && hasDepth450 && hasCenter750;
+      const ok = hasSinOsc && hasLFSaw && hasRate05 && hasDepth450 && hasCenter750 && hasAmp;
       const tips = [];
       if (!hasSinOsc) tips.push({ en: "Use SinOsc.ar as the main oscillator. The first argument will be the frequency expression.", es: "Usa SinOsc.ar como oscilador principal. El primer argumento será la expresión de frecuencia.", fr: "Utilisez SinOsc.ar comme oscillateur principal. Le premier argument sera l'expression de fréquence." });
       else if (!hasLFSaw) tips.push({ en: "Use LFSaw.ar inside the first argument of SinOsc so the frequency rises cyclically.", es: "Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia suba de forma cíclica.", fr: "Utilisez LFSaw.ar dans le premier argument de SinOsc pour que la fréquence monte de façon cyclique." });
@@ -1061,76 +1236,14 @@ Exemple de calcul :
         if (hasLFSaw && !hasRate05) tips.push({ en: "The first argument of LFSaw.ar is the sweep rate. An evacuation siren is slow.", es: "El primer argumento de LFSaw.ar es la velocidad del barrido. Una sirena de evacuación es lenta.", fr: "Le premier argument de LFSaw.ar est la vitesse du balayage. Une sirène d'évacuation est lente." });
         if (!hasDepth450) tips.push({ en: "Multiply LFSaw by half the frequency range. Calculate: (max - min) / 2.", es: "Multiplica LFSaw por la mitad del rango de frecuencias. Calcula: (máximo - mínimo) / 2.", fr: "Multipliez LFSaw par la moitié de la plage de fréquences. Calculez : (max - min) / 2." });
         if (!hasCenter750) tips.push({ en: "Add the center frequency. Calculate: (max + min) / 2.", es: "Suma la frecuencia central. Calcula: (máximo + mínimo) / 2.", fr: "Ajoutez la fréquence centrale. Calculez : (max + min) / 2." });
+        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of SinOsc.ar (after the frequency expression and phase 0).", es: "La amplitud es el tercer argumento de SinOsc.ar (tras la expresión de frecuencia y la fase 0).", fr: "L'amplitude est le troisième argument de SinOsc.ar (après l'expression de fréquence et la phase 0)." });
       }
       return { ok, tips };
     },
   },
+
   {
-    id: "ex14",
-    level: 1,
-    title: { en: "Sawtooth wave", es: "Diente de sierra", fr: "Dent de scie" },
-    tag: "Saw",
-    goal: {
-      en: "Generate a sawtooth wave at 330 Hz with amplitude 0.2",
-      es: "Genera una onda de diente de sierra a 330 Hz con amplitud 0.2",
-      fr: "Génère une onde en dent de scie à 330 Hz avec une amplitude de 0.2",
-    },
-    theory: {
-      en: `The sawtooth wave is one of the richest waveforms in harmonics. Unlike SinOsc (pure and smooth wave), Saw contains all harmonics of the series, giving it a bright and piercing timbre.
-
-Syntax:
-  Saw.ar(freq, mul)
-
-  freq → the frequency in Hz, same as in SinOsc. 330 Hz corresponds approximately to the note E3.
-
-  mul  → the amplitude (volume). Use moderate values (0.1 – 0.3) because its harmonic richness can sound very full at high volumes.
-
-The sawtooth wave is the ideal starting point for subtractive synthesis: it is filtered afterwards to sculpt the timbre.`,
-      es: `La onda de diente de sierra es una de las formas de onda más ricas en armónicos. A diferencia de SinOsc (onda pura y suave), Saw contiene todos los armónicos de la serie, lo que le da un timbre brillante y penetrante.
-
-Sintaxis:
-  Saw.ar(freq, mul)
-
-  freq → la frecuencia en Hz, igual que en SinOsc. 330 Hz corresponde aproximadamente a la nota Mi3.
-
-  mul  → la amplitud (volumen). Usa valores moderados (0.1 – 0.3) porque su riqueza armónica puede sonar muy cargada a volúmenes altos.
-
-La onda de diente de sierra es el punto de partida ideal para la síntesis substractiva: se filtra después para esculpir el timbre.`,
-      fr: `L'onde en dent de scie est l'une des formes d'onde les plus riches en harmoniques. Contrairement à SinOsc (onde pure et douce), Saw contient tous les harmoniques de la série, ce qui lui donne un timbre brillant et perçant.
-
-Syntaxe :
-  Saw.ar(freq, mul)
-
-  freq → la fréquence en Hz, comme dans SinOsc. 330 Hz correspond approximativement à la note Mi3.
-
-  mul  → l'amplitude (volume). Utilisez des valeurs modérées (0.1 – 0.3) car sa richesse harmonique peut sonner très chargée à des volumes élevés.
-
-L'onde en dent de scie est le point de départ idéal pour la synthèse soustractive : elle est ensuite filtrée pour sculpter le timbre.`,
-    },
-    starter: {
-      en: `// Write your code inside the { }.play block:\n{\n  // Your code goes here\n  \n}.play`,
-      es: `// Escribe tu código dentro del bloque { }.play:\n{\n  // Tu código va aquí\n  \n}.play`,
-      fr: `// Écrivez votre code dans le bloc { }.play :\n{\n  // Votre code va ici\n  \n}.play`,
-    },
-    answer: {
-      en: `// Sawtooth wave at 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
-      es: `// Onda de diente de sierra a 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
-      fr: `// Onde en dent de scie à 330 Hz\n{\n  Saw.ar(330, 0.2) ! 2\n}.play`,
-    },
-    validate(code) {
-      const hasSaw = /Saw\.ar/.test(code);
-      const hasCorrectCall = /Saw\.ar\s*\(\s*330\s*,\s*0\.2\s*\)/.test(code);
-      const hasAllArgs = /Saw\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
-      const ok = hasCorrectCall;
-      const tips = [];
-      if (!hasSaw) tips.push({ en: "The UGen for the sawtooth wave is called Saw. Write it inside the { } block.", es: "El UGen para la onda de diente de sierra se llama Saw. Escríbelo dentro del bloque { }.", fr: "L'UGen pour l'onde en dent de scie s'appelle Saw. Écrivez-le à l'intérieur du bloc { }." });
-      else if (hasAllArgs && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
-      else if (!ok) tips.push({ en: "Saw.ar needs two arguments: the frequency in Hz and the amplitude (mul).", es: "Saw.ar necesita dos argumentos: la frecuencia en Hz y la amplitud (mul).", fr: "Saw.ar a besoin de deux arguments : la fréquence en Hz et l'amplitude (mul)." });
-      return { ok, tips };
-    },
-  },
-  {
-    id: "ex15",
+    id: "ex16",
     level: 3,
     title: { en: "Laser shot", es: "Disparo láser", fr: "Tir laser" },
     tag: "XLine",
@@ -1217,86 +1330,5 @@ Utilisez-le comme premier argument de l'oscillateur sinusoïdal pour moduler la 
       return { ok, tips };
     },
   },
-  {
-    id: "ex16",
-    level: 2,
-    title: { en: "Power-up", es: "Recarga de poder", fr: "Recharge de pouvoir" },
-    tag: "Line",
-    goal: {
-      en: "Linear rise from 200 to 1200 Hz in 0.2 seconds, with attack 0.01s and decay 1s",
-      es: "Subida lineal de 200 a 1200 Hz en 0.2 segundos, con ataque 0.01s y caída 1s",
-      fr: "Montée linéaire de 200 à 1200 Hz en 0.2 secondes, avec attaque 0.01s et chute 1s",
-    },
-    theory: {
-      en: `Line.kr generates a linear ramp: the frequency rises or falls at constant speed from one value to another.
 
-Line.kr(start, end, dur)
-
-  start → initial frequency in Hz
-  end   → final frequency in Hz
-  dur   → duration of the traverse in seconds
-
-Unlike XLine (which uses an exponential curve), Line advances in equal steps. This means it rises the same number of Hz per second throughout the traverse.
-
-Since the ear perceives pitch on a logarithmic scale, a linear ramp from 200 to 1200 Hz sounds faster at the beginning than at the end. This is the "power-up" or "video game signal" effect.
-`,
-      es: `Line.kr genera una rampa lineal: la frecuencia sube o baja a velocidad constante desde un valor hasta otro.
-
-Line.kr(start, end, dur)
-
-  start → frecuencia inicial en Hz
-  end   → frecuencia final en Hz
-  dur   → duración del recorrido en segundos
-
-A diferencia de XLine (que usa una curva exponencial), Line avanza en pasos iguales. Eso significa que sube los mismos Hz por segundo durante todo el recorrido.
-
-Como el oído percibe el tono en escala logarítmica, una rampa lineal de 200 a 1200 Hz suena más rápida al principio que al final. Es el efecto de "power-up" o "señal de videojuego".
-`,
-      fr: `Line.kr génère une rampe linéaire : la fréquence monte ou descend à vitesse constante d'une valeur à une autre.
-
-Line.kr(start, end, dur)
-
-  start → fréquence initiale en Hz
-  end   → fréquence finale en Hz
-  dur   → durée du parcours en secondes
-
-Contrairement à XLine (qui utilise une courbe exponentielle), Line avance par pas égaux. Cela signifie qu'il monte du même nombre de Hz par seconde tout au long du parcours.
-
-Comme l'oreille perçoit la hauteur sur une échelle logarithmique, une rampe linéaire de 200 à 1200 Hz sonne plus vite au début qu'à la fin. C'est l'effet "power-up" ou "signal de jeu vidéo".
-`,
-    },
-    starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    Line.kr(INICIO, FIN, DUR),\n    FASE,\n    EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-    },
-    answer: {
-      en: `// Linear pitch rise\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Subida de tono lineal\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Montée linéaire de hauteur\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-    },
-    validate(code) {
-      const hasSinOsc = /SinOsc/.test(code);
-      const hasLine = /(?<![A-Za-z])Line\.kr/.test(code);
-      const hasEnvGen = /EnvGen/.test(code);
-      const hasEnvPerc = /Env\.perc/.test(code);
-      const hasCorrectLine = /(?<![A-Za-z])Line\.kr\s*\(\s*200\s*,\s*1200\s*,\s*1\s*\)/.test(code);
-      const hasPercValues = /Env\.perc\s*\(\s*0\.01\s*,\s*1\s*\)/.test(code);
-      const hasStructure = hasSinOsc && hasLine &&
-        /(?<![A-Za-z])Line\.kr\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
-        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
-      const ok = hasSinOsc && hasLine && hasCorrectLine && hasEnvGen && hasEnvPerc && hasPercValues;
-      const tips = [];
-      if (!hasSinOsc) tips.push({ en: "You need SinOsc.ar as the oscillator. The frequency will come from the Line.kr sweep.", es: "Necesitas SinOsc.ar como oscilador. La frecuencia vendrá del barrido de Line.kr.", fr: "Vous avez besoin de SinOsc.ar comme oscillateur. La fréquence viendra du balayage de Line.kr." });
-      else if (!hasLine) tips.push({ en: "Use Line.kr as the first argument of SinOsc.ar so the frequency rises linearly.", es: "Usa Line.kr como primer argumento de SinOsc.ar para que la frecuencia suba de forma lineal.", fr: "Utilisez Line.kr comme premier argument de SinOsc.ar pour que la fréquence monte de façon linéaire." });
-      else if (!hasEnvGen) tips.push({ en: "Multiply by EnvGen.kr to give the sound a duration and have it release when done.", es: "Multiplica por EnvGen.kr para darle duración al sonido y que se libere al terminar.", fr: "Multipliez par EnvGen.kr pour donner une durée au son et qu'il se libère à la fin." });
-      else if (!hasEnvPerc) tips.push({ en: "Use Env.perc inside EnvGen.kr to define the attack and decay of the tone.", es: "Usa Env.perc dentro de EnvGen.kr para definir el ataque y la caída del tono.", fr: "Utilisez Env.perc dans EnvGen.kr pour définir l'attaque et la chute du ton." });
-      else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
-      else {
-        if (!hasCorrectLine) tips.push({ en: "Check the three arguments of Line.kr: start frequency, end frequency and duration in seconds.", es: "Revisa los tres argumentos de Line.kr: frecuencia inicial, frecuencia final y duración en segundos.", fr: "Vérifiez les trois arguments de Line.kr : fréquence de départ, fréquence finale et durée en secondes." });
-        if (!hasPercValues) tips.push({ en: "Check the Env.perc times: very short attack and decay equal to the sweep duration.", es: "Revisa los tiempos de Env.perc: ataque muy corto y caída igual a la duración del barrido.", fr: "Vérifiez les durées d'Env.perc : attaque très courte et chute égale à la durée du balayage." });
-      }
-      return { ok, tips };
-    },
-  },
 ];

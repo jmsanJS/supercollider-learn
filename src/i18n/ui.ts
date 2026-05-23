@@ -162,6 +162,7 @@ const ui = {
     sc_err_brackets: "Missing or unmatched square brackets [ ].",
     sc_err_play: "Add .play at the end to execute the audio block.",
     sc_err_ugen: "Use a UGen with an .ar(...) call to generate audio.",
+    sc_err_placeholders: "Replace all placeholder words (in UPPERCASE) with actual values.",
   },
 
   es: {
@@ -313,6 +314,7 @@ const ui = {
     sc_err_brackets: "Falta cerrar o abrir correctamente corchetes [ ].",
     sc_err_play: "Agrega .play al final para ejecutar el bloque de audio.",
     sc_err_ugen: "Usa un UGen con llamada .ar(...) para generar audio.",
+    sc_err_placeholders: "Reemplaza todas las palabras de marcador (en MAYÚSCULAS) por valores reales.",
   },
 
   fr: {
@@ -464,6 +466,7 @@ const ui = {
     sc_err_brackets: "Crochets [ ] non fermés ou mal ouverts.",
     sc_err_play: "Ajoutez .play à la fin pour exécuter le bloc audio.",
     sc_err_ugen: "Utilisez un UGen avec un appel .ar(...) pour générer de l'audio.",
+    sc_err_placeholders: "Remplacez tous les mots indicateurs (en MAJUSCULES) par des valeurs réelles.",
   },
 } as const;
 

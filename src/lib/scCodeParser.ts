@@ -51,6 +51,11 @@ export function validateSCCode(code: string): SCCodeValidation {
   const soundUgenPattern = new RegExp(`\\b(${MAIN_UGEN}|${NOISE_UGEN})\\.ar\\s*\\(`);
   if (!soundUgenPattern.test(code)) errorKeys.push("sc_err_ugen");
 
+  // Strip single-line comments before checking for UPPERCASE placeholders so
+  // comments like "// Replace the UPPERCASE words:" don't trigger a false positive.
+  const codeBody = code.replace(/\/\/.*/g, "");
+  if (/\b[A-Z]{3,}\b/.test(codeBody)) errorKeys.push("sc_err_placeholders");
+
   const errors: LocalizedString[] = errorKeys.map((key) => ({
     en: t("en", key),
     es: t("es", key),
@@ -78,13 +83,13 @@ function getMainFreq(code: string): number | null {
 
 function getNoiseConfig(code: string): AudioConfig | null {
   const match = code.match(
-    new RegExp(`\\b(${NOISE_UGEN})\\.ar\\s*\\(\\s*(\\d+(?:\\.\\d+)?)`),
+    new RegExp(`\\b(${NOISE_UGEN})\\.ar\\s*\\(\\s*(\\d+(?:\\.\\d+)?)?`),
   );
   if (!match) return null;
   return {
     type: "noise",
     color: NOISE_COLORS[match[1]],
-    amp: parseFloat(match[2]),
+    amp: match[2] ? parseFloat(match[2]) : 1,
   };
 }
 
@@ -140,21 +145,34 @@ function getFmConfig(code: string, type: OscillatorType): AudioConfig | null {
   const lfoName = match[1];
   const rate = parseFloat(match[2]);
 
-  const depthMatch = code.match(
+  const iphaseMatch = code.match(
     new RegExp(
-      `${lfoName}\\.(?:ar|kr)\\s*\\([^)]*\\)\\s*\\*\\s*\\(?\\s*-?\\s*(\\d+(?:\\.\\d+)?)`,
+      `${lfoName}\\.(?:ar|kr)\\s*\\(\\s*\\d+(?:\\.\\d+)?\\s*,\\s*(\\d+(?:\\.\\d+)?)`,
     ),
   );
-  let depth = depthMatch ? parseFloat(depthMatch[1]) : 100;
+  // SC iphase is in cycles (0–2); Tone.LFO phase is in degrees (0–360)
+  const phase = iphaseMatch ? parseFloat(iphaseMatch[1]) * 180 : 0;
+
+  const depthMatch = code.match(
+    new RegExp(
+      `${lfoName}\\.(?:ar|kr)\\s*\\([^)]*\\)\\s*\\*\\s*\\(?\\s*(-?\\s*\\d+(?:\\.\\d+)?)`,
+    ),
+  );
+  let depth = depthMatch ? parseFloat(depthMatch[1].replace(/\s/g, "")) : 100;
 
   const centerMatch = code.match(/\+\s*(\d+(?:\.\d+)?)/);
   let center = centerMatch ? parseFloat(centerMatch[1]) : 440;
 
   // LFPulse outputs 0..1 (asymmetric). Shift to midpoint so audio.ts' symmetric
   // min/max formula renders the intended [center, center + depth] range.
+  let lfoWidth: number | undefined;
   if (lfoName === "LFPulse") {
     center += depth / 2;
     depth = depth / 2;
+    const widthMatch = code.match(
+      /LFPulse\.(?:ar|kr)\s*\(\s*\d+(?:\.\d+)?\s*,\s*\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
+    );
+    lfoWidth = widthMatch ? parseFloat(widthMatch[1]) : undefined;
   }
 
   const ampMatch = code.match(
@@ -165,7 +183,7 @@ function getFmConfig(code: string, type: OscillatorType): AudioConfig | null {
     freq: center,
     amp: ampMatch ? parseFloat(ampMatch[1]) : 1,
     type,
-    lfo: { rate, depth, shape: LFO_SHAPES[lfoName], target: "frequency" },
+    lfo: { rate, depth, shape: LFO_SHAPES[lfoName], target: "frequency", phase, width: lfoWidth },
   };
 }
 
@@ -246,20 +264,29 @@ function getPanConfig(code: string, type: OscillatorType): AudioConfig | null {
   };
 }
 
+function getPulseWidth(code: string): number | undefined {
+  // Pulse.ar(freq, width, ...) — second arg is the duty cycle (0–1)
+  const match = code.match(
+    /Pulse\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
+  );
+  return match ? parseFloat(match[1]) : undefined;
+}
+
 function getPlainConfig(code: string, type: OscillatorType): AudioConfig {
   const freq = getMainFreq(code) ?? 440;
+  const pulseWidth = type === "square" ? getPulseWidth(code) : undefined;
 
   const threeArg = code.match(
     /\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
   );
-  if (threeArg) return { freq, amp: parseFloat(threeArg[1]), type };
+  if (threeArg) return { freq, amp: parseFloat(threeArg[1]), type, pulseWidth };
 
   const sawTwoArg = code.match(
     /\bSaw\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
   );
-  if (sawTwoArg) return { freq, amp: parseFloat(sawTwoArg[1]), type };
+  if (sawTwoArg) return { freq, amp: parseFloat(sawTwoArg[1]), type, pulseWidth };
 
-  return { freq, type };
+  return { freq, type, pulseWidth };
 }
 
 export function parseSCCode(code: string): AudioConfig {

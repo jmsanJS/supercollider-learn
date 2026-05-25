@@ -93,15 +93,43 @@ function getNoiseConfig(code: string): AudioConfig | null {
   };
 }
 
-function getDtmfConfig(code: string): AudioConfig | null {
-  const freqs = [
-    ...code.matchAll(/SinOsc\.ar\s*\(\s*(\d+(?:\.\d+)?)\s*\)/g),
-  ].map((m) => parseFloat(m[1]));
-  if (freqs.length < 2) return null;
+function getMixConfig(code: string): AudioConfig | null {
+  // Capture up to 3 args: (arg1, arg2, arg3)
+  // arg2 may be negative (e.g. SC phase values)
+  const oscPattern = new RegExp(
+    `\\b(${MAIN_UGEN}|${NOISE_UGEN})\\.ar\\s*\\(\\s*(\\d+(?:\\.\\d+)?)(?:\\s*,\\s*(-?\\d+(?:\\.\\d+)?))?(?:\\s*,\\s*(\\d+(?:\\.\\d+)?))?`,
+    "g",
+  );
+  const matches = [...code.matchAll(oscPattern)];
+  if (matches.length < 2) return null;
+
+  const oscillators = matches.map((m) => {
+    const name = m[1];
+    if (NOISE_COLORS[name]) {
+      // WhiteNoise.ar(mul) — first arg is mul
+      const amp = m[2] ? parseFloat(m[2]) : undefined;
+      return { type: NOISE_COLORS[name] as "white" | "pink" | "brown", ...(amp !== undefined ? { amp } : {}) };
+    }
+    const oscType = OSC_TYPES[name] as "sine" | "sawtooth" | "square" | "triangle";
+    const freq = parseFloat(m[2]);
+    // Pulse.ar(freq, width, mul) / SinOsc.ar(freq, phase, mul) / LFTri.ar(freq, iphase, mul) → mul is arg3
+    // Saw.ar(freq, mul) → mul is arg2
+    const mulStr = name === "Saw" ? m[3] : m[4];
+    const amp = mulStr ? parseFloat(mulStr) : undefined;
+    const pulseWidth = oscType === "square" && m[3] ? parseFloat(m[3]) : undefined;
+    // SinOsc phase is in radians (0–2π) → degrees: × (180/π)
+    // LFTri iphase is in cycles (0–2) → degrees: × 180
+    // Pulse arg2 is width (not phase); Saw has no phase arg
+    let phase: number | undefined;
+    if (name === "SinOsc" && m[3]) phase = parseFloat(m[3]) * (180 / Math.PI);
+    if (name === "LFTri" && m[3]) phase = parseFloat(m[3]) * 180;
+    return { type: oscType, freq, ...(pulseWidth !== undefined ? { pulseWidth } : {}), ...(amp !== undefined ? { amp } : {}), ...(phase !== undefined ? { phase } : {}) };
+  });
+
   const ampMatch = code.match(/\)\s*\*\s*(\d+(?:\.\d+)?)/);
   return {
-    type: "dtmf",
-    freqs: freqs.slice(0, 2),
+    type: "mix",
+    oscillators,
     amp: ampMatch ? parseFloat(ampMatch[1]) : 1,
   };
 }
@@ -125,9 +153,17 @@ function getAmConfig(code: string, type: OscillatorType): AudioConfig | null {
     ),
   );
 
+  // Extract the oscillator's own mul arg so users can experiment with it.
+  // Saw.ar(freq, mul) → 2nd arg; all others (SinOsc/Pulse/LFTri) → 3rd arg.
+  const oscMulMatch = type === "sawtooth"
+    ? code.match(/\bSaw\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/)
+    : code.match(new RegExp(`\\b(?:${MAIN_UGEN})\\.ar\\s*\\(\\s*\\d+(?:\\.\\d+)?\\s*,\\s*-?\\d+(?:\\.\\d+)?\\s*,\\s*(\\d+(?:\\.\\d+)?)`));
+  const oscMul = oscMulMatch ? parseFloat(oscMulMatch[1]) : 1;
+  const outerAmp = ampMatch ? parseFloat(ampMatch[1]) : 1;
+
   return {
     freq,
-    amp: ampMatch ? parseFloat(ampMatch[1]) : 1,
+    amp: outerAmp * oscMul,
     type,
     lfo: { rate, depth: 1, shape: LFO_SHAPES[lfoName], target: "amplitude" },
   };
@@ -179,10 +215,17 @@ function getFmConfig(code: string, type: OscillatorType): AudioConfig | null {
     /\+\s*\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
   );
 
+  // Pulse.ar(lfo_expr, width, amp): the second arg after "+ center," is the width
+  const pulseWidthMatch = type === "square"
+    ? code.match(/\+\s*\d+(?:\.\d+)?\s*,\s*([\d.]+)/)
+    : null;
+  const pulseWidth = pulseWidthMatch ? parseFloat(pulseWidthMatch[1]) : undefined;
+
   return {
     freq: center,
     amp: ampMatch ? parseFloat(ampMatch[1]) : 1,
     type,
+    ...(pulseWidth !== undefined ? { pulseWidth } : {}),
     lfo: { rate, depth, shape: LFO_SHAPES[lfoName], target: "frequency", phase, width: lfoWidth },
   };
 }
@@ -207,13 +250,13 @@ function getSweepConfig(code: string, type: OscillatorType): AudioConfig | null 
   } as const;
 
   const perc = code.match(
-    /Env\.perc\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/,
+    /Env\.perc\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*([\d.]+))?/,
   );
   if (!perc) return { type, amp: 0.4, sweep };
 
   return {
     type,
-    amp: 0.4,
+    amp: perc[3] ? parseFloat(perc[3]) : 0.4,
     sweep,
     env: {
       attack: parseFloat(perc[1]),
@@ -230,16 +273,26 @@ function getEnvConfig(code: string, type: OscillatorType): AudioConfig | null {
   if (!/Env\.perc|EnvGen/.test(code)) return null;
 
   const freq = getMainFreq(code) ?? 440;
+  const pulseWidth = type === "square" ? getPulseWidth(code) : undefined;
+
+  const threeArg = code.match(
+    /\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/,
+  );
+  const sawTwoArg = code.match(/\bSaw\.ar\s*\(\s*\d+(?:\.\d+)?\s*,\s*(\d+(?:\.\d+)?)/);
 
   const perc = code.match(
-    /Env\.perc\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/,
+    /Env\.perc\s*\(\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*,\s*([\d.]+))?/,
   );
-  if (!perc) return { freq, amp: 0.5, type };
+  const envLevel = perc?.[3] ? parseFloat(perc[3]) : undefined;
+  const amp = threeArg ? parseFloat(threeArg[1]) : sawTwoArg ? parseFloat(sawTwoArg[1]) : (envLevel ?? 0.5);
+
+  if (!perc) return { freq, amp, type, pulseWidth };
 
   return {
     freq,
-    amp: 0.5,
+    amp,
     type,
+    pulseWidth,
     env: {
       attack: parseFloat(perc[1]),
       decay: parseFloat(perc[2]),
@@ -292,11 +345,11 @@ function getPlainConfig(code: string, type: OscillatorType): AudioConfig {
 export function parseSCCode(code: string): AudioConfig {
   const stereo = /!\s*2/.test(code);
 
+  const mix = getMixConfig(code);
+  if (mix) return { ...mix, stereo };
+
   const noise = getNoiseConfig(code);
   if (noise) return { ...noise, stereo };
-
-  const dtmf = getDtmfConfig(code);
-  if (dtmf) return { ...dtmf, stereo };
 
   const type = getMainOscType(code);
   if (!type) return { stereo };

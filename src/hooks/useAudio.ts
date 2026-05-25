@@ -5,7 +5,7 @@ import * as Tone from "tone";
 import type { AudioConfig, AudioRefs } from "@/types";
 import {
   createNoise,
-  createDTMF,
+  createOscMix,
   createLFOSynth,
   createEnvSynth,
   createSweepSynth,
@@ -28,8 +28,7 @@ export function useAudio() {
         refs.synth?.stop();
       }
       refs.synth?.dispose();
-      refs.synth2?.stop();
-      refs.synth2?.dispose();
+      refs.oscillators?.forEach((o) => { o.stop(); o.dispose(); });
       refs.lfo?.stop();
       refs.lfo?.dispose();
       refs.noise?.stop();
@@ -52,8 +51,8 @@ export function useAudio() {
           refs = createFilteredNoise(audio);
         } else if (audio.type === "noise") {
           refs = createNoise(audio);
-        } else if (audio.type === "dtmf") {
-          refs = createDTMF(audio);
+        } else if (audio.type === "mix") {
+          refs = createOscMix(audio);
         } else if (audio.pan) {
           refs = createPanner(audio);
         } else if (audio.lfo) {

@@ -47,21 +47,33 @@ export function createNoise(audio: AudioConfig): Pick<AudioRefs, "noise" | "pann
   return { noise, panner };
 }
 
-export function createDTMF(
+export function createOscMix(
   audio: AudioConfig,
-): Pick<AudioRefs, "synth" | "synth2" | "panner"> {
-  const [f1, f2] = audio.freqs ?? [770, 1336];
+): Pick<AudioRefs, "oscillators" | "panner"> {
   const { out, panner } = getOutput(audio);
-
   const gain = new Tone.Gain(audio.amp ?? 1).connect(out);
 
-  const s1 = new Tone.Oscillator(f1, "sine").connect(gain);
-  const s2 = new Tone.Oscillator(f2, "sine").connect(gain);
+  const oscs = (audio.oscillators ?? [{ type: "sine", freq: 770 }, { type: "sine", freq: 1336 }]).map((mix) => {
+    const noiseTypes = ["white", "pink", "brown"] as const;
+    const isNoise = (noiseTypes as readonly string[]).includes(mix.type);
+    if (isNoise) {
+      const noise = new Tone.Noise(mix.type as "white" | "pink" | "brown").connect(gain);
+      noise.volume.value = Tone.gainToDb(mix.amp ?? 1);
+      noise.start();
+      return noise as unknown as Tone.Oscillator;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const oscOptions: any = mix.type === "square" && mix.pulseWidth !== undefined
+      ? { type: "pulse", frequency: mix.freq ?? 440, width: mix.pulseWidth * 2 - 1, phase: mix.phase ?? 0 }
+      : { type: mix.type as OscillatorType, frequency: mix.freq ?? 440, phase: mix.phase ?? 0 };
+    // OmniOscillator handles all types including "pulse" (Tone.Oscillator rejects it)
+    const osc = new Tone.OmniOscillator(oscOptions).connect(gain);
+    osc.volume.value = Tone.gainToDb(mix.amp ?? 1);
+    osc.start();
+    return osc as unknown as Tone.Oscillator;
+  });
 
-  s1.start();
-  s2.start();
-
-  return { synth: s1, synth2: s2, panner };
+  return { oscillators: oscs, panner };
 }
 
 export function createLFOSynth(

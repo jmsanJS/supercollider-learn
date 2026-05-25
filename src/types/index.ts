@@ -4,14 +4,22 @@ import type { ReactNode } from "react";
 export type Locale = "en" | "es" | "fr";
 export type LocalizedString = Record<Locale, string>;
 
+export type OscillatorMix = {
+  type: "sine" | "sawtooth" | "square" | "triangle" | "pulse" | "white" | "pink" | "brown";
+  freq?: number;
+  pulseWidth?: number;
+  amp?: number;
+  phase?: number; // degrees (0–360), converted from SC units at parse time
+};
+
 export type AudioConfig = {
   freq?: number;
   amp?: number;
-  type?: OscillatorType | "noise" | "dtmf";
+  type?: OscillatorType | "noise" | "mix";
   pulseWidth?: number;
   sample?: string;
   lfo?: LFOConfig;
-  freqs?: number[];
+  oscillators?: OscillatorMix[];
   env?: EnvConfig;
   color?: NoiseColor;
   pan?: boolean;
@@ -68,7 +76,7 @@ export type ReverbConfig = {
 // Hooks
 export type AudioRefs = {
   synth?: Tone.Synth | Tone.Oscillator;
-  synth2?: Tone.Oscillator;
+  oscillators?: Tone.Oscillator[];
   sample?: Tone.Player;
   lfo?: Tone.LFO | Tone.Oscillator;
   noise?: Tone.Noise;

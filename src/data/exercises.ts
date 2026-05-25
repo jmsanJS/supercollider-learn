@@ -648,9 +648,9 @@ différence de Hz que vous multipliez doit être négative :
     title: { en: "Microwave beep", es: "Pitido de microondas", fr: "Bip de micro-ondes" },
     tag: "EnvGen",
     goal: {
-      en: "Tone at 1000 Hz with attack 0.01s and decay 0.1s",
-      es: "Tono a 1000 Hz con ataque 0.01s y caída 0.1s",
-      fr: "Ton à 1000 Hz avec attaque 0.01s et chute 0.1s",
+      en: "Tone at 1000 Hz with rise 0.01s and fall 0.1s",
+      es: "Tono a 1000 Hz con subida 0.01s y bajada 0.1s",
+      fr: "Ton à 1000 Hz avec montée 0.01s et descente 0.1s",
     },
     theory: {
       en: `Household appliances use short beeps with a percussive envelope.
@@ -660,14 +660,17 @@ EnvGen.kr generates that amplitude shape. It is multiplied by the oscillator:
   SinOsc.ar(freq) * EnvGen.kr(envelope)
 
 Env.perc defines the shape of the envelope:
-  Env.perc(attack, decay)
+  Env.perc(attack, decay, level, curve)
 
-  attack → time in seconds to rise to maximum volume
-           (very short, like 0.01 s)
-  decay  → time in seconds to fall to silence
-           (somewhat longer, like 0.1 s)
+  attack → time in seconds to rise to maximum volume (very short, like 0.01 s)
+  decay  → time in seconds to fall to silence (somewhat longer, like 0.1 s)
+  level  → peak amplitude of the envelope (default 1). Not used in this exercise.
+  curve  → shape of the curve: 0 is linear, negative values give an exponential drop (default -4). Not used in this exercise.
 
-doneAction: Done.freeSelf releases the synth when the envelope ends.`,
+EnvGen.kr also takes a doneAction argument:
+  doneAction: Done.freeSelf
+
+Without it, the synth node would keep running silently on the server after the envelope ends, wasting CPU. Done.freeSelf tells SuperCollider to free (delete) the synth automatically once the envelope reaches its end.`,
       es: `Los electrodomésticos usan pitidos cortos con envolvente percusiva.
 En lugar de un tono continuo, el sonido sube y baja en amplitud rápidamente.
 
@@ -675,14 +678,19 @@ EnvGen.kr genera esa forma de amplitud. Se multiplica por el oscilador:
   SinOsc.ar(freq) * EnvGen.kr(envolvente)
 
 Env.perc define la forma de la envolvente:
-  Env.perc(ataque, caída)
+  Env.perc(ataque, caída, nivel, curva)
 
   ataque → tiempo en segundos que tarda en subir al volumen máximo
            (muy corto, como 0.01 s)
   caída  → tiempo en segundos que tarda en bajar a silencio
            (algo más largo, como 0.1 s)
+  nivel  → amplitud máxima de la envolvente (por defecto 1). No se usa en este ejercicio.
+  curva  → forma de la curva: 0 es lineal, valores negativos dan una caída exponencial (por defecto -4). No se usa en este ejercicio.
 
-doneAction: Done.freeSelf libera el synth cuando termina la envolvente.`,
+EnvGen.kr también acepta el argumento doneAction:
+  doneAction: Done.freeSelf
+
+Sin él, el nodo del synth seguiría corriendo en silencio en el servidor después de que termine la envolvente, desperdiciando CPU. Done.freeSelf le indica a SuperCollider que libere (elimine) el synth automáticamente cuando la envolvente llega a su fin.`,
       fr: `Les appareils électroménagers utilisent de courts bips avec une enveloppe percussive.
 Au lieu d'un ton continu, le son monte et descend rapidement en amplitude.
 
@@ -690,14 +698,19 @@ EnvGen.kr génère cette forme d'amplitude. Il est multiplié par l'oscillateur 
   SinOsc.ar(freq) * EnvGen.kr(envelope)
 
 Env.perc définit la forme de l'enveloppe :
-  Env.perc(attack, decay)
+  Env.perc(attack, decay, level, curve)
 
   attack → temps en secondes pour monter au volume maximum
            (très court, comme 0.01 s)
   decay  → temps en secondes pour descendre au silence
            (un peu plus long, comme 0.1 s)
+  level  → amplitude maximale de l'enveloppe (défaut 1). Pas utilisé dans cet exercice.
+  curve  → forme de la courbe : 0 est linéaire, les valeurs négatives donnent une chute exponentielle (défaut -4). Pas utilisé dans cet exercice.
 
-doneAction: Done.freeSelf libère le synth quand l'enveloppe se termine.`,
+EnvGen.kr accepte aussi un argument doneAction :
+  doneAction: Done.freeSelf
+
+Sans lui, le nœud synth continuerait à tourner silencieusement sur le serveur après la fin de l'enveloppe, gaspillant du CPU. Done.freeSelf indique à SuperCollider de libérer (supprimer) le synth automatiquement une fois que l'enveloppe atteint sa fin.`,
     },
     starter: {
       en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(FREQUENCY) *\n  EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf) ! 2\n}.play`,
@@ -733,79 +746,102 @@ doneAction: Done.freeSelf libère le synth quand l'enveloppe se termine.`,
     id: "ex10",
     level: 2,
     title: { en: "Kitchen timer", es: "Temporizador de cocina", fr: "Minuteur de cuisine" },
-    tag: "EnvGen",
+    tag: "Pulse",
     goal: {
-      en: "Tone at 880 Hz with attack 0.05s and decay 0.3s",
-      es: "Tono a 880 Hz con ataque 0.05s y caída 0.3s",
-      fr: "Ton à 880 Hz avec attaque 0.05s et chute 0.3s",
+      en: "Square-wave tone at 880 Hz, width 0.35, rise 0.05s, fall 0.3s",
+      es: "Tono de onda cuadrada a 880 Hz, ancho 0.35, subida 0.05s, bajada 0.3s",
+      fr: "Ton d'onde carrée à 880 Hz, largeur 0.35, montée 0.05s, descente 0.3s",
     },
     theory: {
-      en: `Kitchen timers use tones with a rapid decay.
-The envelope defines the "personality" of the sound:
+      en: `Think that a kitchen timer has a slightly buzzier sound than the microwave beep of the last exercise. This time we'll use Pulse.ar — it generates a square-like wave whose timbre depends on its width:
 
-  Env.perc(attack, decay)
+  Pulse.ar(freq, width)
 
-  attack → time to reach maximum volume
-  decay  → time to fade out
+  freq  → frequency in Hz
+  width → pulse width. 0.5 is a perfect square wave. Values below 0.5 create
+          an asymmetric wave with a brighter, sharper character.
 
-Compare with the previous exercise (0.01/0.1):
-  0.01 s attack + 0.1 s decay = dry beep (microwave)
-  0.05 s attack + 0.3 s decay = more resonant tone (timer)
+In the previous exercise the oscillator was multiplied by the envelope afterwards:
+  SinOsc.ar(freq) * EnvGen.kr(...)
 
-Same structure: SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
-      es: `Los temporizadores de cocina usan tonos con caída rápida.
-La envolvente define la "personalidad" del sonido:
+This time, pass EnvGen.kr directly as the third argument (mul) of Pulse.ar:
+  Pulse.ar(freq, width, EnvGen.kr(Env.perc(attack, decay), doneAction: Done.freeSelf))
 
-  Env.perc(ataque, caída)
+Both are equivalent — it is just a different way to write the same thing.
 
-  ataque → tiempo que tarda en alcanzar el volumen máximo
-  caída  → tiempo que tarda en apagarse
+Compare with the previous exercise:
+  SinOsc + 0.01 s / 0.1 s  = pure, dry beep (microwave)
+  Pulse  + 0.05 s / 0.3 s  = buzzy, rounder tone (timer)`,
+      es: `Piensa que un temporizador de cocina tiene un sonido ligeramente más áspero que el pitido del microondas del ejercicio anterior. Esta vez usaremos Pulse.ar — genera una onda de tipo cuadrado cuyo timbre depende de su ancho:
 
-Compara con el ejercicio anterior (0.01/0.1):
-  0.01 s ataque + 0.1 s caída = pitido seco (microondas)
-  0.05 s ataque + 0.3 s caída = tono más resonante (temporizador)
+  Pulse.ar(freq, ancho)
 
-Misma estructura: SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
-      fr: `Les minuteurs de cuisine utilisent des tons avec une chute rapide.
-L'enveloppe définit la "personnalité" du son :
+  freq  → frecuencia en Hz
+  ancho → ancho del pulso. 0.5 es onda cuadrada perfecta. Valores por debajo
+          de 0.5 crean una onda asimétrica con un carácter más brillante y cortante.
 
-  Env.perc(attack, decay)
+En el ejercicio anterior el oscilador se multiplicaba por la envolvente después:
+  SinOsc.ar(freq) * EnvGen.kr(...)
 
-  attack → temps pour atteindre le volume maximum
-  decay  → temps pour s'éteindre
+Esta vez, pasa EnvGen.kr directamente como tercer argumento (mul) de Pulse.ar:
+  Pulse.ar(freq, ancho, EnvGen.kr(Env.perc(ataque, caída), doneAction: Done.freeSelf))
 
-Comparez avec l'exercice précédent (0.01/0.1) :
-  0.01 s attack + 0.1 s decay = bip sec (micro-ondes)
-  0.05 s attack + 0.3 s decay = ton plus résonant (minuteur)
+Ambas formas son equivalentes — es solo una manera distinta de escribir lo mismo.
 
-Même structure : SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
+Compara con el ejercicio anterior:
+  SinOsc + 0.01 s / 0.1 s = pitido puro y seco (microondas)
+  Pulse  + 0.05 s / 0.3 s = tono áspero y más redondo (temporizador)`,
+      fr: `Pensez qu'un minuteur de cuisine a un son légèrement plus rugueux que le bip du micro-ondes du dernier exercice. Cette fois nous allons utiliser Pulse.ar — il génère une onde de type carré dont le timbre dépend de sa largeur :
+
+  Pulse.ar(freq, width)
+
+  freq  → fréquence en Hz
+  width → largeur d'impulsion. 0.5 est une onde carrée parfaite. Les valeurs
+          inférieures à 0.5 créent une onde asymétrique au caractère plus brillant et tranchant.
+
+Dans l'exercice précédent, l'oscillateur était multiplié par l'enveloppe après :
+  SinOsc.ar(freq) * EnvGen.kr(...)
+
+Cette fois, passez EnvGen.kr directement comme troisième argument (mul) de Pulse.ar :
+  Pulse.ar(freq, width, EnvGen.kr(Env.perc(attack, decay), doneAction: Done.freeSelf))
+
+Les deux sont équivalents — c'est juste une façon différente d'écrire la même chose.
+
+Comparez avec l'exercice précédent :
+  SinOsc + 0.01 s / 0.1 s = bip pur et sec (micro-ondes)
+  Pulse  + 0.05 s / 0.3 s = ton rugueux et plus rond (minuteur)`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(FREQUENCY) *\n  EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(FRECUENCIA) *\n  EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(FREQUENCE) *\n  EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  Pulse.ar(FREQUENCY, WIDTH,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  Pulse.ar(FRECUENCIA, ANCHO,\n    EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  Pulse.ar(FREQUENCE, LARGEUR,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Kitchen timer\n{\n  SinOsc.ar(880) *\n  EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf) ! 2\n}.play`,
-      es: `// Temporizador de cocina\n{\n  SinOsc.ar(880) *\n  EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf) ! 2\n}.play`,
-      fr: `// Minuteur de cuisine\n{\n  SinOsc.ar(880) *\n  EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf) ! 2\n}.play`,
+      en: `// Kitchen timer\n{\n  Pulse.ar(880, 0.35,\n    EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Temporizador de cocina\n{\n  Pulse.ar(880, 0.35,\n    EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Minuteur de cuisine\n{\n  Pulse.ar(880, 0.35,\n    EnvGen.kr(Env.perc(0.05, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
     },
     validate(code) {
-      const hasSinOsc = /SinOsc/.test(code);
-      const hasFreq880 = /SinOsc\.ar\s*\(\s*880\s*\)/.test(code);
+      const hasPulse = /Pulse\.ar/.test(code);
+      const hasFreq880 = /Pulse\.ar\s*\(\s*880\b/.test(code);
+      const hasWidth = /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*0\.35\s*,/.test(code);
+      const hasEnvInMul = /Pulse\.ar\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*EnvGen\./.test(code);
       const hasEnvGen = /EnvGen/.test(code);
       const hasEnvPerc = /Env\.perc/.test(code);
       const hasPercValues = /Env\.perc\s*\(\s*0\.05\s*,\s*0\.3\s*\)/.test(code);
-      const hasStructure = hasSinOsc && /SinOsc\.ar\s*\(\s*[\d.]+\s*\)/.test(code) &&
-        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
-      const ok = hasSinOsc && hasFreq880 && hasEnvGen && hasEnvPerc && hasPercValues;
+      const hasStructure = hasPulse && hasEnvInMul &&
+        hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasPulse && hasFreq880 && hasWidth && hasEnvInMul && hasEnvGen && hasEnvPerc && hasPercValues;
       const tips = [];
-      if (!hasEnvGen) tips.push({ en: "Use EnvGen.kr multiplied by SinOsc.ar to shape the volume over time.", es: "Usa EnvGen.kr multiplicado por SinOsc.ar para dar forma al volumen en el tiempo.", fr: "Utilisez EnvGen.kr multiplié par SinOsc.ar pour façonner le volume dans le temps." });
-      else if (!hasEnvPerc) tips.push({ en: "Use Env.perc(attack, decay) to define how the sound rises and falls.", es: "Usa Env.perc(ataque, caída) para definir cómo sube y baja el sonido.", fr: "Utilisez Env.perc(attack, decay) pour définir comment le son monte et descend." });
+      if (!hasPulse) tips.push({ en: "Use Pulse.ar as the oscillator — it generates a square-like wave with adjustable width.", es: "Usa Pulse.ar como oscilador — genera una onda de tipo cuadrado con ancho ajustable.", fr: "Utilisez Pulse.ar comme oscillateur — il génère une onde de type carré avec une largeur ajustable." });
+      else if (!hasEnvGen) tips.push({ en: "Pass EnvGen.kr as the third argument of Pulse.ar to shape the volume over time.", es: "Pasa EnvGen.kr como tercer argumento de Pulse.ar para dar forma al volumen en el tiempo.", fr: "Passez EnvGen.kr comme troisième argument de Pulse.ar pour façonner le volume dans le temps." });
+      else if (!hasEnvInMul) tips.push({ en: "EnvGen.kr should go inside Pulse.ar as its third argument (mul), not multiplied outside.", es: "EnvGen.kr debe ir dentro de Pulse.ar como su tercer argumento (mul), no multiplicado afuera.", fr: "EnvGen.kr doit aller à l'intérieur de Pulse.ar comme troisième argument (mul), pas multiplié à l'extérieur." });
+      else if (!hasEnvPerc) tips.push({ en: "Use Env.perc(attack, decay) inside EnvGen.kr to define how the sound rises and falls.", es: "Usa Env.perc(ataque, caída) dentro de EnvGen.kr para definir cómo sube y baja el sonido.", fr: "Utilisez Env.perc(attack, decay) dans EnvGen.kr pour définir comment le son monte et descend." });
       else if (hasStructure && !ok) tips.push({ en: "The arguments are present but a value is not what is expected. Check the numbers.", es: "Los argumentos están presentes pero algún valor no es el esperado. Revisa los números.", fr: "Les arguments sont présents mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
       else {
-        if (hasEnvPerc && !hasPercValues) tips.push({ en: "The attack and decay times are in the exercise description (in seconds).", es: "Los tiempos de ataque y caída del objetivo están en la descripción del ejercicio (en segundos).", fr: "Les durées d'attaque et de chute sont dans la description de l'exercice (en secondes)." });
-        if (hasSinOsc && !hasFreq880) tips.push({ en: "The first argument of SinOsc.ar is the frequency in Hz. Find which one matches the goal.", es: "El primer argumento de SinOsc.ar es la frecuencia en Hz. Busca cuál corresponde al objetivo.", fr: "Le premier argument de SinOsc.ar est la fréquence en Hz. Trouvez celle qui correspond à l'objectif." });
+        if (hasPulse && !hasFreq880) tips.push({ en: "The first argument of Pulse.ar is the frequency in Hz.", es: "El primer argumento de Pulse.ar es la frecuencia en Hz.", fr: "Le premier argument de Pulse.ar est la fréquence en Hz." });
+        if (hasPulse && hasFreq880 && !hasWidth) tips.push({ en: "The second argument of Pulse.ar is the pulse width.", es: "El segundo argumento de Pulse.ar es el ancho del pulso.", fr: "Le second argument de Pulse.ar est la largeur d'impulsion." });
+        if (hasEnvPerc && !hasPercValues) tips.push({ en: "Check the two arguments of Env.perc: rise time and fall time (both in seconds).", es: "Revisa los dos argumentos de Env.perc: tiempo de subida y tiempo de bajada (ambos en segundos).", fr: "Vérifiez les deux arguments d'Env.perc : temps de montée et temps de descente (tous deux en secondes)." });
       }
       return { ok, tips };
     },
@@ -816,9 +852,9 @@ Même structure : SinOsc.ar(freq) * EnvGen.kr(Env.perc(...))`,
     title: { en: "Power-up", es: "Recarga de poder", fr: "Recharge de pouvoir" },
     tag: "Line",
     goal: {
-      en: "Linear rise from 200 to 1200 Hz in 0.2 seconds, with attack 0.01s and decay 1s",
-      es: "Subida lineal de 200 a 1200 Hz en 0.2 segundos, con ataque 0.01s y caída 1s",
-      fr: "Montée linéaire de 200 à 1200 Hz en 0.2 secondes, avec attaque 0.01s et chute 1s",
+      en: "Linear rise from 200 to 1200 Hz in 0.2 seconds, with rise 0.01s and fall 1s",
+      es: "Subida lineal de 200 a 1200 Hz en 0.2 segundos, con subida 0.01s y bajada 1s",
+      fr: "Montée linéaire de 200 à 1200 Hz en 0.2 secondes, avec montée 0.01s et descente 1s",
     },
     theory: {
       en: `Line.kr generates a linear ramp: the frequency rises or falls at constant speed from one value to another.
@@ -859,14 +895,14 @@ Comme l'oreille perçoit la hauteur sur une échelle logarithmique, une rampe li
 `,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    Line.kr(INICIO, FIN, DUR),\n    FASE,\n    EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE,\n    EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE\n  ) * EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  SinOsc.ar(\n    Line.kr(INICIO, FIN, DUR),\n    FASE\n  ) * EnvGen.kr(Env.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  SinOsc.ar(\n    Line.kr(START, END, DUR),\n    PHASE\n  ) * EnvGen.kr(Env.perc(ATTACK, DECAY), doneAction: Done.freeSelf) ! 2\n}.play`,
     },
     answer: {
-      en: `// Linear pitch rise\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Subida de tono lineal\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Montée linéaire de hauteur\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      en: `// Linear pitch rise\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0\n  ) * EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf) ! 2\n}.play`,
+      es: `// Subida de tono lineal\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0\n  ) * EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf) ! 2\n}.play`,
+      fr: `// Montée linéaire de hauteur\n{\n  SinOsc.ar(\n    Line.kr(200, 1200, 0.2),\n    0\n  ) * EnvGen.kr(Env.perc(0.01, 1), doneAction: Done.freeSelf) ! 2\n}.play`,
     },
     validate(code) {
       const hasSinOsc = /SinOsc/.test(code);
@@ -903,7 +939,9 @@ Comme l'oreille perçoit la hauteur sur une échelle logarithmique, une rampe li
       fr: "Mélange deux tons à 770 Hz et 1336 Hz avec une amplitude de 0.2",
     },
     theory: {
-      en: `Phone keypads use DTMF (Dual-Tone Multi-Frequency).
+      en: `Welcome to level 3 exercises. From here the starter won't name the UGen — you'll see UGEN as a placeholder. Read the theory carefully and look at what the editor shows you: the answer is in there.
+
+Phone keypads use DTMF (Dual-Tone Multi-Frequency).
 Each key is the sum of two different frequencies:
 
      1209  1336  1477
@@ -916,7 +954,9 @@ In SuperCollider, adding two UGens mixes their signals:
   (UGEN.ar(f1) + UGEN.ar(f2)) * amplitude
 
 Parentheses are important so that the amplitude multiplication applies to the combined signal.`,
-      es: `Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).
+      es: `Bienvenido a los ejercicios de nivel 3. A partir de aquí el código de inicio no nombrará el UGen — verás UGEN como marcador. Lee la teoría con atención y fíjate en lo que muestra el editor: la respuesta está ahí.
+
+Las teclas del teléfono usan DTMF (Dual-Tone Multi-Frequency).
 Cada tecla es la suma de dos frecuencias distintas:
 
      1209  1336  1477
@@ -929,7 +969,9 @@ En SuperCollider, sumar dos UGens mezcla sus señales:
   (UGEN.ar(f1) + UGEN.ar(f2)) * amplitud
 
 Los paréntesis son importantes para que la multiplicación de amplitud se aplique a la señal combinada.`,
-      fr: `Les touches de téléphone utilisent le DTMF (Dual-Tone Multi-Frequency).
+      fr: `Bienvenue dans les exercices de niveau 3. À partir d'ici le code de départ ne nommera plus l'UGen — vous verrez UGEN comme espace réservé. Lisez la théorie attentivement et regardez ce que montre l'éditeur : la réponse est là.
+
+Les touches de téléphone utilisent le DTMF (Dual-Tone Multi-Frequency).
 Chaque touche est la somme de deux fréquences différentes :
 
      1209  1336  1477
@@ -981,48 +1023,43 @@ Les parenthèses sont importantes pour que la multiplication d'amplitude s'appli
       fr: "Impulsions aiguës à 3200 Hz intermittentes à 2 fois par seconde, amplitude 0.3",
     },
     theory: {
-      en: `Fire alarms emit short, piercing pulses.
-This is achieved with two layers:
+      en: `Fire alarms emit short, piercing pulses. The sound uses two generators multiplied together:
 
-  1. Pulse.ar generates the sharp, continuous wave.
-  2. LFPulse.ar acts as a switch (0 or 1) that turns that wave on and off at a slow rate.
+  1. A square-like wave — two args: frequency (the pitch) and width (duty cycle, 0–1).
+  2. A low-frequency generator that switches between 0 and 1 — one arg: rate.
+     Multiplying by it turns the first wave on and off rhythmically.
 
-By multiplying both:
-  Pulse.ar(frequency, width) * LFPulse.ar(rate)
+The pattern:
+  UGEN.ar(frequency, width) * UGEN.ar(rate) * amplitude
 
-  frequency → how high-pitched the beep is (in Hz)
-  width     → pulse width of Pulse (0.5 for perfect square)
-  rate (LFPulse) → how many times per second the alarm flashes
+  frequency  → pitch of the alarm tone (Hz)
+  width      → duty cycle (0.5 = perfect square wave)
+  rate       → how many flashes per second
+  amplitude  → overall volume`,
+      es: `Las alarmas de incendio emiten pulsos cortos y penetrantes. El sonido usa dos generadores multiplicados entre sí:
 
-The multiplication causes LFPulse to rhythmically "switch on" and "switch off" the Pulse oscillator.`,
-      es: `Las alarmas de incendio emiten pulsos cortos y penetrantes.
-Se consigue con dos capas:
+  1. Una onda de tipo cuadrada — dos argumentos: frecuencia (el tono) y ancho (ciclo de trabajo, 0–1).
+  2. Un generador de baja frecuencia que alterna entre 0 y 1 — un argumento: frecuencia. Multiplicar por él enciende y apaga la primera onda de forma rítmica.
 
-  1. Pulse.ar genera la onda aguda y continua.
-  2. LFPulse.ar actúa como interruptor (0 o 1) que enciende y apaga esa onda a una velocidad lenta.
+El patrón:
+  UGEN.ar(frecuencia, ancho) * UGEN.ar(frecuencia) * amplitud
 
-Al multiplicar ambos:
-  Pulse.ar(frecuencia, ancho) * LFPulse.ar(frecuencia)
+  frecuencia  → tono de la alarma (Hz)
+  ancho       → ciclo de trabajo (0.5 = cuadrada perfecta)
+  frecuencia (interruptor) → cuántas veces por segundo parpadea
+  amplitud    → volumen general`,
+      fr: `Les alarmes incendie émettent de courtes impulsions perçantes. Le son utilise deux générateurs multipliés ensemble :
 
-  frecuencia → qué tan agudo es el tono del pitido (en Hz)
-  ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
-  frecuencia (LFPulse) → cuántas veces por segundo parpadea la alarma
+  1. Une onde de type carré — deux arguments : frequency (la hauteur) et width (rapport cyclique, 0–1).
+  2. Un générateur basse fréquence qui alterne entre 0 et 1 — un argument : rate. Le multiplier allume et éteint la première onde de façon rythmique.
 
-La multiplicación hace que LFPulse "encienda" y "apague" el oscilador Pulse de forma rítmica.`,
-      fr: `Les alarmes incendie émettent de courtes impulsions perçantes.
-Cela s'obtient avec deux couches :
+Le patron :
+  UGEN.ar(frequency, width) * UGEN.ar(rate) * amplitude
 
-  1. Pulse.ar génère l'onde aiguë et continue.
-  2. LFPulse.ar agit comme un interrupteur (0 ou 1) qui allume et éteint cette onde à une vitesse lente.
-
-En multipliant les deux :
-  Pulse.ar(frequency, width) * LFPulse.ar(rate)
-
-  frequency → à quel point le bip est aigu (en Hz)
-  width     → largeur d'impulsion de Pulse (0.5 pour une onde carrée parfaite)
-  rate (LFPulse) → combien de fois par seconde l'alarme clignote
-
-La multiplication fait que LFPulse "allume" et "éteint" l'oscillateur Pulse de façon rythmique.`,
+  frequency  → hauteur du ton d'alarme (Hz)
+  width      → rapport cyclique (0.5 = onde carrée parfaite)
+  rate       → combien de clignotements par seconde
+  amplitude  → volume général`,
     },
     starter: {
       en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(FREQUENCY, WIDTH) * \n  UGEN.ar(RATE) * AMPLITUDE ! 2\n}.play`,
@@ -1067,48 +1104,45 @@ La multiplication fait que LFPulse "allume" et "éteint" l'oscillateur Pulse de 
       fr: "Onde carrée à 1200 Hz intermittente à 4 fois par seconde, amplitude 0.3",
     },
     theory: {
-      en: `Digital alarm clocks use sharp square waves
-with a rhythmic intermittence to grab attention.
+      en: `Digital alarm clocks use the same technique as the fire alarm:
+a square-like wave multiplied by an on/off switch.
 
-The technique is the same as the fire alarm. Multiply the oscillator by an LFPulse for the intermittence:
+This time the switch runs at control rate (.kr instead of .ar),
+which is more efficient for slow signals that don't need audio precision.
 
-  UGEN.ar(frequency, width) * LFPulse.kr(rate) * amplitude
+The pattern:
+  UGEN.ar(frequency, width) * UGEN.kr(rate) * amplitude
 
-  Note: here we use .kr instead of .ar
-  .kr (control rate) is more efficient for slow signals that do not need audio precision.
+  frequency  → pitch of the beep (Hz)
+  width      → duty cycle (0.5 = perfect square wave)
+  rate       → how many flashes per second
+  amplitude  → overall volume`,
+      es: `Los despertadores digitales usan la misma técnica que la alarma de incendio:
+una onda cuadrada multiplicada por un interruptor de encendido/apagado.
 
-  frequency → the sharp pitch of the beep (Hz)
-  width     → pulse width of Pulse (0.5 for perfect square wave)
-  rate (LFPulse) → how many times per second it flashes (Hz)
-  amplitude → overall volume`,
-      es: `Los despertadores digitales usan ondas cuadradas agudas
-con una intermitencia rítmica para captar la atención.
+Esta vez el interruptor funciona a tasa de control (.kr en lugar de .ar),
+lo que es más eficiente para señales lentas que no necesitan precisión de audio.
 
-La técnica es la misma que en la alarma de incendio. Multiplica el oscilador por un LFPulse para la intermitencia:
+El patrón:
+  UGEN.ar(frecuencia, ancho) * UGEN.kr(frecuencia) * amplitud
 
-  UGEN.ar(frecuencia, ancho) * LFPulse.kr(frecuencia) * amplitud
+  frecuencia  → tono del pitido (Hz)
+  ancho       → ciclo de trabajo (0.5 = cuadrada perfecta)
+  frecuencia (interruptor) → cuántas veces por segundo parpadea
+  amplitud    → volumen general`,
+      fr: `Les réveils numériques utilisent la même technique que l'alarme incendie :
+une onde de type carré multipliée par un interrupteur marche/arrêt.
 
-  Nota: aquí usamos .kr en lugar de .ar
-  .kr (control rate) es más eficiente para señales lentas que no necesitan precisión de audio.
+Cette fois l'interrupteur fonctionne au taux de contrôle (.kr au lieu de .ar),
+plus efficace pour les signaux lents qui n'ont pas besoin de précision audio.
 
-  frecuencia → el tono agudo del pitido (Hz)
-  ancho      → ancho de pulso de Pulse (0.5 para cuadrada perfecta)
-  frecuencia (LFPulse) → cuántas veces por segundo parpadea (Hz)
-  amplitud   → volumen general`,
-      fr: `Les réveils numériques utilisent des ondes carrées aiguës
-avec une intermittence rythmique pour attirer l'attention.
+Le patron :
+  UGEN.ar(frequency, width) * UGEN.kr(rate) * amplitude
 
-La technique est la même que pour l'alarme incendie. Multipliez l'oscillateur par un LFPulse pour l'intermittence :
-
-  UGEN.ar(frequency, width) * LFPulse.kr(rate) * amplitude
-
-  Note : ici nous utilisons .kr au lieu de .ar
-  .kr (control rate) est plus efficace pour les signaux lents qui n'ont pas besoin de précision audio.
-
-  frequency → la hauteur aiguë du bip (Hz)
-  width     → largeur d'impulsion de Pulse (0.5 pour une onde carrée parfaite)
-  rate (LFPulse) → combien de fois par seconde il clignote (Hz)
-  amplitude → volume général`,
+  frequency  → hauteur du bip (Hz)
+  width      → rapport cyclique (0.5 = onde carrée parfaite)
+  rate       → combien de clignotements par seconde
+  amplitude  → volume général`,
     },
     starter: {
       en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(FREQUENCY, WIDTH) *\n  UGEN.kr(RATE) * AMPLITUDE ! 2\n}.play`,
@@ -1147,96 +1181,107 @@ La technique est la même que pour l'alarme incendie. Multipliez l'oscillateur p
     id: "ex15",
     level: 3,
     title: { en: "Evacuation signal", es: "Señal de evacuación", fr: "Signal d'évacuation" },
-    tag: "SinOsc",
+    tag: "Pulse",
     goal: {
-      en: "Ascending sweep from 300 to 1200 Hz, once every 2 seconds, amplitude 0.4",
-      es: "Barrido ascendente de 300 a 1200 Hz, una vez cada 2 segundos, amplitud 0.4",
-      fr: "Balayage ascendant de 300 à 1200 Hz, une fois toutes les 2 secondes, amplitude 0.4",
+      en: "Ascending pulse sweep from 300 to 1200 Hz, once every 2 seconds, width 0.5, amplitude 0.4",
+      es: "Barrido de pulso ascendente de 300 a 1200 Hz, una vez cada 2 segundos, ancho 0.5, amplitud 0.4",
+      fr: "Balayage d'impulsion ascendant de 300 à 1200 Hz, une fois toutes les 2 secondes, largeur 0.5, amplitude 0.4",
     },
     theory: {
-      en: `Evacuation signals (WHOOP) use a slow ascending sweep
-that repeats, designed to be unmistakable.
+      en: `Evacuation signals (WHOOP) use a smooth tone whose frequency rises slowly and repeats.
 
-LFSaw.ar generates values from -1 to 1 in an ascending ramp.
-To convert them into a useful frequency range:
+Two generators nested together:
+  1. A square-like wave — three args: frequency (expression), width (duty cycle), amplitude.
+  2. An ascending ramp from -1 to 1 that repeats at a set rate — one arg: rate.
+     Scaling and shifting it maps the -1..1 range to a frequency sweep:
 
-  LFSaw.ar(rate) * half_range + center
+     UGEN.ar(rate, iphase) * half_range + center
 
-  rate       → how many times per second it repeats (Hz)
-  half_range → half the difference between the max and min frequency
-  center     → the midpoint between the highest and lowest frequencies
+  rate       → how many times per second the sweep repeats (Hz)
+  iphase     → starting position of the ramp (1 = start from the bottom)
+  half_range → (max_freq − min_freq) / 2
+  center     → (max_freq + min_freq) / 2
 
-Calculation example:
-  min         = 300 Hz, max     = 1200 Hz
-  center      = (300 + 1200) / 2 = 750
-  half_range  = (1200 - 300) / 2 = 450
-
-  → LFSaw.ar(rate) * 450 + 750 oscillates between 300 and 1200 Hz`,
-      es: `Las señales de evacuación (WHOOP) usan un barrido ascendente
-lento que se repite, diseñado para ser inconfundible.
-
-LFSaw.ar genera valores de -1 a 1 en rampa ascendente.
-Para convertirlos en un rango de frecuencias útil:
-
-  LFSaw.ar(frecuencia) * mitad_del_rango + centro
-
-  frecuencia  → cuántas veces por segundo se repite (Hz)
-  mitad_rango → la mitad de la diferencia entre la frecuencia máxima y la mínima
-  centro      → el punto medio entre la frecuencia más alta y la más baja
-
-Ejemplo de cálculo:
-  mínimo      = 300 Hz, máximo   = 1200 Hz
-  centro      = (300 + 1200) / 2 = 750
-  mitad_rango = (1200 - 300) / 2 = 450
-
-  → LFSaw.ar(vel) * 450 + 750 oscila entre 300 y 1200 Hz`,
-      fr: `Les signaux d'évacuation (WHOOP) utilisent un balayage ascendant lent
-qui se répète, conçu pour être reconnaissable.
-
-LFSaw.ar génère des valeurs de -1 à 1 en rampe ascendante.
-Pour les convertir en une plage de fréquences utile :
-
-  LFSaw.ar(rate) * half_range + center
-
-  rate       → combien de fois par seconde il se répète (Hz)
-  half_range → la moitié de la différence entre la fréquence max et min
-  center     → le point médian entre les fréquences la plus haute et la plus basse
-
-Exemple de calcul :
-  min        = 300 Hz, max    = 1200 Hz
+Example:
+  min = 300 Hz, max = 1200 Hz
   center     = (300 + 1200) / 2 = 750
-  half_range = (1200 - 300) / 2 = 450
+  half_range = (1200 − 300) / 2 = 450
 
-  → LFSaw.ar(rate) * 450 + 750 oscille entre 300 et 1200 Hz`,
+Use the frequency expression as the first arg of the outer oscillator, width as the second, amplitude as the third.`,
+      es: `Las señales de evacuación (WHOOP) usan una onda cuya frecuencia sube lentamente y se repite.
+
+Dos generadores anidados:
+  1. Una onda de tipo cuadrada — tres argumentos: frecuencia (expresión), ancho (ciclo de trabajo), amplitud.
+  2. Una rampa ascendente de -1 a 1 que se repite a una velocidad dada — dos argumentos: frecuencia, iphase.
+     iphase indica dónde empieza la rampa (1 = fondo de la rampa, comienza a subir de inmediato).
+     Escalarla y desplazarla convierte el rango -1..1 en un barrido de frecuencias:
+
+     UGEN.ar(frecuencia, iphase) * mitad_rango + centro
+
+  frecuencia  → cuántas veces por segundo se repite el barrido (Hz)
+  iphase      → posición inicial de la rampa (1 = empezar desde el fondo)
+  mitad_rango → (máx − mín) / 2
+  centro      → (máx + mín) / 2
+
+Ejemplo:
+  mín = 300 Hz, máx = 1200 Hz
+  centro      = (300 + 1200) / 2 = 750
+  mitad_rango = (1200 − 300) / 2 = 450
+
+Usa la expresión de frecuencia como primer argumento del oscilador exterior, el ancho como segundo y la amplitud como tercero.`,
+      fr: `Les signaux d'évacuation (WHOOP) utilisent une onde dont la fréquence monte lentement et se répète.
+
+Deux générateurs imbriqués :
+  1. Une onde de type carré — trois arguments : fréquence (expression), width (rapport cyclique), amplitude.
+  2. Une rampe ascendante de -1 à 1 qui se répète à une vitesse donnée — deux arguments : rate, iphase.
+     iphase définit où la rampe commence (1 = bas de la rampe, commence à monter immédiatement).
+     La mettre à l'échelle et la décaler convertit la plage -1..1 en un balayage de fréquences :
+
+     UGEN.ar(rate, iphase) * half_range + center
+
+  rate       → combien de fois par seconde le balayage se répète (Hz)
+  iphase     → position initiale de la rampe (1 = commencer depuis le bas)
+  half_range → (max − min) / 2
+  center     → (max + min) / 2
+
+Exemple :
+  min = 300 Hz, max = 1200 Hz
+  center     = (300 + 1200) / 2 = 750
+  half_range = (1200 − 300) / 2 = 450
+
+Utilisez l'expression de fréquence comme premier argument de l'oscillateur extérieur, le width comme second, l'amplitude comme troisième.`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(\n    UGEN.ar(RATE) * HALF_RANGE + CENTER,\n    PHASE,\n    AMPLITUDE\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.ar(FRECUENCIA) * MITAD_RANGO + CENTRO,\n    FASE,\n    AMPLITUD\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(\n    UGEN.ar(RATE) * HALF_RANGE + CENTER,\n    PHASE,\n    AMPLITUDE\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(\n    UGEN.ar(RATE, IPHASE) * HALF_RANGE + CENTER,\n    WIDTH,\n    AMPLITUDE\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.ar(FRECUENCIA, IPHASE) * MITAD_RANGO + CENTRO,\n    ANCHO,\n    AMPLITUD\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(\n    UGEN.ar(RATE, IPHASE) * HALF_RANGE + CENTER,\n    WIDTH,\n    AMPLITUDE\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Evacuation signal: ascending sweep\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  ) ! 2\n}.play`,
-      es: `// Señal de evacuación: barrido ascendente\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  ) ! 2\n}.play`,
-      fr: `// Signal d'évacuation : balayage ascendant\n{\n  SinOsc.ar(\n    LFSaw.ar(0.5) * 450 + 750,\n    0, 0.4\n  ) ! 2\n}.play`,
+      en: `// Evacuation signal: ascending sweep\n{\n  Pulse.ar(\n    LFSaw.ar(0.5, 1) * 450 + 750,\n    0.5, 0.4\n  ) ! 2\n}.play`,
+      es: `// Señal de evacuación: barrido ascendente\n{\n  Pulse.ar(\n    LFSaw.ar(0.5, 1) * 450 + 750,\n    0.5, 0.4\n  ) ! 2\n}.play`,
+      fr: `// Signal d'évacuation : balayage ascendant\n{\n  Pulse.ar(\n    LFSaw.ar(0.5, 1) * 450 + 750,\n    0.5, 0.4\n  ) ! 2\n}.play`,
     },
     validate(code) {
-      const hasSinOsc = /SinOsc/.test(code);
+      const hasPulse = /Pulse\.ar/.test(code);
       const hasLFSaw = /LFSaw/.test(code);
-      const hasRate05 = /LFSaw\.ar\s*\(\s*0\.5\s*\)/.test(code);
+      const hasRate05 = /LFSaw\.ar\s*\(\s*0\.5/.test(code);
+      const hasIphase1 = /LFSaw\.ar\s*\(\s*0\.5\s*,\s*1\s*\)/.test(code);
       const hasDepth450 = /450/.test(code);
       const hasCenter750 = /750/.test(code);
-      const hasAmp = /,\s*0\s*,\s*0\.4/.test(code);
-      const hasStructure = hasSinOsc && hasLFSaw && /LFSaw\.ar\s*\(\s*[\d.]+\s*\)\s*\*\s*[\d.]+\s*\+\s*[\d.]+/.test(code);
-      const ok = hasSinOsc && hasLFSaw && hasRate05 && hasDepth450 && hasCenter750 && hasAmp;
+      const hasWidth05 = /,\s*0\.5\s*,/.test(code);
+      const hasAmp = /,\s*[\d.]+\s*,\s*0\.4/.test(code);
+      const ok = hasPulse && hasLFSaw && hasIphase1 && hasDepth450 && hasCenter750 && hasWidth05 && hasAmp;
       const tips = [];
-      if (!hasSinOsc) tips.push({ en: "Use SinOsc.ar as the main oscillator. The first argument will be the frequency expression.", es: "Usa SinOsc.ar como oscilador principal. El primer argumento será la expresión de frecuencia.", fr: "Utilisez SinOsc.ar comme oscillateur principal. Le premier argument sera l'expression de fréquence." });
-      else if (!hasLFSaw) tips.push({ en: "Use LFSaw.ar inside the first argument of SinOsc so the frequency rises cyclically.", es: "Usa LFSaw.ar dentro del primer argumento de SinOsc para que la frecuencia suba de forma cíclica.", fr: "Utilisez LFSaw.ar dans le premier argument de SinOsc pour que la fréquence monte de façon cyclique." });
-      else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
+      if (!hasPulse) tips.push({ en: "Use Pulse.ar as the main oscillator. The first argument will be the frequency expression.", es: "Usa Pulse.ar como oscilador principal. El primer argumento será la expresión de frecuencia.", fr: "Utilisez Pulse.ar comme oscillateur principal. Le premier argument sera l'expression de fréquence." });
+      else if (!hasLFSaw) tips.push({ en: "Use LFSaw.ar inside the first argument of Pulse.ar so the frequency rises cyclically.", es: "Usa LFSaw.ar dentro del primer argumento de Pulse.ar para que la frecuencia suba de forma cíclica.", fr: "Utilisez LFSaw.ar dans le premier argument de Pulse.ar pour que la fréquence monte de façon cyclique." });
       else {
-        if (hasLFSaw && !hasRate05) tips.push({ en: "The first argument of LFSaw.ar is the sweep rate. An evacuation siren is slow.", es: "El primer argumento de LFSaw.ar es la velocidad del barrido. Una sirena de evacuación es lenta.", fr: "Le premier argument de LFSaw.ar est la vitesse du balayage. Une sirène d'évacuation est lente." });
+        if (!hasRate05) tips.push({ en: "The first argument of LFSaw.ar is the sweep rate. An evacuation siren is slow.", es: "El primer argumento de LFSaw.ar es la velocidad del barrido. Una sirena de evacuación es lenta.", fr: "Le premier argument de LFSaw.ar est la vitesse du balayage. Une sirène d'évacuation est lente." });
+        if (hasRate05 && !hasIphase1) tips.push({ en: "The second argument of LFSaw.ar is the initial phase (iphase). Check the theory for the value that makes the sweep start from the bottom.", es: "El segundo argumento de LFSaw.ar es la fase inicial (iphase). Consulta la teoría para encontrar el valor que hace que el barrido empiece desde el fondo.", fr: "Le second argument de LFSaw.ar est la phase initiale (iphase). Consultez la théorie pour trouver la valeur qui fait démarrer le balayage depuis le bas." });
         if (!hasDepth450) tips.push({ en: "Multiply LFSaw by half the frequency range. Calculate: (max - min) / 2.", es: "Multiplica LFSaw por la mitad del rango de frecuencias. Calcula: (máximo - mínimo) / 2.", fr: "Multipliez LFSaw par la moitié de la plage de fréquences. Calculez : (max - min) / 2." });
         if (!hasCenter750) tips.push({ en: "Add the center frequency. Calculate: (max + min) / 2.", es: "Suma la frecuencia central. Calcula: (máximo + mínimo) / 2.", fr: "Ajoutez la fréquence centrale. Calculez : (max + min) / 2." });
-        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of SinOsc.ar (after the frequency expression and phase 0).", es: "La amplitud es el tercer argumento de SinOsc.ar (tras la expresión de frecuencia y la fase 0).", fr: "L'amplitude est le troisième argument de SinOsc.ar (après l'expression de fréquence et la phase 0)." });
+        if (!hasWidth05) tips.push({ en: "The second argument of Pulse.ar is the width (duty cycle). A value of 0.5 gives a perfect square wave.", es: "El segundo argumento de Pulse.ar es el ancho (ciclo de trabajo). Un valor de 0.5 da una onda cuadrada perfecta.", fr: "Le second argument de Pulse.ar est le width (rapport cyclique). Une valeur de 0.5 donne une onde carrée parfaite." });
+        if (!hasAmp) tips.push({ en: "The amplitude is the third argument of Pulse.ar (after the frequency expression and width).", es: "La amplitud es el tercer argumento de Pulse.ar (tras la expresión de frecuencia y el ancho).", fr: "L'amplitude est le troisième argument de Pulse.ar (après l'expression de fréquence et le width)." });
+        if (tips.length === 0 && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
       }
       return { ok, tips };
     },
@@ -1248,84 +1293,89 @@ Exemple de calcul :
     title: { en: "Laser shot", es: "Disparo láser", fr: "Tir laser" },
     tag: "XLine",
     goal: {
-      en: "Exponential sweep from 2000 to 200 Hz in 0.3 seconds, with attack 0.001s and decay 0.3s",
-      es: "Barrido exponencial de 2000 a 200 Hz en 0.3 segundos, con ataque 0.001s y caída 0.3s",
-      fr: "Balayage exponentiel de 2000 à 200 Hz en 0.3 secondes, avec attaque 0.001s et chute 0.3s",
+      en: "Exponential sweep from 1500 to 200 Hz in 0.2 seconds, with rise 0.001s, fall 0.3s, level 0.5",
+      es: "Barrido exponencial de 1500 a 200 Hz en 0.2 segundos, con subida 0.001s, bajada 0.3s, nivel 0.5",
+      fr: "Balayage exponentiel de 1500 à 200 Hz en 0.2 secondes, avec montée 0.001s, descente 0.3s, niveau 0.5",
     },
     theory: {
-      en: `A laser shot is a frequency that falls fast, not linearly but exponentially. The ear perceives pitch changes on a logarithmic scale, so an exponential fall sounds much more natural.
+      en: `A laser shot is a pitch that falls fast — not linearly, but exponentially.
+The ear perceives pitch on a logarithmic scale, so an exponential fall sounds more natural.
 
-XLine.kr generates that single-shot sweep:
+Two generators nested together:
+  1. A sawtooth wave — two args: frequency (expression), amplitude expression.
+  2. A single-shot exponential sweep — three args: start, end, dur (seconds).
+     Unlike cyclic ramps, it runs from start to end exactly once and stops. The amplitude is a percussive envelope:
+     UGEN.kr(UGEN.perc(attack, decay, level), doneAction: Done.freeSelf)
 
-  XLine.kr(start, end, dur)
+  start   → initial frequency (Hz)
+  end     → final frequency (Hz)
+  dur     → sweep duration in seconds
+  attack  → rise time (very short for a shot)
+  decay   → fall time (close to the sweep duration)
+  level   → peak amplitude of the envelope (0–1)`,
+      es: `Un disparo láser es un tono que cae rápido, no de forma lineal, sino exponencial.
+El oído percibe el tono en escala logarítmica, así que una caída exponencial suena más natural.
 
-  start → initial frequency (Hz)
-  end   → final frequency (Hz)
-  dur   → duration of the sweep in seconds
+Dos generadores anidados:
+  1. Una onda de sierra — dos argumentos: frecuencia (expresión), expresión de amplitud.
+  2. Un barrido exponencial de un solo disparo — tres argumentos: start, end, dur (segundos).
+     A diferencia de las rampas cíclicas, recorre el rango de start a end una sola vez y se detiene. La amplitud es una envolvente percusiva:
+     UGEN.kr(UGEN.perc(attack, decay, level), doneAction: Done.freeSelf)
 
-Unlike LFSaw or LFPulse, XLine.kr does not repeat: it traverses the range once and stops.
+  start   → frecuencia inicial (Hz)
+  end     → frecuencia final (Hz)
+  dur     → duración del barrido en segundos
+  ataque  → tiempo de subida (muy corto para un disparo)
+  caída   → tiempo de bajada (cercano a la duración del barrido)
+  nivel   → amplitud máxima de la envolvente (0–1)`,
+      fr: `Un tir laser est un ton qui descend rapidement — non pas de façon linéaire, mais exponentielle.
+L'oreille perçoit la hauteur sur une échelle logarithmique, donc une chute exponentielle sonne plus naturelle.
 
-Use it as the first argument of the sine oscillator to modulate the frequency. For the sound to have a defined duration, multiply the result by a percussive envelope.
-`,
-      es: `Un disparo láser es una frecuencia que cae rápido, no de forma lineal, sino exponencial. El oído percibe los cambios de tono en escala logarítmica, así que una caída exponencial suena mucho más natural.
+Deux générateurs imbriqués :
+  1. Une onde en dents de scie — deux arguments : fréquence (expression), expression d'amplitude.
+  2. Un balayage exponentiel en un seul coup — trois arguments : start, end, dur (secondes).
+     Contrairement aux rampes cycliques, il parcourt la plage de start à end une seule fois et s'arrête. L'amplitude est une enveloppe percussive :
+     UGEN.kr(UGEN.perc(attack, decay, level), doneAction: Done.freeSelf)
 
-XLine.kr genera ese barrido de un solo disparo:
-
-  XLine.kr(start, end, dur)
-
-  start → frecuencia inicial (Hz)
-  end   → frecuencia final (Hz)
-  dur   → duración del barrido en segundos
-
-A diferencia de LFSaw o LFPulse, XLine.kr no se repite: recorre el rango una vez y se detiene.
-
-Úsalo como primer argumento del oscilador sinusoidal para modular la frecuencia. Para que el sonido tenga duración definida, multiplica el resultado por una envolvente percusiva.
-`,
-      fr: `Un tir laser est une fréquence qui descend rapidement, non pas de façon linéaire, mais exponentielle. L'oreille perçoit les changements de hauteur sur une échelle logarithmique, donc une chute exponentielle sonne beaucoup plus naturelle.
-
-XLine.kr génère ce balayage en un seul coup :
-
-  XLine.kr(start, end, dur)
-
-  start → fréquence initiale (Hz)
-  end   → fréquence finale (Hz)
-  dur   → durée du balayage en secondes
-
-Contrairement à LFSaw ou LFPulse, XLine.kr ne se répète pas : il parcourt la plage une fois et s'arrête.
-
-Utilisez-le comme premier argument de l'oscillateur sinusoïdal pour moduler la fréquence. Pour que le son ait une durée définie, multipliez le résultat par une enveloppe percussive.
-`,
+  start   → fréquence initiale (Hz)
+  end     → fréquence finale (Hz)
+  dur     → durée du balayage en secondes
+  attack  → temps de montée (très court pour un tir)
+  decay   → temps de descente (proche de la durée du balayage)
+  level   → amplitude maximale de l'enveloppe (0–1)`,
     },
     starter: {
-      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    PHASE,\n    UGEN.kr(UGEN.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    FASE,\n    UGEN.kr(UGEN.perc(ATAQUE, CAIDA), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    PHASE,\n    UGEN.kr(UGEN.perc(ATTACK, DECAY), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      en: `// Replace the UPPERCASE words:\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    UGEN.kr(UGEN.perc(ATTACK, DECAY, LEVEL), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Reemplaza las palabras en MAYÚSCULAS:\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    UGEN.kr(UGEN.perc(ATAQUE, CAIDA, NIVEL), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Remplacez les mots en MAJUSCULES :\n{\n  UGEN.ar(\n    UGEN.kr(START, END, DUR),\n    UGEN.kr(UGEN.perc(ATTACK, DECAY, LEVEL), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
     },
     answer: {
-      en: `// Laser shot\n{\n  SinOsc.ar(\n    XLine.kr(2000, 200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.001, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      es: `// Disparo láser\n{\n  SinOsc.ar(\n    XLine.kr(2000, 200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.001, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
-      fr: `// Tir laser\n{\n  SinOsc.ar(\n    XLine.kr(2000, 200, 0.2),\n    0,\n    EnvGen.kr(Env.perc(0.001, 0.3), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      en: `// Laser shot\n{\n  Saw.ar(\n    XLine.kr(1500, 200, 0.2),\n    EnvGen.kr(Env.perc(0.001, 0.3, 0.5), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      es: `// Disparo láser\n{\n  Saw.ar(\n    XLine.kr(1500, 200, 0.2),\n    EnvGen.kr(Env.perc(0.001, 0.3, 0.5), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
+      fr: `// Tir laser\n{\n  Saw.ar(\n    XLine.kr(1500, 200, 0.2),\n    EnvGen.kr(Env.perc(0.001, 0.3, 0.5), doneAction: Done.freeSelf)\n  ) ! 2\n}.play`,
     },
     validate(code) {
-      const hasSinOsc = /SinOsc/.test(code);
+      const hasSaw = /Saw\.ar/.test(code);
       const hasXLine = /XLine/.test(code);
       const hasEnvGen = /EnvGen/.test(code);
       const hasEnvPerc = /Env\.perc/.test(code);
-      const hasCorrectXLine = /XLine\.kr\s*\(\s*2000\s*,\s*200\s*,\s*0\.2\s*\)/.test(code);
-      const hasPercValues = /Env\.perc\s*\(\s*0\.001\s*,\s*0\.3\s*\)/.test(code);
-      const hasStructure = hasSinOsc && hasXLine &&
+      const hasCorrectXLine = /XLine\.kr\s*\(\s*1500\s*,\s*200\s*,\s*0\.2\s*\)/.test(code);
+      const hasPercTimes = /Env\.perc\s*\(\s*0\.001\s*,\s*0\.3\s*,/.test(code);
+      const hasPercLevel = /Env\.perc\s*\(\s*0\.001\s*,\s*0\.3\s*,\s*0\.5\s*\)/.test(code);
+      const hasStructure = hasSaw && hasXLine &&
         /XLine\.kr\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code) &&
-        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
-      const ok = hasSinOsc && hasXLine && hasCorrectXLine && hasEnvGen && hasEnvPerc && hasPercValues;
+        hasEnvGen && hasEnvPerc && /Env\.perc\s*\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*\)/.test(code);
+      const ok = hasSaw && hasXLine && hasCorrectXLine && hasEnvGen && hasEnvPerc && hasPercLevel;
       const tips = [];
-      if (!hasSinOsc) tips.push({ en: "You need SinOsc.ar as the oscillator. The frequency will be the XLine.kr sweep.", es: "Necesitas SinOsc.ar como oscilador. La frecuencia será el barrido de XLine.kr.", fr: "Vous avez besoin de SinOsc.ar comme oscillateur. La fréquence sera le balayage de XLine.kr." });
-      else if (!hasXLine) tips.push({ en: "Use XLine.kr as the first argument of SinOsc.ar so the frequency falls exponentially.", es: "Usa XLine.kr como primer argumento de SinOsc.ar para que la frecuencia caiga de forma exponencial.", fr: "Utilisez XLine.kr comme premier argument de SinOsc.ar pour que la fréquence descende de façon exponentielle." });
-      else if (!hasEnvGen) tips.push({ en: "Multiply by EnvGen.kr so the shot has a defined duration and releases itself.", es: "Multiplica por EnvGen.kr para que el disparo tenga una duración definida y se libere solo.", fr: "Multipliez par EnvGen.kr pour que le tir ait une durée définie et se libère tout seul." });
+      if (!hasSaw) tips.push({ en: "Use Saw.ar as the oscillator. The frequency will be the XLine.kr sweep.", es: "Usa Saw.ar como oscilador. La frecuencia será el barrido de XLine.kr.", fr: "Utilisez Saw.ar comme oscillateur. La fréquence sera le balayage de XLine.kr." });
+      else if (!hasXLine) tips.push({ en: "Use XLine.kr as the first argument of Saw.ar so the frequency falls exponentially.", es: "Usa XLine.kr como primer argumento de Saw.ar para que la frecuencia caiga de forma exponencial.", fr: "Utilisez XLine.kr comme premier argument de Saw.ar pour que la fréquence descende de façon exponentielle." });
+      else if (!hasEnvGen) tips.push({ en: "Use EnvGen.kr as the second argument of Saw.ar so the shot has a defined duration and releases itself.", es: "Usa EnvGen.kr como segundo argumento de Saw.ar para que el disparo tenga una duración definida y se libere solo.", fr: "Utilisez EnvGen.kr comme second argument de Saw.ar pour que le tir ait une durée définie et se libère tout seul." });
       else if (!hasEnvPerc) tips.push({ en: "Use Env.perc inside EnvGen.kr to define the attack and decay of the shot.", es: "Usa Env.perc dentro de EnvGen.kr para definir el ataque y la caída del disparo.", fr: "Utilisez Env.perc dans EnvGen.kr pour définir l'attaque et la chute du tir." });
       else if (hasStructure && !ok) tips.push({ en: "The structure is correct but a value is not what is expected. Check the numbers.", es: "La estructura es correcta pero algún valor no es el esperado. Revisa los números.", fr: "La structure est correcte mais une valeur n'est pas celle attendue. Vérifiez les nombres." });
       else {
         if (!hasCorrectXLine) tips.push({ en: "Check the three arguments of XLine.kr: start frequency, end frequency and duration in seconds.", es: "Revisa los tres argumentos de XLine.kr: frecuencia inicial, frecuencia final y duración en segundos.", fr: "Vérifiez les trois arguments de XLine.kr : fréquence de départ, fréquence finale et durée en secondes." });
-        if (!hasPercValues) tips.push({ en: "Check the Env.perc times: the attack is very short and the decay matches the sweep duration.", es: "Revisa los tiempos de Env.perc: el ataque es muy corto y la caída coincide con la duración del barrido.", fr: "Vérifiez les durées d'Env.perc : l'attaque est très courte et la chute correspond à la durée du balayage." });
+        if (!hasPercTimes) tips.push({ en: "Check the Env.perc times: the attack is very short and the decay matches the sweep duration.", es: "Revisa los tiempos de Env.perc: el ataque es muy corto y la caída coincide con la duración del barrido.", fr: "Vérifiez les durées d'Env.perc : l'attaque est très courte et la chute correspond à la durée du balayage." });
+        if (hasPercTimes && !hasPercLevel) tips.push({ en: "Env.perc has a third argument: the peak level (amplitude) of the envelope.", es: "Env.perc tiene un tercer argumento: el nivel máximo (amplitud) de la envolvente.", fr: "Env.perc a un troisième argument : le niveau maximal (amplitude) de l'enveloppe." });
       }
       return { ok, tips };
     },

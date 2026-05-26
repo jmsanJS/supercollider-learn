@@ -164,6 +164,62 @@ const ui = {
     sc_err_play: "Add .play at the end to execute the audio block.",
     sc_err_ugen: "Use a UGen with an .ar(...) call to generate audio.",
     sc_err_placeholders: "Replace all placeholder words (in UPPERCASE) with actual values.",
+
+    // Setup page
+    nav_setup: "Setup",
+    setup_desc: "get started with the real SuperCollider",
+    setup_hero_title: "Setting up SuperCollider",
+    setup_hero_sub: "SC Learn runs entirely in the browser — no installation needed. But to go beyond the introductory exercises and use the full SuperCollider language, you need to install the real software on your computer. This guide covers the essentials.",
+    setup_download_label: "01 — Download",
+    setup_download_body: "SuperCollider is free and open source. Download it from <strong>supercollider.github.io</strong> — installers are available for <strong>macOS</strong>, <strong>Windows</strong>, and <strong>Linux</strong>.",
+    setup_download_btn: "Go to supercollider.github.io",
+    setup_ide_label: "02 — The IDE",
+    setup_ide_intro: "SuperCollider comes with its own IDE (Integrated Development Environment). When you first open it, you will see three main areas:",
+    setup_start_label: "03 — First steps",
+    setup_shortcuts_label: "04 — Key shortcuts",
+    setup_sc_eval: "Evaluate code block",
+    setup_sc_eval_desc: "Select the lines to evaluate, or wrap your code in <code>( )</code> — place the cursor anywhere inside and press the shortcut to run the whole block.",
+    setup_sc_line: "Evaluate current line",
+    setup_sc_stop: "Stop all sound",
+    setup_sc_stop_desc: "The most important shortcut to know — and the most important to develop as a reflex. The fastest way to stop any sound that is playing.",
+    setup_sc_docs: "Open documentation",
+    setup_sc_docs_desc: "Click on a UGen or expression in the editor first, then press the shortcut to open its documentation page.",
+    setup_areas: [
+      {
+        title: "Code editor",
+        desc: "The main panel where you write SuperCollider code. You can have multiple documents open as tabs.",
+      },
+      {
+        title: "Post window",
+        desc: "The panel on the right. SuperCollider prints all its output here: server status, errors, evaluation results, and warnings. When something goes wrong, <strong>check the Post Window first</strong>.",
+      },
+      {
+        title: "Help browser",
+        desc: "The built-in documentation. Access it from the Help menu, or select any word in the editor and press <code>Cmd+D</code> (Mac) / <code>Ctrl+D</code> (Win/Linux). The help pages include runnable examples.",
+      },
+    ],
+    setup_steps: [
+      {
+        title: "Open the IDE",
+        desc: "After installing, launch the SuperCollider application. You will see the code editor on the left and the Post Window on the right.",
+      },
+      {
+        title: "Boot the audio server",
+        desc: "SuperCollider separates the language from the audio engine. Type <code>s.boot</code> in the editor and press <code>Cmd+Return</code> (Mac) or <code>Ctrl+Return</code> (Win/Linux) to evaluate it. Watch the Post Window — it will show the server starting up.",
+      },
+      {
+        title: "Run your first sound",
+        desc: "Once the server is running, type <code>{ SinOsc.ar(440, 0, 0.3) }.play</code> and evaluate it. You should hear a sine wave at 440 Hz.",
+      },
+      {
+        title: "Stop all sound",
+        desc: "Press <code>Cmd+.</code> (Mac) or <code>Ctrl+.</code> (Win/Linux) to stop all audio immediately. This shortcut works at any time and is the most important one to memorise.",
+      },
+      {
+        title: "Quit the server",
+        desc: "When you are done, evaluate <code>s.quit</code> to shut down the audio server, or simply close the application.",
+      },
+    ],
   },
 
   es: {
@@ -317,6 +373,62 @@ const ui = {
     sc_err_play: "Agrega .play al final para ejecutar el bloque de audio.",
     sc_err_ugen: "Usa un UGen con llamada .ar(...) para generar audio.",
     sc_err_placeholders: "Reemplaza todas las palabras de marcador (en MAYÚSCULAS) por valores reales.",
+
+    // Setup page
+    nav_setup: "Configuración",
+    setup_desc: "cómo instalar y usar SuperCollider",
+    setup_hero_title: "Configurar SuperCollider",
+    setup_hero_sub: "SC Learn funciona completamente en el navegador — sin instalación. Pero para ir más allá de los ejercicios introductorios y usar el lenguaje completo de SuperCollider, necesitas instalar el software real en tu computadora. Esta guía cubre lo esencial.",
+    setup_download_label: "01 — Descarga",
+    setup_download_body: "SuperCollider es gratuito y de código abierto. Descárgalo desde <strong>supercollider.github.io</strong> — hay instaladores disponibles para <strong>macOS</strong>, <strong>Windows</strong> y <strong>Linux</strong>.",
+    setup_download_btn: "Ir a supercollider.github.io",
+    setup_ide_label: "02 — El IDE",
+    setup_ide_intro: "SuperCollider viene con su propio IDE (Entorno de Desarrollo Integrado). Al abrirlo por primera vez, verás tres áreas principales:",
+    setup_start_label: "03 — Primeros pasos",
+    setup_shortcuts_label: "04 — Atajos de teclado",
+    setup_sc_eval: "Evaluar bloque de código",
+    setup_sc_eval_desc: "Selecciona las líneas a evaluar, o encierra tu código entre <code>( )</code> — coloca el cursor dentro y pulsa el atajo para ejecutar el bloque completo.",
+    setup_sc_line: "Evaluar línea actual",
+    setup_sc_stop: "Detener todo el sonido",
+    setup_sc_stop_desc: "El atajo más importante — y el más importante de convertir en un reflejo. La forma más rápida de detener cualquier sonido que esté sonando.",
+    setup_sc_docs: "Abrir documentación",
+    setup_sc_docs_desc: "Primero haz clic en un UGen o expresión en el editor, luego pulsa el atajo para abrir su página de documentación.",
+    setup_areas: [
+      {
+        title: "Editor de código",
+        desc: "El panel principal donde escribes código SuperCollider. Puedes tener múltiples documentos abiertos como pestañas.",
+      },
+      {
+        title: "Ventana Post",
+        desc: "El panel de la derecha. SuperCollider imprime toda su salida aquí: estado del servidor, errores, resultados de evaluación y advertencias. Cuando algo falla, <strong>revisa la Ventana Post primero</strong>.",
+      },
+      {
+        title: "Navegador de ayuda",
+        desc: "La documentación integrada. Accede desde el menú Help, o selecciona cualquier palabra en el editor y pulsa <code>Cmd+D</code> (Mac) / <code>Ctrl+D</code> (Win/Linux). Las páginas de ayuda incluyen ejemplos ejecutables.",
+      },
+    ],
+    setup_steps: [
+      {
+        title: "Abre el IDE",
+        desc: "Tras instalar, abre la aplicación SuperCollider. Verás el editor de código a la izquierda y la Ventana Post a la derecha.",
+      },
+      {
+        title: "Arranca el servidor de audio",
+        desc: "SuperCollider separa el lenguaje del motor de audio. Escribe <code>s.boot</code> en el editor y pulsa <code>Cmd+Return</code> (Mac) o <code>Ctrl+Return</code> (Win/Linux) para evaluarlo. Observa la Ventana Post — mostrará el servidor iniciándose.",
+      },
+      {
+        title: "Ejecuta tu primer sonido",
+        desc: "Una vez que el servidor esté corriendo, escribe <code>{ SinOsc.ar(440, 0, 0.3) }.play</code> y evalúalo. Deberías escuchar una onda sinusoidal a 440 Hz.",
+      },
+      {
+        title: "Detén el sonido",
+        desc: "Pulsa <code>Cmd+.</code> (Mac) o <code>Ctrl+.</code> (Win/Linux) para detener todo el audio de inmediato. Este atajo funciona en cualquier momento y es el más importante que debes memorizar.",
+      },
+      {
+        title: "Cierra el servidor",
+        desc: "Cuando termines, evalúa <code>s.quit</code> para apagar el servidor de audio, o simplemente cierra la aplicación.",
+      },
+    ],
   },
 
   fr: {
@@ -470,6 +582,62 @@ const ui = {
     sc_err_play: "Ajoutez .play à la fin pour exécuter le bloc audio.",
     sc_err_ugen: "Utilisez un UGen avec un appel .ar(...) pour générer de l'audio.",
     sc_err_placeholders: "Remplacez tous les mots indicateurs (en MAJUSCULES) par des valeurs réelles.",
+
+    // Setup page
+    nav_setup: "Installation",
+    setup_desc: "comment installer et utiliser SuperCollider",
+    setup_hero_title: "Configurer SuperCollider",
+    setup_hero_sub: "SC Learn fonctionne entièrement dans le navigateur — sans installation. Mais pour aller au-delà des exercices d'introduction et utiliser le langage SuperCollider complet, vous devez installer le vrai logiciel sur votre ordinateur. Ce guide couvre l'essentiel.",
+    setup_download_label: "01 — Téléchargement",
+    setup_download_body: "SuperCollider est gratuit et open source. Téléchargez-le depuis <strong>supercollider.github.io</strong> — des installeurs sont disponibles pour <strong>macOS</strong>, <strong>Windows</strong> et <strong>Linux</strong>.",
+    setup_download_btn: "Aller sur supercollider.github.io",
+    setup_ide_label: "02 — L'IDE",
+    setup_ide_intro: "SuperCollider est livré avec son propre IDE (Environnement de Développement Intégré). Lors de la première ouverture, vous verrez trois zones principales :",
+    setup_start_label: "03 — Premiers pas",
+    setup_shortcuts_label: "04 — Raccourcis clavier",
+    setup_sc_eval: "Évaluer le bloc de code",
+    setup_sc_eval_desc: "Sélectionnez les lignes à évaluer, ou entourez votre code avec <code>( )</code> — placez le curseur à l'intérieur et appuyez sur le raccourci pour exécuter tout le bloc.",
+    setup_sc_line: "Évaluer la ligne courante",
+    setup_sc_stop: "Arrêter tout le son",
+    setup_sc_stop_desc: "Le raccourci le plus important — et le plus important à transformer en réflexe. La façon la plus rapide d'arrêter tout son en cours.",
+    setup_sc_docs: "Ouvrir la documentation",
+    setup_sc_docs_desc: "Cliquez d'abord sur un UGen ou une expression dans l'éditeur, puis appuyez sur le raccourci pour ouvrir sa page de documentation.",
+    setup_areas: [
+      {
+        title: "Éditeur de code",
+        desc: "Le panneau principal où vous écrivez du code SuperCollider. Vous pouvez avoir plusieurs documents ouverts sous forme d'onglets.",
+      },
+      {
+        title: "Fenêtre Post",
+        desc: "Le panneau à droite. SuperCollider y affiche toutes ses sorties : statut du serveur, erreurs, résultats d'évaluation et avertissements. Quand quelque chose ne va pas, <strong>vérifiez d'abord la Fenêtre Post</strong>.",
+      },
+      {
+        title: "Navigateur d'aide",
+        desc: "La documentation intégrée. Accédez-y depuis le menu Help, ou sélectionnez un mot dans l'éditeur et appuyez sur <code>Cmd+D</code> (Mac) / <code>Ctrl+D</code> (Win/Linux). Les pages d'aide contiennent des exemples exécutables.",
+      },
+    ],
+    setup_steps: [
+      {
+        title: "Ouvrir l'IDE",
+        desc: "Après l'installation, lancez l'application SuperCollider. Vous verrez l'éditeur de code à gauche et la Fenêtre Post à droite.",
+      },
+      {
+        title: "Démarrer le serveur audio",
+        desc: "SuperCollider sépare le langage du moteur audio. Tapez <code>s.boot</code> dans l'éditeur et appuyez sur <code>Cmd+Return</code> (Mac) ou <code>Ctrl+Return</code> (Win/Linux) pour l'évaluer. Regardez la Fenêtre Post — elle affichera le démarrage du serveur.",
+      },
+      {
+        title: "Jouer votre premier son",
+        desc: "Une fois le serveur démarré, tapez <code>{ SinOsc.ar(440, 0, 0.3) }.play</code> et évaluez-le. Vous devriez entendre une onde sinusoïdale à 440 Hz.",
+      },
+      {
+        title: "Arrêter le son",
+        desc: "Appuyez sur <code>Cmd+.</code> (Mac) ou <code>Ctrl+.</code> (Win/Linux) pour arrêter tout l'audio immédiatement. Ce raccourci fonctionne à tout moment — c'est le plus important à mémoriser.",
+      },
+      {
+        title: "Quitter le serveur",
+        desc: "Quand vous avez terminé, évaluez <code>s.quit</code> pour arrêter le serveur audio, ou fermez simplement l'application.",
+      },
+    ],
   },
 } as const;
 
@@ -481,4 +649,12 @@ export function t(lang: Locale, key: UIKey): string {
 
 export function tSteps(lang: Locale) {
   return ui[lang].about_steps;
+}
+
+export function tSetupAreas(lang: Locale) {
+  return ui[lang].setup_areas;
+}
+
+export function tSetupSteps(lang: Locale) {
+  return ui[lang].setup_steps;
 }

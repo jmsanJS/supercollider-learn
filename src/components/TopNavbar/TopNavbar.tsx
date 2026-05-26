@@ -23,6 +23,7 @@ export default function TopNavbar() {
   const tabs: TopNavbarTab[] = [
     { id: "home", path: "/", label: t(lang, "nav_home") },
     { id: "about", path: "/about", label: t(lang, "nav_about") },
+    { id: "setup", path: "/setup", label: t(lang, "nav_setup") },
     { id: "exercises", path: "/exercises", label: t(lang, "nav_exercises") },
     { id: "progress", path: "/progress", label: t(lang, "nav_progress") },
     { id: "ugens", path: "/ugens", label: t(lang, "nav_ugens") },

@@ -13,6 +13,7 @@ export default function Footer() {
   const navLinks: FooterLink[] = [
     { label: t(lang, "nav_home"), href: "/" },
     { label: t(lang, "nav_about"), href: "/about" },
+    { label: t(lang, "nav_setup"), href: "/setup" },
     { label: t(lang, "nav_exercises"), href: "/exercises" },
     { label: t(lang, "nav_progress"), href: "/progress" },
     { label: t(lang, "nav_ugens"), href: "/ugens" },

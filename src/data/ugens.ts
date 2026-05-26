@@ -145,21 +145,21 @@ export const UGENS: UGen[] = [
       { name: "add", default: "0", desc: { en: "Value added to the output", es: "Valor añadido a la salida", fr: "Valeur ajoutée à la sortie" } },
     ],
     example: `{
-  SinOsc.ar(
-    LFSaw.kr(2) * 200 + 600,
-    0,
-    0.3) ! 2
+  Saw.ar(
+    LFSaw.kr(0.3) * 300 + 500,
+    0.25
+  ) ! 2
 }.play`,
     note: [
       { en: "! 2 duplicates the signal to the left and right channel → stereo output", es: "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo", fr: "! 2 duplique le signal vers le canal gauche et droit → sortie stéréo" },
-      { en: "LFSaw.kr(2) oscillates between -1 and 1 at 2 Hz; × 200 converts that range to ±200 Hz; + 600 shifts the centre to 600 Hz → frequency sweeps between 400 and 800 Hz", es: "LFSaw.kr(2) oscila entre -1 y 1 a 2 Hz; × 200 convierte ese rango en ±200 Hz; + 600 desplaza el centro a 600 Hz → la frecuencia barre entre 400 y 800 Hz", fr: "LFSaw.kr(2) oscille entre -1 et 1 à 2 Hz ; × 200 convertit cette plage en ±200 Hz ; + 600 décale le centre à 600 Hz → la fréquence balaie entre 400 et 800 Hz" },
+      { en: "LFSaw.kr(0.3) completes one ramp every ~3 seconds; × 300 gives ±300 Hz; + 500 centres at 500 Hz → the frequency slowly climbs from 200 to 800 Hz then resets", es: "LFSaw.kr(0.3) completa una rampa cada ~3 segundos; × 300 da ±300 Hz; + 500 centra en 500 Hz → la frecuencia sube lentamente de 200 a 800 Hz y vuelve a empezar", fr: "LFSaw.kr(0.3) complète une rampe toutes les ~3 secondes ; × 300 donne ±300 Hz ; + 500 centre à 500 Hz → la fréquence monte lentement de 200 à 800 Hz puis repart" },
       { en: ".kr is used instead of .ar because it is an LFO: it runs at control rate (lower CPU cost) as it does not need audio resolution", es: "Se usa .kr en vez de .ar porque es un LFO: corre a tasa de control (menor coste de CPU) ya que no necesita la resolución de audio", fr: ".kr est utilisé à la place de .ar car c'est un LFO : il fonctionne à la fréquence de contrôle (coût CPU inférieur) car il ne nécessite pas la résolution audio" },
     ],
     sound: {
-      freq: 600,
-      amp: 0.3,
-      type: "sine",
-      lfo: { rate: 2, depth: 200, shape: "sawtooth", target: "frequency" },
+      freq: 500,
+      amp: 0.25,
+      type: "sawtooth",
+      lfo: { rate: 0.3, depth: 300, shape: "sawtooth", target: "frequency" },
     },
   },
   {
@@ -180,20 +180,21 @@ export const UGENS: UGen[] = [
     ],
     example: `{
 	SinOsc.ar(
-		440,
+		800,
 		0,
-		LFPulse.kr(2, 0, 0.5) * 0.3
+		LFPulse.kr(5, 0, 0.15) * 0.35
 	) ! 2
 }.play`,
     note: [
       { en: "! 2 duplicates the signal to the left and right channel → stereo output", es: "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo", fr: "! 2 duplique le signal vers le canal gauche et droit → sortie stéréo" },
-      { en: "LFPulse.kr(2, 0, 0.5) * 0.3 produces a tremolo: amplitude alternates between 0 and 0.3 at 2 Hz (on/off)", es: "LFPulse.kr(2, 0, 0.5) * 0.3 produce un trémolo: la amplitud alterna entre 0 y 0.3 a 2 Hz (encendido/apagado)", fr: "LFPulse.kr(2, 0, 0.5) * 0.3 produit un trémolo : l'amplitude alterne entre 0 et 0.3 à 2 Hz (allumé/éteint)" },
+      { en: "width: 0.15 means the pulse is on only 15% of each cycle → short, sharp blips at 5 Hz rather than a 50/50 on-off pattern", es: "width: 0.15 significa que el pulso está activo solo el 15% de cada ciclo → ráfagas cortas y agudas a 5 Hz en lugar de un patrón 50/50", fr: "width: 0.15 signifie que l'impulsion est active seulement 15% de chaque cycle → courtes impulsions nettes à 5 Hz plutôt qu'un motif 50/50" },
+      { en: "LFPulse outputs 0 or 1, so multiplying by 0.35 gates the amplitude between 0 (silent) and 0.35 (audible)", es: "LFPulse produce 0 o 1, así que multiplicar por 0.35 controla la amplitud entre 0 (silencio) y 0.35 (audible)", fr: "LFPulse produit 0 ou 1, donc multiplier par 0.35 bascule l'amplitude entre 0 (silence) et 0.35 (audible)" },
     ],
     sound: {
-      freq: 440,
-      amp: 0.3,
+      freq: 800,
+      amp: 0.35,
       type: "sine",
-      lfo: { rate: 2, depth: 0, shape: "square", target: "amplitude" },
+      lfo: { rate: 5, depth: 0, shape: "square", target: "amplitude" },
     },
   },
   {
@@ -506,23 +507,22 @@ export const UGENS: UGen[] = [
       { name: "doneAction", default: "0", desc: { en: "Done.freeSelf = releases the synth when done", es: "Done.freeSelf = libera el synth al terminar", fr: "Done.freeSelf = libère le synth quand c'est terminé" } },
     ],
     example: `{
-  SinOsc.ar(
-    XLine.kr(2000, 200, 0.4),
-    0,
-    EnvGen.kr(Env.perc(0.001, 0.4), doneAction: Done.freeSelf)
+  Saw.ar(
+    XLine.kr(100, 3000, 1.5),
+    EnvGen.kr(Env.perc(0.01, 1.5), doneAction: Done.freeSelf)
   ) ! 2
 }.play`,
     note: [
       { en: "! 2 duplicates the signal to the left and right channel → stereo output", es: "! 2 duplica la señal al canal izquierdo y derecho → salida estéreo", fr: "! 2 duplique le signal vers le canal gauche et droit → sortie stéréo" },
       { en: "The ear perceives pitch on a logarithmic scale, so XLine (exponential) sounds like a 'natural' pitch glide", es: "El oído percibe el tono en escala logarítmica, así que XLine (exponencial) suena como un deslizamiento 'natural' de pitch", fr: "L'oreille perçoit la hauteur sur une échelle logarithmique, donc XLine (exponentiel) sonne comme un glissement de hauteur 'naturel'" },
       { en: "start and end must be non-zero and have the same sign; otherwise the server throws an error", es: "start y end deben ser distintos de cero y tener el mismo signo; de lo contrario el servidor lanza un error", fr: "start et end doivent être différents de zéro et avoir le même signe ; sinon le serveur lance une erreur" },
-      { en: "Used as the frequency argument of SinOsc, it creates laser shot, bomb drop or siren effects", es: "Usado como argumento de frecuencia de SinOsc, crea efectos de disparo láser, caída de bomba o sirena", fr: "Utilisé comme argument de fréquence de SinOsc, il crée des effets de tir laser, de chute de bombe ou de sirène" },
+      { en: "Ascending sweep from 100 to 3000 Hz over 1.5 s on a Saw oscillator — like a rocket launch or rising alarm", es: "Barrido ascendente de 100 a 3000 Hz en 1.5 s sobre un oscilador Saw — como el lanzamiento de un cohete o una alarma ascendente", fr: "Balayage ascendant de 100 à 3000 Hz en 1,5 s sur un oscillateur Saw — comme le lancement d'une fusée ou une alarme montante" },
     ],
     sound: {
-      type: "sine",
+      type: "sawtooth",
       amp: 0.4,
-      sweep: { start: 2000, end: 200, duration: 0.4, curve: "exponential" },
-      env: { attack: 0.001, decay: 0.4, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "exponential" },
+      sweep: { start: 100, end: 3000, duration: 1.5, curve: "exponential" },
+      env: { attack: 0.01, decay: 1.5, sustain: 0, release: 0.001, attackCurve: "linear", decayCurve: "exponential" },
     },
   },
   {

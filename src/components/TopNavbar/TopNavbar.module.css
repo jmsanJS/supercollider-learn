@@ -129,7 +129,9 @@
   font-size: 0.78rem;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border-subtle);
-  transition: background 0.1s, color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s;
   letter-spacing: 0.05em;
 }
 
@@ -161,9 +163,9 @@
 }
 
 /* ── Responsive ────────────────────────────────────────────────────────────── */
-@media (max-width: 868px) {
+@media (max-width: 1110px) {
   .topbar {
-    padding: 4px 16px;
+    padding: 6px 16px;
   }
   .logo_mark {
     font-size: 0.88rem;
@@ -183,10 +185,6 @@
 
 @media (max-width: 480px) {
   .topbar {
-    padding: 3px 12px;
-  }
-  .logo_mark {
-    font-size: 0.82rem;
-    padding: 10px 12px 10px 0;
+    padding: 4px 12px;
   }
 }

@@ -95,6 +95,7 @@ const ui = {
     exercises_answer_modal_desc: "If you confirm, the solution to the current exercise will be loaded in the editor.",
     exercises_answer_modal_confirm: "Show",
     exercises_cancel: "Cancel",
+    exercises_next: "→ Next exercise",
 
     // UGens page
     ugens_sidebar_label: "Common UGens",
@@ -314,6 +315,7 @@ const ui = {
     exercises_answer_modal_desc: "Si confirmas, se cargará la solución del ejercicio actual en el editor.",
     exercises_answer_modal_confirm: "Mostrar",
     exercises_cancel: "Cancelar",
+    exercises_next: "→ Siguiente ejercicio",
 
     ugens_sidebar_label: "UGens comunes",
     ugens_args_label: "// argumentos",
@@ -526,6 +528,7 @@ const ui = {
     exercises_answer_modal_desc: "Si tu confirmes, la solution de l'exercice actuel sera chargée dans l'éditeur.",
     exercises_answer_modal_confirm: "Afficher",
     exercises_cancel: "Annuler",
+    exercises_next: "→ Exercice suivant",
 
     ugens_sidebar_label: "UGens courants",
     ugens_args_label: "// arguments",

@@ -17,6 +17,11 @@ export function getTotalExercises(): number {
   return EXERCISES.length;
 }
 
+export function getNextExercise(id: string): Exercise | undefined {
+  const idx = EXERCISES.findIndex(ex => ex.id === id);
+  return idx !== -1 ? EXERCISES[idx + 1] : undefined;
+}
+
 export function getInitialCodes(lang: Locale = "en"): Record<string, string> {
   return Object.fromEntries(EXERCISES.map(e => [e.id, e.starter[lang]]));
 }

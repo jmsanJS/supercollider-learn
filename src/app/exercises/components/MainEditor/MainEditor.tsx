@@ -2,7 +2,7 @@
 
 import { useExercises } from "@/context/ExercisesContext";
 import styles from "./MainEditor.module.css";
-import { getExerciseById } from "@/lib/exercises";
+import { getExerciseById, getNextExercise } from "@/lib/exercises";
 import { useEffect, useRef, useState } from "react";
 import { highlight } from "@/lib/highlight";
 import { useProgress } from "@/context/ProgressContext";
@@ -17,7 +17,7 @@ import { useLang } from "@/context/LangContext";
 import { t } from "@/i18n/ui";
 
 export default function MainEditor() {
-  const { activeId } = useExercises();
+  const { activeId, setActiveId } = useExercises();
   const { markCompleted } = useProgress();
   const { play, stop } = useAudio();
   const { lang } = useLang();
@@ -48,6 +48,7 @@ export default function MainEditor() {
 
   const code: string = codes[activeId] ?? exercise.starter[lang];
   const activeResult = results[exercise.id] ?? null;
+  const nextExercise = getNextExercise(activeId);
 
   const onChange = (newCode: string): void => {
     setCodes((prev) => ({ ...prev, [activeId]: newCode }));
@@ -215,6 +216,17 @@ export default function MainEditor() {
               <button className={styles.btn_reset} onClick={handleShowAnswer}>
                 {t(lang, "exercises_show_answer")}
               </button>
+              {activeResult?.ok && nextExercise && (
+                <button
+                  className={styles.btn_next}
+                  onClick={() => {
+                    stop();
+                    setActiveId(nextExercise.id);
+                  }}
+                >
+                  {t(lang, "exercises_next")}
+                </button>
+              )}
             </div>
 
             {activeResult && (

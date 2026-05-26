@@ -143,6 +143,8 @@
 
 .ex_controls {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
   margin-top: 10px;
 }
@@ -203,6 +205,23 @@
 .btn_reset:hover {
   color: var(--text-secondary);
   border-color: color-mix(in srgb, var(--text-secondary) 40%, transparent);
+}
+
+.btn_next {
+  padding: 7px 12px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 3px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn_next:hover {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border-color: var(--accent);
 }
 
 .feedback {

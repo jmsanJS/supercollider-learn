@@ -88,7 +88,7 @@ export const GLOSSARY: GlossaryTerm[] = [
       es: "Instancia de una clase que combina datos y comportamiento. En SuperCollider todo es un objeto: números, strings, UGens.",
       fr: "Instance d'une classe qui combine données et comportement. Dans SuperCollider, tout est un objet : nombres, chaînes, UGens.",
     },
-    related: ["oop", "method"],
+    related: ["class", "instance", "oop", "method"],
   },
   {
     id: "oop",
@@ -99,7 +99,29 @@ export const GLOSSARY: GlossaryTerm[] = [
       es: "Programación Orientada a Objetos. Paradigma en el que el código se organiza en objetos con propiedades y métodos. SuperCollider es un lenguaje POO.",
       fr: "Programmation Orientée Objet. Paradigme dans lequel le code est organisé en objets avec des propriétés et des méthodes. SuperCollider est un langage POO.",
     },
-    related: ["object", "method"],
+    related: ["object", "class", "method"],
+  },
+  {
+    id: "class",
+    term: { en: "Class", es: "Clase", fr: "Classe" },
+    category: "programming",
+    definition: {
+      en: "Blueprint or template that defines the properties and behaviour of objects. In SuperCollider every element belongs to a class: SinOsc, Array, String, Integer. Class names always start with an uppercase letter.",
+      es: "Plantilla que define las propiedades y el comportamiento de los objetos. En SuperCollider cada elemento pertenece a una clase: SinOsc, Array, String, Integer. Los nombres de clase siempre comienzan con mayúscula.",
+      fr: "Modèle ou gabarit qui définit les propriétés et le comportement des objets. Dans SuperCollider, chaque élément appartient à une classe : SinOsc, Array, String, Integer. Les noms de classe commencent toujours par une majuscule.",
+    },
+    related: ["instance", "object", "oop"],
+  },
+  {
+    id: "instance",
+    term: { en: "Instance", es: "Instancia", fr: "Instance" },
+    category: "programming",
+    definition: {
+      en: "Specific object created from a class, with its own state. In SuperCollider, Synth('name') creates an instance of a SynthDef. Every number, string, or array is also an instance of its respective class.",
+      es: "Objeto específico creado a partir de una clase, con su propio estado. En SuperCollider, Synth('nombre') crea una instancia de un SynthDef. Cada número, string o array también es una instancia de su clase respectiva.",
+      fr: "Objet spécifique créé à partir d'une classe, avec son propre état. Dans SuperCollider, Synth('nom') crée une instance d'un SynthDef. Chaque nombre, chaîne ou tableau est aussi une instance de sa classe respective.",
+    },
+    related: ["class", "object", "synth-instance"],
   },
   {
     id: "ide",
@@ -145,8 +167,41 @@ export const GLOSSARY: GlossaryTerm[] = [
     },
     related: ["ide", "interpreter"],
   },
+  {
+    id: "condition",
+    term: { en: "Condition", es: "Condición", fr: "Condition" },
+    category: "programming",
+    definition: {
+      en: "Control flow structure that executes a block of code only when a boolean expression is true. In SuperCollider: if (condition) { trueAction } { falseAction }, or in message style: condition.if { ... } { ... }.",
+      es: "Estructura de control de flujo que ejecuta un bloque de código solo cuando una expresión booleana es verdadera. En SuperCollider: if (condición) { acciónVerdadera } { acciónFalsa }, o en estilo mensaje: condición.if { ... } { ... }.",
+      fr: "Structure de contrôle de flux qui exécute un bloc de code uniquement lorsqu'une expression booléenne est vraie. Dans SuperCollider : if (condition) { actionVraie } { actionFausse }, ou en style message : condition.if { ... } { ... }.",
+    },
+    related: ["loop", "function"],
+  },
+  {
+    id: "loop",
+    term: { en: "Loop", es: "Bucle", fr: "Boucle" },
+    category: "programming",
+    definition: {
+      en: "Control structure that repeats a block of code. In SuperCollider: n.do { |i| ... } repeats n times, loop { ... } runs indefinitely, whileTrue: { ... } runs while a condition holds. Also refers to audio looping when a buffer or sample plays back repeatedly.",
+      es: "Estructura de control que repite un bloque de código. En SuperCollider: n.do { |i| ... } repite n veces, loop { ... } corre indefinidamente, whileTrue: { ... } corre mientras una condición se cumple. También se refiere al looping de audio cuando un buffer o sample se reproduce en bucle.",
+      fr: "Structure de contrôle qui répète un bloc de code. Dans SuperCollider : n.do { |i| ... } répète n fois, loop { ... } tourne indéfiniment, whileTrue: { ... } tourne tant qu'une condition est vraie. Désigne aussi le bouclage audio quand un buffer ou sample est lu en boucle.",
+    },
+    related: ["condition", "routine", "buffer"],
+  },
 
   // ── Audio ──
+  {
+    id: "hz",
+    term: { en: "Hz (Hertz)", es: "Hz (Hertz)", fr: "Hz (Hertz)" },
+    category: "audio",
+    definition: {
+      en: "Unit of measurement for frequency. One Hertz equals one cycle per second. 440 Hz means the wave completes 440 cycles per second, corresponding to note A4. Kilohertz (kHz) = 1000 Hz. Standard sample rates are 44100 Hz and 48000 Hz.",
+      es: "Unidad de medida de la frecuencia. Un Hertz equivale a un ciclo por segundo. 440 Hz significa que la onda completa 440 ciclos por segundo, correspondiente a la nota La4. Kilohertz (kHz) = 1000 Hz. Las frecuencias de muestreo estándar son 44100 Hz y 48000 Hz.",
+      fr: "Unité de mesure de la fréquence. Un Hertz équivaut à un cycle par seconde. 440 Hz signifie que l'onde complète 440 cycles par seconde, correspondant à la note La4. Kilohertz (kHz) = 1000 Hz. Les fréquences d'échantillonnage standard sont 44 100 Hz et 48 000 Hz.",
+    },
+    related: ["frequency", "samplerate"],
+  },
   {
     id: "frequency",
     term: { en: "Frequency", es: "Frecuencia", fr: "Fréquence" },
@@ -156,7 +211,7 @@ export const GLOSSARY: GlossaryTerm[] = [
       es: "Número de ciclos por segundo de una onda, medido en Hertz (Hz). Determina el tono percibido: 440 Hz = La4, frecuencias más altas = tonos más agudos.",
       fr: "Nombre de cycles par seconde d'une onde, mesuré en Hertz (Hz). Détermine la hauteur perçue : 440 Hz = La4, fréquences plus élevées = sons plus aigus.",
     },
-    related: ["oscillator", "phase", "amplitude"],
+    related: ["hz", "oscillator", "phase", "amplitude"],
   },
   {
     id: "amplitude",
@@ -178,7 +233,7 @@ export const GLOSSARY: GlossaryTerm[] = [
       es: "Posición inicial de una onda en su ciclo, expresada en radianes (0 a 2π). Dos ondas idénticas con fases opuestas se cancelan entre sí (cancelación de fase).",
       fr: "Position initiale d'une onde dans son cycle, exprimée en radians (0 à 2π). Deux ondes identiques avec des phases opposées s'annulent mutuellement (annulation de phase).",
     },
-    related: ["frequency", "oscillator"],
+    related: ["frequency", "oscillator", "phase-cancellation"],
   },
   {
     id: "envelope",
@@ -189,7 +244,7 @@ export const GLOSSARY: GlossaryTerm[] = [
       es: "Curva que controla cómo evoluciona la amplitud de un sonido en el tiempo. Definida por cuatro fases: Attack, Decay, Sustain, Release (ADSR).",
       fr: "Courbe qui contrôle l'évolution de l'amplitude d'un son dans le temps. Définie par quatre phases : Attack, Decay, Sustain, Release (ADSR).",
     },
-    related: ["attack", "decay", "sustain", "release"],
+    related: ["adsr", "attack", "decay", "sustain", "release"],
   },
   {
     id: "attack",
@@ -344,6 +399,72 @@ export const GLOSSARY: GlossaryTerm[] = [
       fr: "Largeur d'impulsion d'une onde carrée. Valeur entre 0 et 1. 0.5 produit une onde carrée parfaite ; d'autres valeurs créent des timbres plus riches en harmoniques.",
     },
     related: ["oscillator", "frequency"],
+  },
+  {
+    id: "phase-cancellation",
+    term: { en: "Phase cancellation", es: "Cancelación de fase", fr: "Annulation de phase" },
+    category: "audio",
+    definition: {
+      en: "Acoustic phenomenon that occurs when two identical signals with opposite phases (one 180° ahead of the other) combine and cancel each other out, resulting in silence or reduced volume. A critical concept in mixing and signal routing.",
+      es: "Fenómeno acústico que ocurre cuando dos señales idénticas con fases opuestas (una 180° adelantada respecto a la otra) se combinan y se cancelan mutuamente, resultando en silencio o volumen reducido. Concepto fundamental en mezcla y enrutamiento de señales.",
+      fr: "Phénomène acoustique qui se produit lorsque deux signaux identiques avec des phases opposées (l'un en avance de 180° sur l'autre) se combinent et s'annulent mutuellement, résultant en silence ou en volume réduit. Concept fondamental en mixage et en routage de signal.",
+    },
+    related: ["phase", "signal"],
+  },
+  {
+    id: "output",
+    term: { en: "Output", es: "Salida", fr: "Sortie" },
+    category: "audio",
+    definition: {
+      en: "Where a signal exits a process or device. In SuperCollider, the Out UGen sends audio to a bus: Out.ar(0, signal) routes to the main stereo output (bus 0 = left, bus 1 = right).",
+      es: "Por donde sale una señal de un proceso o dispositivo. En SuperCollider, el UGen Out envía audio a un bus: Out.ar(0, señal) enruta a la salida estéreo principal (bus 0 = izquierdo, bus 1 = derecho).",
+      fr: "Là où un signal sort d'un processus ou d'un appareil. Dans SuperCollider, le UGen Out envoie de l'audio vers un bus : Out.ar(0, signal) achemine vers la sortie stéréo principale (bus 0 = gauche, bus 1 = droite).",
+    },
+    related: ["input", "bus", "signal"],
+  },
+  {
+    id: "input",
+    term: { en: "Input", es: "Entrada", fr: "Entrée" },
+    category: "audio",
+    definition: {
+      en: "Where a signal enters a process or device. In SuperCollider, the In UGen reads from a bus: In.ar(0) reads from bus 0. SoundIn.ar(0) captures audio from the microphone or external audio interface.",
+      es: "Por donde entra una señal a un proceso o dispositivo. En SuperCollider, el UGen In lee desde un bus: In.ar(0) lee del bus 0. SoundIn.ar(0) captura audio del micrófono o interfaz de audio externa.",
+      fr: "Là où un signal entre dans un processus ou un appareil. Dans SuperCollider, le UGen In lit depuis un bus : In.ar(0) lit depuis le bus 0. SoundIn.ar(0) capture l'audio depuis le microphone ou l'interface audio externe.",
+    },
+    related: ["output", "bus", "signal"],
+  },
+  {
+    id: "master",
+    term: { en: "Master", es: "Master", fr: "Master" },
+    category: "audio",
+    definition: {
+      en: "Main mixing channel that all audio signals pass through before reaching the speakers. Controls the overall output level of the mix. In SuperCollider, buses 0-1 function as the master output; a master effects chain can be added with a dedicated SynthDef routed to those buses.",
+      es: "Canal de mezcla principal por el que pasan todas las señales de audio antes de llegar a los altavoces. Controla el nivel de salida general de la mezcla. En SuperCollider, los buses 0-1 funcionan como salida master; se puede añadir una cadena de efectos master con un SynthDef dedicado enrutado a esos buses.",
+      fr: "Canal de mixage principal par lequel passent tous les signaux audio avant d'atteindre les haut-parleurs. Contrôle le niveau de sortie global du mix. Dans SuperCollider, les bus 0-1 fonctionnent comme la sortie master ; une chaîne d'effets master peut être ajoutée avec un SynthDef dédié routé vers ces bus.",
+    },
+    related: ["output", "bus", "limiter"],
+  },
+  {
+    id: "limiter",
+    term: { en: "Limiter", es: "Limitador", fr: "Limiteur" },
+    category: "audio",
+    definition: {
+      en: "Dynamic processor that prevents a signal from exceeding a maximum amplitude level, acting as a hard ceiling. Protects speakers and prevents clipping. In SuperCollider: Limiter.ar(signal, level, lookAheadTime). Often placed at the end of a signal chain.",
+      es: "Procesador dinámico que impide que una señal supere un nivel de amplitud máximo, actuando como un techo rígido. Protege los altavoces y evita el clipping. En SuperCollider: Limiter.ar(señal, nivel, lookAheadTime). Se coloca habitualmente al final de la cadena de señal.",
+      fr: "Processeur dynamique qui empêche un signal de dépasser un niveau d'amplitude maximum, agissant comme un plafond rigide. Protège les haut-parleurs et évite l'écrêtage. Dans SuperCollider : Limiter.ar(signal, niveau, lookAheadTime). Placé habituellement en fin de chaîne de signal.",
+    },
+    related: ["amplitude", "signal", "master"],
+  },
+  {
+    id: "adsr",
+    term: { en: "ADSR", es: "ADSR", fr: "ADSR" },
+    category: "audio",
+    definition: {
+      en: "Attack-Decay-Sustain-Release. The standard four-stage envelope shape describing how a sound evolves over time: rises to peak (attack), falls to sustain level (decay), holds while the note is pressed (sustain), then fades to silence (release). In SuperCollider: Env.adsr(attackTime, decayTime, sustainLevel, releaseTime).",
+      es: "Attack-Decay-Sustain-Release. La forma de envolvente estándar de cuatro etapas que describe cómo evoluciona un sonido en el tiempo: sube al pico (attack), baja al nivel de sustain (decay), se mantiene mientras se sostiene la nota (sustain) y se desvanece hasta el silencio (release). En SuperCollider: Env.adsr(attackTime, decayTime, sustainLevel, releaseTime).",
+      fr: "Attack-Decay-Sustain-Release. La forme d'enveloppe standard à quatre étapes décrivant l'évolution d'un son dans le temps : monte au pic (attack), descend au niveau de sustain (decay), se maintient pendant que la note est tenue (sustain), puis s'estompe jusqu'au silence (release). Dans SuperCollider : Env.adsr(attackTime, decayTime, sustainLevel, releaseTime).",
+    },
+    related: ["envelope", "attack", "decay", "sustain", "release"],
   },
 
   // ── Music ──

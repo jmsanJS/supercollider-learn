@@ -4,6 +4,20 @@ import TerminalHeader from "@/components/TerminalHeader/TerminalHeader";
 import styles from "./page.module.css";
 import { useLang } from "@/context/LangContext";
 import { t, tSteps } from "@/i18n/ui";
+import { UGENS } from "@/data/ugens";
+
+const UGEN_NAMES = UGENS.map((u) => u.name);
+
+function linkifyUGens(html: string, linkClass: string): string {
+  return UGEN_NAMES.reduce(
+    (acc, name) =>
+      acc.replace(
+        new RegExp(`\\b${name}\\b`, "g"),
+        `<a href="/ugens?name=${name}" class="${linkClass}">${name}</a>`
+      ),
+    html
+  );
+}
 
 export default function AboutClient() {
   const { lang } = useLang();
@@ -25,6 +39,14 @@ export default function AboutClient() {
       </div>
 
       <div className={styles.section}>
+        <div className={styles.section_label}>{t(lang, "about_note_label")}</div>
+        <div
+          className={styles.notice}
+          dangerouslySetInnerHTML={{ __html: t(lang, "about_note_body") }}
+        />
+      </div>
+
+      <div className={styles.section}>
         <div className={styles.section_label}>{t(lang, "about_path_label")}</div>
         <div className={styles.steps}>
           {steps.map((s, i) => (
@@ -36,20 +58,12 @@ export default function AboutClient() {
                 <div className={styles.step_title}>{s.title}</div>
                 <div
                   className={styles.step_desc}
-                  dangerouslySetInnerHTML={{ __html: s.desc }}
+                  dangerouslySetInnerHTML={{ __html: linkifyUGens(s.desc, styles.term_link) }}
                 />
               </div>
             </div>
           ))}
         </div>
-      </div>
-
-      <div className={styles.section}>
-        <div className={styles.section_label}>{t(lang, "about_note_label")}</div>
-        <div
-          className={styles.notice}
-          dangerouslySetInnerHTML={{ __html: t(lang, "about_note_body") }}
-        />
       </div>
 
       <div className={styles.section}>
@@ -76,14 +90,14 @@ export default function AboutClient() {
             <span className={styles.link_url}>docs.supercollider.online</span>
           </a>
           <a
-            href="https://github.com/supercollider/supercollider"
+            href="https://github.com/supercollider"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.ext_link}
           >
             <span className={styles.link_label}>GitHub</span>
             <span className={styles.link_url}>
-              github.com/supercollider/supercollider
+              github.com/supercollider
             </span>
           </a>
         </div>

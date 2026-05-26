@@ -46,10 +46,11 @@ const ui = {
     about_hero_sub: "SC Learn is a platform to take your first steps in <strong>SuperCollider</strong> from the browser, without installing anything. It is designed for musicians curious about programming and for programmers interested in audio synthesis: people who already have one foot in one world and want to build bridges to the other.<br/><br/>SuperCollider is an environment for <span>real-time audio synthesis</span> and <span>algorithmic composition</span>, in active use since 1996 in electroacoustic music, live coding and sound research. This site is an introduction — not a substitute for the real software.",
     about_path_label: "The learning path",
     about_note_label: "An important note",
-    about_note_body: "<strong>SC Learn does not run SuperCollider.</strong> The real synthesis server (<code>scsynth</code>) does not run in the browser. The audio you hear is an approximation built with <strong>Tone.js</strong> that models the behaviour of the UGens in the exercises — functionally valid for learning, but not identical to the real implementation.<br/><br/>The exercises cover a bounded subset of the language. The goal is not exhaustiveness but understanding of the principles. Once the foundations are established here, the next step is to install SuperCollider and work directly with <code>sclang</code>.",
-    about_resources_label: "Official SuperCollider resources",
+    about_note_body: "<strong>SuperCollider does not run in the browser.</strong> SC Learn is an <strong>introductory guide</strong> to the basics of SuperCollider — it is not a replacement for the real software. The audio you hear is an approximation built with <strong>Tone.js</strong> (a JavaScript library for browser audio) that models the behaviour of the UGens in the exercises, functionally valid for learning.<br/><br/>To go further, <strong>download SuperCollider</strong> from <a href=\"https://supercollider.github.io\" target=\"_blank\" rel=\"noopener noreferrer\">supercollider.github.io</a> and try the exercises directly in the <strong>SuperCollider IDE</strong>. That is where the real synthesis server (<code>scsynth</code>) runs and where you will experience the full language.",
+    about_resources_label: "SuperCollider resources",
     about_site_label: "Official site",
     about_docs_label: "Documentation",
+    about_awesome_label: "Awesome SuperCollider",
     about_steps: [
       {
         title: "Oscillators and waveforms",
@@ -206,10 +207,11 @@ const ui = {
     about_hero_sub: "SC Learn es una plataforma para dar los primeros pasos en <strong>SuperCollider</strong> desde el navegador, sin instalar nada. Está pensada para músicos con curiosidad por la programación y para programadores con interés en la síntesis de audio: gente que ya tiene un pie en uno de los dos mundos y quiere construir puentes hacia el otro.<br/><br/>SuperCollider es un entorno para <span>síntesis de audio en tiempo real</span> y <span>composición algorítmica</span>, en uso activo desde 1996 en música electroacústica, live coding e investigación sonora. Este sitio es una introducción — no un sustituto del software real.",
     about_path_label: "El camino de aprendizaje",
     about_note_label: "Una aclaración importante",
-    about_note_body: "<strong>SC Learn no ejecuta SuperCollider.</strong> El servidor de síntesis real (<code>scsynth</code>) no corre en el navegador. El audio que escuchas es una aproximación construida con <strong>Tone.js</strong> que modela el comportamiento de los UGens de los ejercicios — funcionalmente válida para aprender, pero no idéntica a la implementación real.<br/><br/>Los ejercicios cubren un subconjunto acotado del lenguaje. El objetivo no es la exhaustividad sino la comprensión de los principios. Una vez asentadas las bases aquí, el siguiente paso es instalar SuperCollider y trabajar directamente con <code>sclang</code>.",
-    about_resources_label: "Recursos oficiales de SuperCollider",
+    about_note_body: "<strong>SuperCollider no se ejecuta en el navegador.</strong> SC Learn es una <strong>guía introductoria</strong> a los conceptos básicos de SuperCollider — no es un sustituto del software real. El audio que escuchas es una aproximación construida con <strong>Tone.js</strong> (una librería de JavaScript para audio en el navegador) que modela el comportamiento de los UGens de los ejercicios, funcionalmente válida para aprender.<br/><br/>Para ir más lejos, <strong>descarga SuperCollider</strong> desde <a href=\"https://supercollider.github.io\" target=\"_blank\" rel=\"noopener noreferrer\">supercollider.github.io</a> y prueba los ejercicios directamente en el <strong>SuperCollider IDE</strong>. Ahí es donde corre el servidor de síntesis real (<code>scsynth</code>) y donde experimentarás el lenguaje completo.",
+    about_resources_label: "Recursos de SuperCollider",
     about_site_label: "Sitio oficial",
     about_docs_label: "Documentación",
+    about_awesome_label: "Awesome SuperCollider",
     about_steps: [
       {
         title: "Osciladores y formas de onda",
@@ -358,10 +360,11 @@ const ui = {
     about_hero_sub: "SC Learn est une plateforme pour faire vos premiers pas dans <strong>SuperCollider</strong> depuis le navigateur, sans rien installer. Elle est destinée aux musiciens curieux de la programmation et aux programmeurs intéressés par la synthèse audio : des personnes qui ont déjà un pied dans l'un de ces mondes et veulent construire des ponts vers l'autre.<br/><br/>SuperCollider est un environnement pour la <span>synthèse audio en temps réel</span> et la <span>composition algorithmique</span>, en usage actif depuis 1996 dans la musique électroacoustique, le live coding et la recherche sonore. Ce site est une introduction — pas un substitut au vrai logiciel.",
     about_path_label: "Le chemin d'apprentissage",
     about_note_label: "Une précision importante",
-    about_note_body: "<strong>SC Learn n'exécute pas SuperCollider.</strong> Le serveur de synthèse réel (<code>scsynth</code>) ne fonctionne pas dans le navigateur. L'audio que vous entendez est une approximation construite avec <strong>Tone.js</strong> qui modélise le comportement des UGens des exercices — fonctionnellement valide pour apprendre, mais non identique à l'implémentation réelle.<br/><br/>Les exercices couvrent un sous-ensemble délimité du langage. L'objectif n'est pas l'exhaustivité mais la compréhension des principes. Une fois les bases établies ici, l'étape suivante est d'installer SuperCollider et de travailler directement avec <code>sclang</code>.",
-    about_resources_label: "Ressources officielles SuperCollider",
+    about_note_body: "<strong>SuperCollider ne fonctionne pas dans le navigateur.</strong> SC Learn est un <strong>guide d'introduction</strong> aux bases de SuperCollider — il ne remplace pas le vrai logiciel. L'audio que vous entendez est une approximation construite avec <strong>Tone.js</strong> (une bibliothèque JavaScript pour l'audio dans le navigateur) qui modélise le comportement des UGens des exercices, fonctionnellement valide pour apprendre.<br/><br/>Pour aller plus loin, <strong>téléchargez SuperCollider</strong> depuis <a href=\"https://supercollider.github.io\" target=\"_blank\" rel=\"noopener noreferrer\">supercollider.github.io</a> et essayez les exercices directement dans le <strong>SuperCollider IDE</strong>. C'est là que tourne le vrai serveur de synthèse (<code>scsynth</code>) et que vous découvrirez le langage dans son intégralité.",
+    about_resources_label: "Ressources SuperCollider",
     about_site_label: "Site officiel",
     about_docs_label: "Documentation",
+    about_awesome_label: "Awesome SuperCollider",
     about_steps: [
       {
         title: "Oscillateurs et formes d'onde",

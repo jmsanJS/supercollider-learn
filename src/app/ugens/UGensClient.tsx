@@ -22,7 +22,6 @@ export default function UGensClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { lang } = useLang();
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [activeUGen, setActiveUGen] = useState<string>(searchParams.get("name") ?? "SinOsc");
 
   const handleSelectUGen = (name: string) => {
@@ -48,7 +47,6 @@ export default function UGensClient() {
     }
     play(u.sound);
     setPlayingName(u.name);
-    setIsDisabled(true);
   };
 
   const handleVolumeConfirm = (remindNextSession: boolean): void => {
@@ -59,7 +57,6 @@ export default function UGensClient() {
   const handleStop = (): void => {
     stop();
     setPlayingName(null);
-    setIsDisabled(false);
   };
 
   return (
@@ -112,6 +109,11 @@ export default function UGensClient() {
               <div className={styles.pane_label} style={{ marginBottom: 8 }}>
                 {t(lang, "ugens_args_label")}
               </div>
+              <div className={`${styles.arg_row} ${styles.arg_header}`}>
+                <span className={styles.arg_name}>{t(lang, "ugens_args_col_name")}</span>
+                <span className={styles.arg_default}>{t(lang, "ugens_args_col_default")}</span>
+                <span className={styles.arg_desc}>{t(lang, "ugens_args_col_desc")}</span>
+              </div>
               {ugen.args.map((arg) => (
                 <div key={arg.name} className={styles.arg_row}>
                   <span className={styles.arg_name}>{arg.name}</span>
@@ -149,16 +151,13 @@ export default function UGensClient() {
             )}
 
             <div className={styles.ud_controls}>
-              <button
-                className={styles.btn_run}
-                onClick={() => handlePlay(ugen)}
-                disabled={isDisabled}
-              >
-                {t(lang, "ugens_listen")}
-              </button>
-              {playingName === ugen.name && (
+              {playingName === ugen.name ? (
                 <button className={styles.btn_stop} onClick={handleStop}>
                   ■ Stop
+                </button>
+              ) : (
+                <button className={styles.btn_run} onClick={() => handlePlay(ugen)}>
+                  {t(lang, "ugens_listen")}
                 </button>
               )}
             </div>

@@ -99,6 +99,9 @@ const ui = {
     // UGens page
     ugens_sidebar_label: "Common UGens",
     ugens_args_label: "// arguments",
+    ugens_args_col_name: "name",
+    ugens_args_col_default: "default",
+    ugens_args_col_desc: "description",
     ugens_example_label: "// example",
     ugens_notes_label: "// notes",
     ugens_listen: "▶ Listen",
@@ -314,6 +317,9 @@ const ui = {
 
     ugens_sidebar_label: "UGens comunes",
     ugens_args_label: "// argumentos",
+    ugens_args_col_name: "nombre",
+    ugens_args_col_default: "por defecto",
+    ugens_args_col_desc: "descripción",
     ugens_example_label: "// ejemplo",
     ugens_notes_label: "// notas",
     ugens_listen: "▶ Escuchar",
@@ -523,6 +529,9 @@ const ui = {
 
     ugens_sidebar_label: "UGens courants",
     ugens_args_label: "// arguments",
+    ugens_args_col_name: "nom",
+    ugens_args_col_default: "défaut",
+    ugens_args_col_desc: "description",
     ugens_example_label: "// exemple",
     ugens_notes_label: "// notes",
     ugens_listen: "▶ Écouter",

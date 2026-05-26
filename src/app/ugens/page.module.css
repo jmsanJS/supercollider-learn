@@ -227,22 +227,37 @@
 
 .arg_row {
   display: flex;
-  gap: 12px;
+  gap: 20px;
   padding: 6px 0;
   border-bottom: 1px solid var(--border-subtle);
   font-size: 0.72rem;
   align-items: baseline;
 }
 
+.arg_header {
+  opacity: 0.45;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.arg_header .arg_name,
+.arg_header .arg_default,
+.arg_header .arg_desc {
+  color: var(--text-muted);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6rem;
+}
+
 .arg_name {
   color: var(--hl-ugen);
-  min-width: 60px;
+  min-width: 80px;
   font-weight: 500;
 }
 
 .arg_default {
   color: var(--hl-number);
-  min-width: 50px;
+  min-width: 70px;
 }
 
 .arg_desc {
@@ -310,6 +325,7 @@
 }
 
 .btn_stop {
+  flex: 1;
   padding: 9px 14px;
   background: transparent;
   color: var(--btn-stop);

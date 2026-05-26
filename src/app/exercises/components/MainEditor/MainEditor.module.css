@@ -172,6 +172,7 @@
 }
 
 .btn_stop {
+  flex: 1;
   padding: 9px 14px;
   background: transparent;
   color: var(--btn-stop);

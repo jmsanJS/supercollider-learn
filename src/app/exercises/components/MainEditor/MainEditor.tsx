@@ -200,16 +200,13 @@ export default function MainEditor() {
             )}
 
             <div className={styles.ex_controls}>
-              <button
-                className={styles.btn_run}
-                onClick={handleRun}
-                disabled={playingId === activeId}
-              >
-                {t(lang, "exercises_run")}
-              </button>
-              {playingId === activeId && (
+              {playingId === activeId ? (
                 <button className={styles.btn_stop} onClick={handleStop}>
                   {t(lang, "exercises_stop")}
+                </button>
+              ) : (
+                <button className={styles.btn_run} onClick={handleRun}>
+                  {t(lang, "exercises_run")}
                 </button>
               )}
               <button className={styles.btn_reset} onClick={handleReset}>

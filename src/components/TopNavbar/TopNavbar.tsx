@@ -6,7 +6,7 @@ import ThemeSelector from "../ThemeSelector/ThemeSelector";
 import LangSwitcher from "../LangSwitcher/LangSwitcher";
 import { TopNavbarTab } from "@/types";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, startTransition } from "react";
 import { useLang } from "@/context/LangContext";
 import { t } from "@/i18n/ui";
 
@@ -17,7 +17,7 @@ export default function TopNavbar() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    setMenuOpen(false);
+    startTransition(() => setMenuOpen(false));
   }, [path]);
 
   const tabs: TopNavbarTab[] = [

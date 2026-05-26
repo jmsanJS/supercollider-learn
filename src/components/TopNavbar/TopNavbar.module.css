@@ -116,13 +116,15 @@
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
+  max-height: calc(100dvh - 52px);
+  overflow-y: auto;
 }
 
 .mobile_tab {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 20px;
+  padding: 15px 20px;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.78rem;
   color: var(--text-muted);
@@ -181,7 +183,7 @@
 
 @media (max-width: 480px) {
   .topbar {
-    padding: 2px 12px;
+    padding: 3px 12px;
   }
   .logo_mark {
     font-size: 0.82rem;

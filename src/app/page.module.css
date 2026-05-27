@@ -67,11 +67,112 @@
   max-width: 480px;
 }
 
+.cta_banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+  background: var(--accent-dim);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.cta_banner:hover {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.cta_label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.cta_btn {
+  font-family: "Syne Mono", monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  white-space: nowrap;
+  transition: letter-spacing 0.15s;
+}
+
+.cta_banner:hover .cta_btn {
+  letter-spacing: 0.04em;
+}
+
 .cards_grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   margin-bottom: 28px;
+}
+
+.nav_section {
+  margin-bottom: 28px;
+}
+
+.nav_cards_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.nav_card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 16px 18px;
+  background: var(--bg-secondary);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.nav_card:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.nav_card_icon {
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.nav_card_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nav_card_label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.nav_card_arrow {
+  font-size: 0.85rem;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.nav_card:hover .nav_card_arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+.nav_card_desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .section_label {
@@ -94,8 +195,17 @@
   overflow: scroll;
 }
 
+@media (max-width: 900px) {
+  .nav_cards_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   .cards_grid {
+    grid-template-columns: 1fr;
+  }
+  .nav_cards_grid {
     grid-template-columns: 1fr;
   }
   .section_wrap {

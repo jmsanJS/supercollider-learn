@@ -554,7 +554,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     definition: {
       en: "Synthesis Definition. Template that defines how a synth is built. Compiled and sent to the server. With SynthDef you can create reusable instances with Synth('name').",
       es: "Synthesis Definition. Plantilla que define cómo se construye un synth. Se compila y envía al servidor. Con SynthDef puedes crear instancias reutilizables con Synth('nombre').",
-      fr: "Synthesis Definition. Modèle qui définit comment un synth est construit. Compilé et envoyé au serveur. Avec SynthDef, vous pouvez créer des instances réutilisables avec Synth('nom').",
+      fr: "Synthesis Definition. Modèle qui définit comment un synth est construit. Compilé et envoyé au serveur. Avec SynthDef, tu peux créer des instances réutilisables avec Synth('nom').",
     },
     related: ["ugen", "server", "synth-instance"],
   },
@@ -631,7 +631,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     definition: {
       en: ".ar (audio rate): the UGen runs at sample rate (44100 Hz). .kr (control rate): runs slower (~689 Hz), uses less CPU. Use .ar for audio, .kr for modulation.",
       es: ".ar (audio rate): el UGen corre a la frecuencia de muestreo (44100 Hz). .kr (control rate): corre más lento (~689 Hz), usa menos CPU. Usa .ar para audio, .kr para modulación.",
-      fr: ".ar (audio rate) : l'UGen fonctionne à la fréquence d'échantillonnage (44 100 Hz). .kr (control rate) : fonctionne plus lentement (~689 Hz), utilise moins de CPU. Utilisez .ar pour l'audio, .kr pour la modulation.",
+      fr: ".ar (audio rate) : l'UGen fonctionne à la fréquence d'échantillonnage (44 100 Hz). .kr (control rate) : fonctionne plus lentement (~689 Hz), utilise moins de CPU. Utilise .ar pour l'audio, .kr pour la modulation.",
     },
     related: ["ugen", "signal"],
   },

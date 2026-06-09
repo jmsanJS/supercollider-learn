@@ -70,17 +70,6 @@ export default function Home() {
         </p>
       </div>
 
-      <div className={styles.cards_grid}>
-        {cards.map((c, i) => (
-          <HomeInfoCard key={i} icon={c.icon} label={c.label} desc={c.desc} />
-        ))}
-      </div>
-
-      <Link href="/exercises" className={styles.cta_banner}>
-        <span className={styles.cta_label}>{t(lang, "home_cta_label")}</span>
-        <span className={styles.cta_btn}>{t(lang, "home_cta_btn")}</span>
-      </Link>
-
       <div className={styles.nav_section}>
         <div className={styles.section_label}>{t(lang, "home_explore_label")}</div>
         <div className={styles.nav_cards_grid}>
@@ -157,6 +146,17 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </div>
+
+      <Link href="/exercises" className={styles.cta_banner}>
+        <span className={styles.cta_label}>{t(lang, "home_cta_label")}</span>
+        <span className={styles.cta_btn}>{t(lang, "home_cta_btn")}</span>
+      </Link>
+
+      <div className={styles.cards_grid}>
+        {cards.map((c, i) => (
+          <HomeInfoCard key={i} icon={c.icon} label={c.label} desc={c.desc} />
+        ))}
       </div>
 
       <div className={styles.about_sc}>

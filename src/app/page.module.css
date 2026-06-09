@@ -72,34 +72,35 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid var(--accent);
+  border: 2px solid var(--accent);
   border-radius: 4px;
-  padding: 18px 24px;
+  padding: 28px 32px;
   margin-bottom: 28px;
   background: var(--accent-dim);
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .cta_banner:hover {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
+  transform: translateY(-2px);
 }
 
 .cta_label {
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   color: var(--text-secondary);
 }
 
 .cta_btn {
   font-family: "Syne Mono", monospace;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--accent);
   white-space: nowrap;
   transition: letter-spacing 0.15s;
 }
 
 .cta_banner:hover .cta_btn {
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em;
 }
 
 .cards_grid {
@@ -199,6 +200,18 @@
   .nav_cards_grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .cta_banner {
+    padding: 22px 24px;
+  }
+
+  .cta_label {
+    font-size: 1.2rem;
+  }
+
+  .cta_btn {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -213,5 +226,20 @@
   }
   .terminal_section {
     padding: 24px 16px;
+  }
+
+  .cta_banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 20px 18px;
+  }
+
+  .cta_label {
+    font-size: 1rem;
+  }
+
+  .cta_btn {
+    font-size: 1rem;
   }
 }

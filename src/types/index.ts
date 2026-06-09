@@ -93,7 +93,7 @@ export type ValidationResult = {
 
 export type Exercise = {
   id: string;
-  level: 1 | 2 | 3;
+  level: 0 | 1 | 2 | 3;
   title: LocalizedString;
   tag: string;
   goal: LocalizedString;

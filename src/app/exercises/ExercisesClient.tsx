@@ -8,7 +8,7 @@ import MainEditor from "./components/MainEditor/MainEditor";
 
 export default function ExercisesClient() {
   const searchParams = useSearchParams();
-  const initialId = searchParams.get("id") ?? "ex1";
+  const initialId = searchParams.get("id") ?? "ex0";
 
   return (
     <ExercisesProvider initialId={initialId}>

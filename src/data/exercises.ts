@@ -2,6 +2,211 @@ import { Exercise } from "@/types";
 
 export const EXERCISES: Exercise[] = [
   {
+    id: "ex0",
+    level: 0,
+    title: {
+      en: "Welcome",
+      es: "Bienvenida",
+      fr: "Bienvenue",
+    },
+    tag: "intro",
+    goal: {
+      en: "Run the code below to hear your first sound. When the ✓ message appears, click → Next exercise.",
+      es: "Ejecuta el código de abajo para escuchar tu primer sonido. Cuando aparezca el mensaje ✓, haz clic en → Siguiente ejercicio.",
+      fr: "Exécute le code ci-dessous pour entendre ton premier son. Quand le message ✓ apparaît, clique sur → Exercice suivant.",
+    },
+    theory: {
+      en: `Welcome to SC Learn. This is a quick tour of the interface before you write any code.
+
+  SIDEBAR  (left panel)
+  ─────────────────────────────────────────────────────────────────────
+
+  Lists all exercises grouped by level.
+
+    ○  not yet completed
+    ✓  completed
+
+  Click any exercise name to open it.
+
+  MAIN AREA  (right panel)
+  ─────────────────────────────────────────────────────────────────────
+
+  The header at the top shows the exercise title (e.g. Pure tone). Below it, the goal bar tells you exactly what your code must do:
+
+    Exercise:   What you need to write.
+
+  Each exercise then has two panels side by side:
+
+    // THEORY   Explains the concept you need to solve the exercise. Read this before writing any code.
+
+    // EDITOR   Where you write SuperCollider code.
+
+  BUTTONS
+  ─────────────────────────────────────────────────────────────────────
+
+    ▶ Run             Validates and runs your code. If correct, the sound plays and the exercise is marked as completed.
+
+    ■ Stop            Stops the sound immediately.
+
+    ↺ Reset           Restores the editor to the original starter code.
+
+    💡 Show answer    Loads the solution into the editor (a confirmation dialog appears first).
+
+    → Next exercise   Appears only when your code is correct. Moves to the next exercise.
+
+  FEEDBACK
+  ─────────────────────────────────────────────────────────────────────
+
+  After clicking ▶ Run, one of two messages appears below the buttons:
+
+    ✓  Correct! The sound is being generated.
+
+    ✗  Check your code: Read each tip carefully and try again.
+
+  Important: you may hear a sound even when you see ✗. This means your code runs
+  but the values do not match what the goal asks for exactly.
+
+  HOW YOU ARE GUIDED
+  ─────────────────────────────────────────────────────────────────────
+
+  Each exercise builds on the previous one — work through them in order. The theory panel always tells you what you need to know before you start. After a failed run, tips guide you step by step toward the correct answer. The Glossary and Common UGens tabs (top navigation) are always available for reference.
+
+  ─────────────────────────────────────────────────────────────────────
+
+  Now click ▶ Run to hear your first sound. Once you see the ✓ message, click → Next exercise to begin.
+`,
+      es: `Bienvenido a SC Learn. Este es un recorrido rápido por la interfaz antes de escribir código.
+
+  BARRA LATERAL  (panel izquierdo)
+  ─────────────────────────────────────────────────────────────────────
+
+  Lista todos los ejercicios agrupados por nivel.
+
+    ○  no completado todavía
+    ✓  completado
+
+  Haz clic en el nombre de cualquier ejercicio para abrirlo.
+
+  ÁREA PRINCIPAL  (panel derecho)
+  ─────────────────────────────────────────────────────────────────────
+
+  El encabezado muestra el título del ejercicio (ej. Tono puro). Debajo, la barra de objetivo te dice exactamente qué debe hacer tu código:
+
+    Ejercicio:   Lo que debes escribir.
+
+  Cada ejercicio tiene dos paneles uno al lado del otro:
+
+    // TEORÍA    Explica el concepto que necesitas para resolver el ejercicio. Léelo antes de escribir código.
+
+    // EDITOR    Donde escribes el código SuperCollider.
+
+  BOTONES
+  ─────────────────────────────────────────────────────────────────────
+
+    ▶ Ejecutar            Valida y ejecuta tu código. Si es correcto, el sonido comienza y el ejercicio se marca como completado.
+
+    ■ Stop                Detiene el sonido inmediatamente.
+
+    ↺ Reiniciar           Restaura el editor al código de inicio original.
+
+    💡 Mostrar respuesta  Carga la solución en el editor (aparece un diálogo de confirmación primero).
+
+    → Siguiente ejercicio Aparece solo cuando tu código es correcto. Te lleva al siguiente ejercicio.
+
+  RETROALIMENTACIÓN
+  ─────────────────────────────────────────────────────────────────────
+
+  Después de hacer clic en ▶ Ejecutar, aparece uno de dos mensajes bajo los botones:
+
+    ✓  ¡Correcto! El sonido se está generando.
+
+    ✗  Revisa tu código: Lee cada pista con atención e inténtalo de nuevo.
+
+  Importante: puedes escuchar un sonido incluso cuando ves ✗. Esto significa que tu código se ejecuta, pero los valores no coinciden exactamente con lo que pide exactamente el ejercicio.
+
+  CÓMO SERÁS GUIADO
+  ─────────────────────────────────────────────────────────────────────
+
+  Cada ejercicio se apoya en el anterior — trabájalos en orden. El panel de teoría siempre te dice lo que necesitas saber antes de empezar. Después de un intento fallido, las pistas te guían paso a paso hacia la respuesta correcta. Las pestañas Glosario y UGens comunes (navegación superior) están siempre disponibles como referencia.
+
+  ─────────────────────────────────────────────────────────────────────
+
+  Ahora haz clic en ▶ Ejecutar para escuchar tu primer sonido. Cuando veas el mensaje ✓, haz clic en → Siguiente ejercicio para comenzar.
+`,
+      fr: `Bienvenue sur SC Learn. Voici un aperçu rapide de l'interface avant d'écrire du code.
+
+  BARRE LATÉRALE  (panneau gauche)
+  ─────────────────────────────────────────────────────────────────────
+
+  Liste tous les exercices groupés par niveau.
+
+    ○  pas encore terminé
+    ✓  terminé
+
+  Clique sur le nom d'un exercice pour l'ouvrir.
+
+  ZONE PRINCIPALE  (panneau droit)
+  ─────────────────────────────────────────────────────────────────────
+
+  L'en-tête affiche le titre de l'exercice (ex. Ton pur). En dessous, la barre d'objectif indique exactement ce que ton code doit faire :
+
+    Exercice :   Ce que tu dois écrire.
+
+  Chaque exercice a deux panneaux côte à côte :
+
+    // THÉORIE   Explique le concept dont tu as besoin pour résoudre l'exercice. Lis-le avant d'écrire du code.
+
+    // ÉDITEUR   Là où tu écris ton code SuperCollider.
+
+  BOUTONS
+  ─────────────────────────────────────────────────────────────────────
+
+    ▶ Exécuter           Valide et exécute ton code. Si correct, le son démarre et l'exercice est marqué comme terminé.
+
+    ■ Stop               Arrête le son immédiatement.
+
+    ↺ Réinitialiser      Restaure l'éditeur au code de départ original.
+
+    💡 Afficher la réponse  Charge la solution dans l'éditeur (une boîte de dialogue apparaît d'abord).
+
+    → Exercice suivant   Apparaît seulement quand ton code est correct. Passe à l'exercice suivant.
+
+  RETOUR
+  ─────────────────────────────────────────────────────────────────────
+
+  Après avoir cliqué sur ▶ Exécuter, un message apparaît sous les boutons :
+
+    ✓  Correct ! Le son est en cours de génération.
+
+    ✗  Vérifie ton code : Lis chaque astuce attentivement et réessaie.
+
+  Important : tu peux entendre un son même quand tu vois ✗. Cela signifie que ton code s'exécute, mais les valeurs ne correspondent pas exactement à ce que l'exercice demande.
+
+  COMMENT TU SERAS GUIDÉ
+  ─────────────────────────────────────────────────────────────────────
+
+  Chaque exercice s'appuie sur le précédent — travaille-les dans l'ordre. Le panneau de théorie te dit toujours ce que tu dois savoir avant de commencer. Après un essai raté, les astuces te guident pas à pas vers la bonne réponse. Les onglets Glossaire et UGens courants (navigation du haut) sont toujours disponibles comme référence.
+
+  ─────────────────────────────────────────────────────────────────────
+
+  Maintenant, clique sur ▶ Exécuter pour entendre ton premier son. Quand tu vois le message ✓, clique sur → Exercice suivant pour commencer.
+`,
+    },
+    starter: {
+      en: `// This code is ready to run. \n// Click ▶ Run to hear your first sound.\n{\n  SinOsc.ar(440) \n}.play`,
+      es: `// Este código está listo para ejecutarse. \n// Haz clic en ▶ Ejecutar para escuchar tu primer sonido.\n{\n  SinOsc.ar(440) \n}.play`,
+      fr: `// Ce code est prêt à être exécuté. \n// Clique sur ▶ Exécuter pour entendre ton premier son.\n{\n  SinOsc.ar(440) \n}.play`,
+    },
+    answer: {
+      en: `// This code is ready to run. \nClick ▶ Run to hear your first sound.\n{\n  SinOsc.ar(440) \n}.play`,
+      es: `// Este código está listo para ejecutarse. \nHaz clic en ▶ Ejecutar para escuchar tu primer sonido.\n{\n  SinOsc.ar(440) \n}.play`,
+      fr: `// Ce code est prêt à être exécuté. \nClique sur ▶ Exécuter pour entendre ton premier son.\n{\n  SinOsc.ar(440) \n}.play`,
+    },
+    validate() {
+      return { ok: true, tips: [] };
+    },
+  },
+  {
     id: "ex1",
     level: 1,
     title: {

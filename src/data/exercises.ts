@@ -11,15 +11,14 @@ export const EXERCISES: Exercise[] = [
     },
     tag: "intro",
     goal: {
-      en: "Run the code below to hear your first sound. When the ✓ message appears, click → Next exercise.",
-      es: "Ejecuta el código de abajo para escuchar tu primer sonido. Cuando aparezca el mensaje ✓, haz clic en → Siguiente ejercicio.",
-      fr: "Exécute le code ci-dessous pour entendre ton premier son. Quand le message ✓ apparaît, clique sur → Exercice suivant.",
+      en: "Read the introduction below, then run the code in the editor to hear your first sound.",
+      es: "Lee la introducción a continuación, luego ejecuta el código en el editor para escuchar tu primer sonido.",
+      fr: "Lis l'introduction ci-dessous, puis exécute le code dans l'éditeur pour entendre ton premier son.",
     },
     theory: {
       en: `Welcome to SC Learn. This is a quick tour of the interface before you write any code.
 
-  SIDEBAR  (left panel)
-  ─────────────────────────────────────────────────────────────────────
+  ── SIDEBAR (left panel) ──
 
   Lists all exercises grouped by level.
 
@@ -28,8 +27,7 @@ export const EXERCISES: Exercise[] = [
 
   Click any exercise name to open it.
 
-  MAIN AREA  (right panel)
-  ─────────────────────────────────────────────────────────────────────
+  ── MAIN AREA (right panel) ──
 
   The header at the top shows the exercise title (e.g. Pure tone). Below it, the goal bar tells you exactly what your code must do:
 
@@ -41,8 +39,7 @@ export const EXERCISES: Exercise[] = [
 
     // EDITOR   Where you write SuperCollider code.
 
-  BUTTONS
-  ─────────────────────────────────────────────────────────────────────
+  ── BUTTONS ──
 
     ▶ Run             Validates and runs your code. If correct, the sound plays and the exercise is marked as completed.
 
@@ -54,31 +51,25 @@ export const EXERCISES: Exercise[] = [
 
     → Next exercise   Appears only when your code is correct. Moves to the next exercise.
 
-  FEEDBACK
-  ─────────────────────────────────────────────────────────────────────
+  ── FEEDBACK ──
 
   After clicking ▶ Run, one of two messages appears below the buttons:
 
     ✓  Correct! The sound is being generated.
-
     ✗  Check your code: Read each tip carefully and try again.
 
   Important: you may hear a sound even when you see ✗. This means your code runs
   but the values do not match what the goal asks for exactly.
 
-  HOW YOU ARE GUIDED
-  ─────────────────────────────────────────────────────────────────────
+  ── HOW YOU ARE GUIDED ──
 
   Each exercise builds on the previous one — work through them in order. The theory panel always tells you what you need to know before you start. After a failed run, tips guide you step by step toward the correct answer. The Glossary and Common UGens tabs (top navigation) are always available for reference.
-
-  ─────────────────────────────────────────────────────────────────────
 
   Now click ▶ Run to hear your first sound. Once you see the ✓ message, click → Next exercise to begin.
 `,
       es: `Bienvenido a SC Learn. Este es un recorrido rápido por la interfaz antes de escribir código.
 
-  BARRA LATERAL  (panel izquierdo)
-  ─────────────────────────────────────────────────────────────────────
+  ── BARRA LATERAL (panel izquierdo) ──
 
   Lista todos los ejercicios agrupados por nivel.
 
@@ -87,8 +78,7 @@ export const EXERCISES: Exercise[] = [
 
   Haz clic en el nombre de cualquier ejercicio para abrirlo.
 
-  ÁREA PRINCIPAL  (panel derecho)
-  ─────────────────────────────────────────────────────────────────────
+  ── ÁREA PRINCIPAL (panel derecho) ──
 
   El encabezado muestra el título del ejercicio (ej. Tono puro). Debajo, la barra de objetivo te dice exactamente qué debe hacer tu código:
 
@@ -100,8 +90,7 @@ export const EXERCISES: Exercise[] = [
 
     // EDITOR    Donde escribes el código SuperCollider.
 
-  BOTONES
-  ─────────────────────────────────────────────────────────────────────
+  ── BOTONES ──
 
     ▶ Ejecutar            Valida y ejecuta tu código. Si es correcto, el sonido comienza y el ejercicio se marca como completado.
 
@@ -113,30 +102,24 @@ export const EXERCISES: Exercise[] = [
 
     → Siguiente ejercicio Aparece solo cuando tu código es correcto. Te lleva al siguiente ejercicio.
 
-  RETROALIMENTACIÓN
-  ─────────────────────────────────────────────────────────────────────
+  ── COMENTARIO  ──
 
   Después de hacer clic en ▶ Ejecutar, aparece uno de dos mensajes bajo los botones:
 
     ✓  ¡Correcto! El sonido se está generando.
-
     ✗  Revisa tu código: Lee cada pista con atención e inténtalo de nuevo.
 
   Importante: puedes escuchar un sonido incluso cuando ves ✗. Esto significa que tu código se ejecuta, pero los valores no coinciden exactamente con lo que pide exactamente el ejercicio.
 
-  CÓMO SERÁS GUIADO
-  ─────────────────────────────────────────────────────────────────────
+  ── CÓMO SERÁS GUIADO ──
 
   Cada ejercicio se apoya en el anterior — trabájalos en orden. El panel de teoría siempre te dice lo que necesitas saber antes de empezar. Después de un intento fallido, las pistas te guían paso a paso hacia la respuesta correcta. Las pestañas Glosario y UGens comunes (navegación superior) están siempre disponibles como referencia.
-
-  ─────────────────────────────────────────────────────────────────────
 
   Ahora haz clic en ▶ Ejecutar para escuchar tu primer sonido. Cuando veas el mensaje ✓, haz clic en → Siguiente ejercicio para comenzar.
 `,
       fr: `Bienvenue sur SC Learn. Voici un aperçu rapide de l'interface avant d'écrire du code.
 
-  BARRE LATÉRALE  (panneau gauche)
-  ─────────────────────────────────────────────────────────────────────
+  ── BARRE LATÉRALE (panneau gauche) ──
 
   Liste tous les exercices groupés par niveau.
 
@@ -145,8 +128,7 @@ export const EXERCISES: Exercise[] = [
 
   Clique sur le nom d'un exercice pour l'ouvrir.
 
-  ZONE PRINCIPALE  (panneau droit)
-  ─────────────────────────────────────────────────────────────────────
+  ── ZONE PRINCIPALE (panneau droit) ──
 
   L'en-tête affiche le titre de l'exercice (ex. Ton pur). En dessous, la barre d'objectif indique exactement ce que ton code doit faire :
 
@@ -158,8 +140,7 @@ export const EXERCISES: Exercise[] = [
 
     // ÉDITEUR   Là où tu écris ton code SuperCollider.
 
-  BOUTONS
-  ─────────────────────────────────────────────────────────────────────
+  ── BOUTONS ──
 
     ▶ Exécuter           Valide et exécute ton code. Si correct, le son démarre et l'exercice est marqué comme terminé.
 
@@ -171,8 +152,7 @@ export const EXERCISES: Exercise[] = [
 
     → Exercice suivant   Apparaît seulement quand ton code est correct. Passe à l'exercice suivant.
 
-  RETOUR
-  ─────────────────────────────────────────────────────────────────────
+  ── RETOUR ──
 
   Après avoir cliqué sur ▶ Exécuter, un message apparaît sous les boutons :
 
@@ -182,12 +162,9 @@ export const EXERCISES: Exercise[] = [
 
   Important : tu peux entendre un son même quand tu vois ✗. Cela signifie que ton code s'exécute, mais les valeurs ne correspondent pas exactement à ce que l'exercice demande.
 
-  COMMENT TU SERAS GUIDÉ
-  ─────────────────────────────────────────────────────────────────────
+  ── COMMENT TU SERAS GUIDÉ ──
 
   Chaque exercice s'appuie sur le précédent — travaille-les dans l'ordre. Le panneau de théorie te dit toujours ce que tu dois savoir avant de commencer. Après un essai raté, les astuces te guident pas à pas vers la bonne réponse. Les onglets Glossaire et UGens courants (navigation du haut) sont toujours disponibles comme référence.
-
-  ─────────────────────────────────────────────────────────────────────
 
   Maintenant, clique sur ▶ Exécuter pour entendre ton premier son. Quand tu vois le message ✓, clique sur → Exercice suivant pour commencer.
 `,

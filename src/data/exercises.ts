@@ -198,7 +198,7 @@ export const EXERCISES: Exercise[] = [
       fr: "Génère un ton pur à 440 Hz avec une amplitude de 0.3",
     },
     theory: {
-      en: `Welcome! This is your first exercise. You are about to generate the simplest sound possible: a pure sine wave.
+      en: `Time to produce your first sound! You are going to generate the simplest audio signal there is: a pure sine wave.
 
 Which UGen generates a pure sine wave?
 
@@ -219,7 +219,7 @@ The { }.play block evaluates the code and sends the audio to your speakers.
 Not sure about a term like Hz, amplitude or UGen? Check the Glossary section — you will find clear definitions for each one.
 If you have any doubts about how UGens work, you can also check the Common UGens tab to review the syntax and listen to the sound they produce.
 `,
-      es: `¡Bienvenido! Este es tu primer ejercicio. Vas a generar el sonido más simple posible: una onda sinusoidal pura.
+      es: `¡Es hora de producir tu primer sonido! Vas a generar la señal de audio más simple que existe: una onda sinusoidal pura.
 
 ¿Cuál UGen genera una onda sinusoidal pura?
 
@@ -240,7 +240,7 @@ El bloque { }.play evalúa el código y envía el audio a tus altavoces.
 ¿No conoces algún término como Hz, amplitud o UGen? Consulta la sección Glosario — encontrarás definiciones claras para cada uno.
 Si tienes dudas sobre cómo funcionan los UGens, también puedes revisar la pestaña de UGens comunes para ver la sintaxis y escuchar el sonido que producen.
 `,
-      fr: `Bienvenue ! Voici ton premier exercice. Tu vas générer le son le plus simple qui soit : une onde sinusoïdale pure.
+      fr: `À toi de produire ton premier son ! Tu vas générer le signal audio le plus simple qui soit : une onde sinusoïdale pure.
 
 Quel UGen génère une onde sinusoïdale pure ?
 
